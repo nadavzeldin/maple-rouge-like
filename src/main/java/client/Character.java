@@ -6282,7 +6282,7 @@ public class Character extends AbstractCharacterObject {
 
 
 
-    public void jobUpdateLogic(int level){
+    public synchronized void jobUpdateLogic(int level){
         if (level % 10 == 0)
         {
             List<Job> jobOptionList;
@@ -6291,23 +6291,24 @@ public class Character extends AbstractCharacterObject {
             {
                 jobOptionList = Arrays.asList(Job.WARRIOR, Job.MAGICIAN, Job.THIEF,
                         Job.BOWMAN, Job.PIRATE, Job.NOBLESSE);
-                return;
             }
-            if (level < 70) // Second job
+            else if (level < 70) // Second job
             {
                 jobOptionList = Arrays.asList(Job.FIGHTER, Job.PAGE, Job.SPEARMAN,
                         Job.FP_WIZARD, Job.IL_WIZARD, Job.CLERIC,
                         Job.HUNTER, Job.CROSSBOWMAN, Job.ASSASSIN, Job.BANDIT,
                         Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
                         Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
-                //randomSecondJob();
-                return;
             }
-            if (level < 90)  // Third job
+            else if (level < 90)  // Third job
             {
-                jobOptionList = Arrays.asList(Job.WARRIOR);
+                jobOptionList = Arrays.asList(Job.CRUSADER, Job.WHITEKNIGHT, Job.DRAGONKNIGHT,
+                        Job.FP_MAGE, Job.IL_MAGE, Job.PRIEST,
+                        Job.RANGER, Job.SNIPER, Job.HERMIT, Job.CHIEFBANDIT,
+                        Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
+                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
             }
-            else // Firth Job
+            else // Firth Job not done yet
             {
                 jobOptionList = Arrays.asList(Job.WARRIOR);
             }
