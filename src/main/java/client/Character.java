@@ -6312,7 +6312,7 @@ public class Character extends AbstractCharacterObject {
             {
                 jobOptionList = Arrays.asList(Job.WARRIOR);
             }
-            job = jobOptionList.get(random.nextInt(jobOptionList.size()));
+            this.job = jobOptionList.get(random.nextInt(jobOptionList.size()));
         }
         return;
     }
