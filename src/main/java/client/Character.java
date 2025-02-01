@@ -179,6 +179,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6279,6 +6280,36 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+
+
+    public void unlockRandomSkillForPlayer() {
+        // Fetch all skills that could be unlocked
+        List<Skill> allSkills = SkillFactory.getAllSkills(); // Ensure SkillFactory has a method to fetch all skills
+
+        // Filter skills: Exclude already-learned skills and ensure it's applicable for the player's job or any conditions you define
+        List<Skill> availableSkills = allSkills.stream()
+                .filter(skill -> skill != null) // Avoid null skills
+                //.filter(skill -> !this.hasSkill(skill)) // Check if the character doesn't already know this skill
+                .collect(Collectors.toList());
+
+        // If there are no skills available to unlock, inform the player and return
+        if (availableSkills.isEmpty()) {
+            this.yellowMessage("There are no new skills available to unlock.");
+            return;
+        }
+
+        // Choose a random skill from the filtered list
+        Random random = new Random();
+        Skill randomSkill = availableSkills.get(random.nextInt(availableSkills.size()));
+
+        // Unlock the skill at Level 1 (or customize as needed, e.g., unlock more levels)
+        this.changeSkillLevel(randomSkill, (byte) 1, randomSkill.getMaxLevel(), -1);
+
+        // Notify the player
+        this.yellowMessage("Congratulations! You have unlocked a new skill with ID: " + randomSkill.getId());
+    }
+
+
     public synchronized void levelUp(boolean takeexp) {
         Skill improvingMaxHP = null;
         Skill improvingMaxMP = null;
@@ -6381,6 +6412,7 @@ public class Character extends AbstractCharacterObject {
         }
 
         level++;
+        unlockRandomSkillForPlayer();
         if (level >= getMaxClassLevel()) {
             exp.set(0);
 

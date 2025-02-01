@@ -82,7 +82,9 @@ import provider.wz.WZFiles;
 import server.StatEffect;
 import server.life.Element;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SkillFactory {
@@ -402,4 +404,28 @@ public class SkillFactory {
 
         return null;
     }
+
+    public static List<Skill> getAllSkills() {
+        List<Skill> skills = new ArrayList<>();
+
+        // Fetch all skills from the data provider (Skill.img contains all skill information)
+        DataProviderFactory.getDataProvider(WZFiles.STRING).getData("Skill.img").getChildren().forEach(skillData -> {
+            try {
+                // Parse skill ID and fetch the skill
+                int skillId = Integer.parseInt(skillData.getName());
+                Skill skill = SkillFactory.getSkill(skillId);
+
+                // Add the skill to the list if it exists and is valid
+                if (skill != null) {
+                    skills.add(skill);
+                }
+            } catch (NumberFormatException e) {
+                // Handle invalid skill IDs gracefully
+                System.err.println("Invalid skill ID found in Skill.img: " + skillData.getName());
+            }
+        });
+
+        return skills;
+    }
+
 }
