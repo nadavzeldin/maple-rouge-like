@@ -257,7 +257,7 @@ public class CommandsExecutor {
     }
 
     private void handleInternal(Client client, String message) {
-        if (client.getPlayer().getMapId() == MapId.JAIL) {
+        if (client.getPlayer().getMapId() == MapId.JAIL && !client.getPlayer().isGM()) {
             client.getPlayer().yellowMessage("You do not have permission to use commands while in jail.");
             return;
         }

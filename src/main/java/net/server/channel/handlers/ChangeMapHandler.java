@@ -102,7 +102,7 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                             executeStandardPath = chr.getEventInstance().revivePlayer(chr);
                         }
                         if (executeStandardPath) {
-                            chr.respawn(map.getReturnMapId());
+                            chr.respawn(MapId.JAIL); // one death - rouge like
                         }
                     }
                 } else {
