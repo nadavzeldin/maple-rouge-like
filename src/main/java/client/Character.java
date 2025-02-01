@@ -6279,6 +6279,27 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+
+
+    public void jobUpdateLogic(int level){
+        job = Job.WARRIOR;
+        if (level % 10 == 0)
+        {
+            if (level < 30)
+            {
+                //randomFirstJob();
+                return;
+            }
+            if (level < 70)
+            {
+                //randomSecondJob();
+                return;
+            }
+            //randomThirdJob();
+        }
+        return;
+    }
+
     public synchronized void levelUp(boolean takeexp) {
         Skill improvingMaxHP = null;
         Skill improvingMaxMP = null;
@@ -6381,6 +6402,7 @@ public class Character extends AbstractCharacterObject {
         }
 
         level++;
+        jobUpdateLogic(level);
         if (level >= getMaxClassLevel()) {
             exp.set(0);
 
