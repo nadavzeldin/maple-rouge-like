@@ -179,6 +179,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6282,20 +6283,35 @@ public class Character extends AbstractCharacterObject {
 
 
     public void jobUpdateLogic(int level){
-        job = Job.WARRIOR;
         if (level % 10 == 0)
         {
-            if (level < 30)
+            List<Job> jobOptionList;
+            Random random = new Random();
+            if (level < 30) // First job
             {
-                //randomFirstJob();
+                jobOptionList = Arrays.asList(Job.WARRIOR, Job.MAGICIAN, Job.THIEF,
+                        Job.BOWMAN, Job.PIRATE, Job.NOBLESSE);
                 return;
             }
-            if (level < 70)
+            if (level < 70) // Second job
             {
+                jobOptionList = Arrays.asList(Job.FIGHTER, Job.PAGE, Job.SPEARMAN,
+                        Job.FP_WIZARD, Job.IL_WIZARD, Job.CLERIC,
+                        Job.HUNTER, Job.CROSSBOWMAN, Job.ASSASSIN, Job.BANDIT,
+                        Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
+                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
                 //randomSecondJob();
                 return;
             }
-            //randomThirdJob();
+            if (level < 90)  // Third job
+            {
+                jobOptionList = Arrays.asList(Job.WARRIOR);
+            }
+            else // Firth Job
+            {
+                jobOptionList = Arrays.asList(Job.WARRIOR);
+            }
+            job = jobOptionList.get(random.nextInt(jobOptionList.size()));
         }
         return;
     }
