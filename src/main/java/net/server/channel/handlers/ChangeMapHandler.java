@@ -41,6 +41,8 @@ import java.awt.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 public final class ChangeMapHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ChangeMapHandler.class);
 
@@ -102,6 +104,7 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                             executeStandardPath = chr.getEventInstance().revivePlayer(chr);
                         }
                         if (executeStandardPath) {
+                            chr.addJailExpirationTime(MINUTES.toMillis(1000000));
                             chr.respawn(MapId.JAIL); // one death - rouge like
                         }
                     }
