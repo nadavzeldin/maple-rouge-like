@@ -104,7 +104,7 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                             executeStandardPath = chr.getEventInstance().revivePlayer(chr);
                         }
                         if (executeStandardPath) {
-                            chr.addJailExpirationTime(MINUTES.toMillis(1000000));
+                            chr.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
                             chr.respawn(MapId.JAIL); // one death - rouge like
                         }
                     }
