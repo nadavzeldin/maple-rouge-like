@@ -1359,7 +1359,8 @@ public class Character extends AbstractCharacterObject {
     public void eventLootLizardSpawnLogic(){
         if (Randomizer.nextInt(100) < GameConstants.LootLizardPrecent)
         {
-            this.getMap().spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(GameConstants.LootLizardId)), this.getPosition());
+            MapleMap map_ = getWarpMap(mapid);
+            this.getMap().spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(GameConstants.LootLizardId)), map_.getRandomPlayerSpawnpoint().getPosition());
         }
     }
 
