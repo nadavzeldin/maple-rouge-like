@@ -5568,7 +5568,7 @@ public class Character extends AbstractCharacterObject {
 
     public void setGMLevel(int level) {
         this.gmLevel = Math.min(level, 6);
-        this.gmLevel = Math.max(level, 0);
+        this.gmLevel = Math.max(level, 1);
 
         whiteChat = gmLevel >= 4;   // thanks ozanrijen for suggesting default white chat
     }

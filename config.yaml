@@ -347,7 +347,7 @@ server:
     CHSCROLL_STAT_RANGE: 5              #Stat upgrade range (-N, N) on chaos scrolls.
 
     #Beginner Skills Configuration
-    USE_ULTRA_NIMBLE_FEET: false     #Massive speed & jump upgrade.
+    USE_ULTRA_NIMBLE_FEET: true     #Massive speed & jump upgrade.
     USE_ULTRA_RECOVERY: false        #Massive recovery amounts overtime.
     USE_ULTRA_THREE_SNAILS: false    #Massive damage on shell toss.
 
