@@ -117,6 +117,7 @@ import server.events.RescueGaga;
 import server.events.gm.Fitness;
 import server.events.gm.Ola;
 import server.life.BanishInfo;
+import server.life.LifeFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.life.MobSkillId;
@@ -179,6 +180,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
@@ -1354,6 +1356,13 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    public void eventLootLizardSpawnLogic(){
+        if (Randomizer.nextInt(100) < GameConstants.LootLizardPrecent)
+        {
+            this.getMap().spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(GameConstants.LootLizardId)), this.getPosition());
+        }
+    }
+
     public void changeMapBanish(BanishInfo banishInfo) {
         if (banishInfo.msg() != null) {
             dropMessage(5, banishInfo.msg());
@@ -1441,6 +1450,7 @@ public class Character extends AbstractCharacterObject {
         }
 
         eventAfterChangedMap(this.getMapId());
+        eventLootLizardSpawnLogic();
     }
 
     public void changeMap(final MapleMap target, final Point pos) {
