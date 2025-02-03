@@ -66,7 +66,7 @@ JrGM Commands:
 !levelpro - Set your level, one by one.
 !setslot - Set amount of inventory slots in all tabs.
 !setstat - Set all primary stats to new value.
-!maxstat - Max out all character stats
+!maxstat - Max out all character stats.
 !maxskill - Max out all job skills.
 !resetskill Set all skill levels to 0.
 !search - Search String.wz.
