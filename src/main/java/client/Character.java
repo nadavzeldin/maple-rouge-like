@@ -6314,6 +6314,12 @@ public class Character extends AbstractCharacterObject {
             }
             this.job = jobOptionList.get(random.nextInt(jobOptionList.size()));
         }
+        // Create a list of stats to update
+        List<Pair<Stat, Integer>> stats = new ArrayList<>();
+        stats.add(new Pair<>(Stat.JOB, this.job.jobid)); // Add the Stat.JOB update with the new job ID
+
+        // Send the stat update packet to the client
+        sendPacket(PacketCreator.updatePlayerStats(stats, true, this)); // 'true' enables actions after update
         return;
     }
 
