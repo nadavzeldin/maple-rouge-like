@@ -35,6 +35,7 @@ import client.command.commands.gm0.HelpCommand;
 import client.command.commands.gm0.JoinEventCommand;
 import client.command.commands.gm0.LeaveEventCommand;
 import client.command.commands.gm0.MapOwnerClaimCommand;
+import client.command.commands.gm0.MergeCommand;
 import client.command.commands.gm0.OnlineCommand;
 import client.command.commands.gm0.RanksCommand;
 import client.command.commands.gm0.RatesCommand;
@@ -351,6 +352,7 @@ public class CommandsExecutor {
         addCommand("equiplv", EquipLvCommand.class);
         addCommand("showrates", ShowRatesCommand.class);
         addCommand("rates", RatesCommand.class);
+        addCommand("merge", MergeCommand.class);
         addCommand("online", OnlineCommand.class);
         addCommand("gm", GmCommand.class);
         addCommand("reportbug", ReportBugCommand.class);

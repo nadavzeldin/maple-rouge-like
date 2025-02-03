@@ -57,7 +57,7 @@ public class MakerProcessor {
                 int toCreate = p.readInt();
                 int toDisassemble = -1, pos = -1;
                 boolean makerSucceeded = true;
-
+                log.info("We are now here\n");
                 MakerItemCreateEntry recipe;
                 Map<Integer, Short> reagentids = new LinkedHashMap<>();
                 int stimulantid = -1;
