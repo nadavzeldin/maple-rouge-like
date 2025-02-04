@@ -1370,8 +1370,8 @@ public class Character extends AbstractCharacterObject {
         {
             MapleMap map_ = getWarpMap(mapid);
             // Create weak boss with custom stats
-            Monster weakBoss = LifeFactory.getMonster(LootLizardId); // The Boss event version
-            MonsterStats stats = weakBoss.getStats();
+            Monster scrollCandle = LifeFactory.getMonster(LootLizardId); // The Boss event version
+            MonsterStats stats = scrollCandle.getStats();
 
             // Set weak stats
             stats.setHp(100);
@@ -1383,10 +1383,11 @@ public class Character extends AbstractCharacterObject {
             stats.setMDDamage(0);
 
 
-            weakBoss.setStartingHp(100);
+            scrollCandle.setStartingHp(100);
 
+            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards!", 5120008);
             // Spawn at random player spawn point
-            this.getMap().spawnMonsterOnGroundBelow(weakBoss,
+            this.getMap().spawnMonsterOnGroundBelow(scrollCandle,
                     map_.getRandomPlayerSpawnpoint().getPosition());
 
             this.lizardLastSpawnTime = currentTime; // Update last spawn time
@@ -6331,23 +6332,24 @@ public class Character extends AbstractCharacterObject {
             if (level < 30) // First job
             {
                 jobOptionList = Arrays.asList(Job.WARRIOR, Job.MAGICIAN, Job.THIEF,
-                        Job.BOWMAN, Job.PIRATE, Job.NOBLESSE);
+                        Job.BOWMAN, Job.PIRATE, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
+                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
             }
             else if (level < 70) // Second job
             {
                 jobOptionList = Arrays.asList(Job.FIGHTER, Job.PAGE, Job.SPEARMAN,
                         Job.FP_WIZARD, Job.IL_WIZARD, Job.CLERIC,
                         Job.HUNTER, Job.CROSSBOWMAN, Job.ASSASSIN, Job.BANDIT,
-                        Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
-                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
+                        Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR2, Job.BLAZEWIZARD2,
+                        Job.WINDARCHER2, Job.NIGHTWALKER2, Job.THUNDERBREAKER2);
             }
             else if (level < 90)  // Third job
             {
                 jobOptionList = Arrays.asList(Job.CRUSADER, Job.WHITEKNIGHT, Job.DRAGONKNIGHT,
                         Job.FP_MAGE, Job.IL_MAGE, Job.PRIEST,
                         Job.RANGER, Job.SNIPER, Job.HERMIT, Job.CHIEFBANDIT,
-                        Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
-                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
+                        Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR3, Job.BLAZEWIZARD3,
+                        Job.WINDARCHER3, Job.NIGHTWALKER3, Job.THUNDERBREAKER3);
             }
             else // Firth Job not done yet
             {
