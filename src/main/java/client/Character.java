@@ -123,6 +123,7 @@ import server.life.MobSkillFactory;
 import server.life.MobSkillId;
 import server.life.MobSkillType;
 import server.life.Monster;
+import server.life.MonsterStats;
 import server.life.PlayerNPC;
 import server.maps.AbstractAnimatedMapObject;
 import server.maps.Door;
@@ -193,6 +194,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static constants.game.GameConstants.LootLizardId;
+import static constants.game.GameConstants.SPAWN_COOLDOWN;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -359,6 +362,7 @@ public class Character extends AbstractCharacterObject {
     private boolean pendingNameChange; //only used to change name on logout, not to be relied upon elsewhere
     private long loginTime;
     private boolean chasing = false;
+    private long lizardLastSpawnTime = 0;
 
     private Character() {
         super.setListener(new AbstractCharacterListener() {
@@ -1357,10 +1361,36 @@ public class Character extends AbstractCharacterObject {
     }
 
     public void eventLootLizardSpawnLogic(){
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - this.lizardLastSpawnTime < SPAWN_COOLDOWN) {
+            return; // Still on cooldown
+        }
+
         if (Randomizer.nextInt(100) < GameConstants.LootLizardPrecent)
         {
             MapleMap map_ = getWarpMap(mapid);
-            this.getMap().spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(GameConstants.LootLizardId)), map_.getRandomPlayerSpawnpoint().getPosition());
+            // Create weak boss with custom stats
+            Monster weakBoss = LifeFactory.getMonster(LootLizardId); // The Boss event version
+            MonsterStats stats = weakBoss.getStats();
+
+            // Set weak stats
+            stats.setHp(100);
+            stats.setMp(10);
+            stats.setExp(500);
+            stats.setPADamage(0);
+            stats.setMADamage(0);
+            stats.setPDDamage(0);
+            stats.setMDDamage(0);
+
+
+            weakBoss.setStartingHp(100);
+
+            // Spawn at random player spawn point
+            this.getMap().spawnMonsterOnGroundBelow(weakBoss,
+                    map_.getRandomPlayerSpawnpoint().getPosition());
+
+            this.lizardLastSpawnTime = currentTime; // Update last spawn time
+
         }
     }
 
