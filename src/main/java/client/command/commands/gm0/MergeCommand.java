@@ -20,10 +20,11 @@
 
 /*
    @Author: Roey Zeldin - command to merge items and make them stronger
+
+   TODO: add Fredrick in fm as a way to merge without commands. His ID is
 */
 package client.command.commands.gm0;
 
-import client.Character;
 import client.Client;
 import client.command.Command;
 import client.inventory.Equip;
@@ -45,8 +46,6 @@ public class MergeCommand extends Command {
 
     @Override
     public void execute(Client c, String[] params) {
-        System.out.println("Here 1");
-        Character player = c.getPlayer();
         ArrayList<Equip> equipmentItems = new ArrayList<>();
         // Retrieve all equipment (EQP) items from the player's inventory
         for (int i = 0; i < 101; i++) {
@@ -56,7 +55,6 @@ public class MergeCommand extends Command {
             }
             equipmentItems.add((Equip) tempItem);
         }
-        System.out.println("Here 2");
         // A map to group items by their ID
         Map<Integer, ArrayList<Equip>> itemsById = new HashMap<>();
 
@@ -64,8 +62,6 @@ public class MergeCommand extends Command {
         for (Equip equip : equipmentItems) {
             itemsById.computeIfAbsent(equip.getItemId(), k -> new ArrayList<>()).add(equip);
         }
-        System.out.println("Here 3");
-
         // Process each group of items with the same ID
         for (Map.Entry<Integer, ArrayList<Equip>> entry : itemsById.entrySet()) {
             int itemId = entry.getKey();
@@ -81,29 +77,50 @@ public class MergeCommand extends Command {
                     .mapToInt(Equip::getWatk) // Assuming `getStr()` gets the STR value of the item
                     .max()
                     .orElse(0);
-            System.out.printf("Here 4 %d%n\n", weaponAttack);
 
             // Calculate the percentage boost to be added
-            short additionalWatkPercentage = (short)((equips.size() - 1) * 5); // 5% per duplicate
-            short additionalWatk = (short)((weaponAttack * additionalWatkPercentage) / 100); // Rounded down automatically due to integer division
-            short newWeaponAttack = (short)(weaponAttack + additionalWatk + 10);
-            
-            Equip primaryItem = equips.getFirst();
+            Equip primaryItem = mergeEquipStats(equips);
 
-            // Update the first item with the new STR value
-            primaryItem.setWatk(newWeaponAttack); // Assuming `setStr(int)` sets the STR value of the item
             short primaryPosition = primaryItem.getPosition();
             for (Equip equip : equips) {
                 if (equip.getPosition() != primaryPosition) {
                     InventoryManipulator.removeFromSlot(c, InventoryType.EQUIP, (byte) equip.getPosition(), equip.getQuantity(), false, false);
                 }
             }
-            System.out.println("Sending packet!");
             c.sendPacket(PacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(1, primaryItem))));
-            System.out.printf("New weapon attack %d%n\n", newWeaponAttack);
         }
-        System.out.println("Hello World");
     }
+
+    private Equip mergeEquipStats(ArrayList<Equip> equips) {
+        Equip primaryItem = equips.getFirst();
+        statGetters.forEach((statName, getter) -> {
+            short currentMaxStat = getter.apply(primaryItem);
+            short additionalStat = (short) (currentMaxStat * statsMultiplier * (equips.size() - 1));
+            short newStatValue = (short) (currentMaxStat + additionalStat);
+            statUpdaters.get(statName).accept(primaryItem, newStatValue);
+        });
+
+        return primaryItem;
+    }
+
+    private final double statsMultiplier = 0.1;
+    private final Map<String, java.util.function.BiConsumer<Equip, Short>> statUpdaters = Map.of(
+            "Watk", Equip::setWatk,
+            "Wdef", Equip::setWdef,
+            "Str", Equip::setStr,
+            "Dex", Equip::setDex,
+            "Luk", Equip::setLuk,
+            "Int", Equip::setInt
+    );
+
+    private final Map<String, java.util.function.Function<Equip, Short>> statGetters = Map.of(
+            "Watk", Equip::getWatk,
+            "Wdef", Equip::getWdef,
+            "Str", Equip::getStr,
+            "Dex", Equip::getDex,
+            "Luk", Equip::getLuk,
+            "Int", Equip::getInt
+    );
 }
 
 // !item 1302000 1
