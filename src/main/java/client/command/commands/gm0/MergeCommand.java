@@ -32,6 +32,8 @@ import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.ModifyInventory;
 import client.inventory.manipulator.InventoryManipulator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tools.PacketCreator;
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MergeCommand extends Command {
+    private static final Logger log = LoggerFactory.getLogger(MergeCommand.class);
+
     {
         setDescription("Merges EQP items and makes them stronger");
     }
@@ -64,19 +68,12 @@ public class MergeCommand extends Command {
         }
         // Process each group of items with the same ID
         for (Map.Entry<Integer, ArrayList<Equip>> entry : itemsById.entrySet()) {
-            int itemId = entry.getKey();
             ArrayList<Equip> equips = entry.getValue();
-
+            
             // Skip if there's only one item (no merging needed)
             if (equips.size() <= 1) {
                 continue;
             }
-
-            // Find the max STR value among the items
-            int weaponAttack = equips.stream()
-                    .mapToInt(Equip::getWatk) // Assuming `getStr()` gets the STR value of the item
-                    .max()
-                    .orElse(0);
 
             // Calculate the percentage boost to be added
             Equip primaryItem = mergeEquipStats(equips);
@@ -94,9 +91,16 @@ public class MergeCommand extends Command {
     private Equip mergeEquipStats(ArrayList<Equip> equips) {
         Equip primaryItem = equips.getFirst();
         statGetters.forEach((statName, getter) -> {
-            short currentMaxStat = getter.apply(primaryItem);
+            // Get the max stat for the equips array on the getter func
+            short currentMaxStat = equips.stream()
+                    .map(getter)
+                    .max(Short::compare)
+                    .orElse(getter.apply(primaryItem));
+
             short additionalStat = (short) (currentMaxStat * statsMultiplier * (equips.size() - 1));
             short newStatValue = (short) (currentMaxStat + additionalStat);
+
+            log.info("The new Item stat for {} is {}", statName, newStatValue);
             statUpdaters.get(statName).accept(primaryItem, newStatValue);
         });
 
@@ -123,4 +127,6 @@ public class MergeCommand extends Command {
     );
 }
 
-// !item 1302000 1
+// !item 1302000 1 sword
+// !item 1082002 1 glove
+// !item 2040806 10 glove dex
