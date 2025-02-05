@@ -181,7 +181,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
@@ -194,8 +193,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static constants.game.GameConstants.LootLizardId;
-import static constants.game.GameConstants.SPAWN_COOLDOWN;
+import static constants.game.GameConstants.LOOT_LIZARD_ID;
+import static constants.game.GameConstants.LOOT_LIZARD_SPAWN_COOLDOWN;
+import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -1362,15 +1362,15 @@ public class Character extends AbstractCharacterObject {
 
     public void eventLootLizardSpawnLogic(){
         long currentTime = System.currentTimeMillis();
-        if (currentTime - this.lizardLastSpawnTime < SPAWN_COOLDOWN) {
+        if (currentTime - this.lizardLastSpawnTime < LOOT_LIZARD_SPAWN_COOLDOWN) {
             return; // Still on cooldown
         }
 
-        if (Randomizer.nextInt(100) < GameConstants.LootLizardPrecent)
+        if (Randomizer.nextInt(100) < GameConstants.LOOT_LIZARD_PERCENT)
         {
             MapleMap map_ = getWarpMap(mapid);
             // Create weak boss with custom stats
-            Monster scrollCandle = LifeFactory.getMonster(LootLizardId); // The Boss event version
+            Monster scrollCandle = LifeFactory.getMonster(LOOT_LIZARD_ID); // The Boss event version
             MonsterStats stats = scrollCandle.getStats();
 
             // Set weak stats
@@ -1385,7 +1385,7 @@ public class Character extends AbstractCharacterObject {
 
             scrollCandle.setStartingHp(100);
 
-            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards!", 5120008);
+            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards!", LOOT_LIZARD_UI_BANNER);
             // Spawn at random player spawn point
             this.getMap().spawnMonsterOnGroundBelow(scrollCandle,
                     map_.getRandomPlayerSpawnpoint().getPosition());

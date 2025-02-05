@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static constants.game.GameConstants.LootLizardId;
+import static constants.game.GameConstants.LOOT_LIZARD_ID;
 
 public class MonsterInformationProvider {
     private static final Logger log = LoggerFactory.getLogger(MonsterInformationProvider.class);
@@ -107,7 +107,7 @@ public class MonsterInformationProvider {
             customDrops.add(allPossibleDrops.get(Randomizer.nextInt(allPossibleDrops.size())));
         }
 
-        drops.put(LootLizardId, customDrops);
+        drops.put(LOOT_LIZARD_ID, customDrops);
 
     }
 
