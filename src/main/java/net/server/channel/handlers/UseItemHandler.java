@@ -80,6 +80,13 @@ public final class UseItemHandler extends AbstractPacketHandler {
 
             remove(c, slot);
 
+
+            if (toUse.getItemId() == ItemId.HAPPY_BIRTHDAY) {
+                chr.AddStrDexIntLuk();
+            }
+
+            
+            
             if (toUse.getItemId() != ItemId.HAPPY_BIRTHDAY) {
                 ii.getItemEffect(toUse.getItemId()).applyTo(chr);
             } else {

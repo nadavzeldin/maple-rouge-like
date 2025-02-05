@@ -639,7 +639,7 @@ public class ItemInformationProvider {
     }
 
     private static short chscrollRandomizedStat(int range) {
-        return (short) Randomizer.rand(-range, range);
+        return (short) Randomizer.rand(0, range);
     }
 
     public void scrollOptionEquipWithChaos(Equip nEquip, int range, boolean option) {
