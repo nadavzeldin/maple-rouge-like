@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static constants.game.GameConstants.LOOT_LIZARD_ID;
+
 public class MonsterInformationProvider {
     private static final Logger log = LoggerFactory.getLogger(MonsterInformationProvider.class);
     // Author : LightPepsi
@@ -72,8 +74,41 @@ public class MonsterInformationProvider {
     private final Map<Integer, Boolean> mobBossCache = new HashMap<>();
     private final Map<Integer, String> mobNameCache = new HashMap<>();
 
+
     protected MonsterInformationProvider() {
+        initializeCustomDrops();
         retrieveGlobal();
+    }
+
+    private void initializeCustomDrops() {
+        // Create list of all possible valuable drops
+        List<MonsterDropEntry> allPossibleDrops = new ArrayList<>();
+
+        allPossibleDrops.add(new MonsterDropEntry(2049100, 500000, 1, 1, (short)0));  // Chaos Scroll
+        allPossibleDrops.add(new MonsterDropEntry(2044500, 500000, 1, 1, (short)0));  // Bow ATT 60%
+        allPossibleDrops.add(new MonsterDropEntry(2044600, 500000, 1, 1, (short)0));  // Crossbow ATT 60%
+        allPossibleDrops.add(new MonsterDropEntry(2044700, 500000, 1, 1, (short)0));  // Claw ATT 60%
+        allPossibleDrops.add(new MonsterDropEntry(2043000, 500000, 1, 1, (short)0));  // One-Handed Sword 60%
+        allPossibleDrops.add(new MonsterDropEntry(2043100, 500000, 1, 1, (short)0));  // One-Handed Axe 60%
+        allPossibleDrops.add(new MonsterDropEntry(2043200, 500000, 1, 1, (short)0));  // One-Handed Mace 60%
+        allPossibleDrops.add(new MonsterDropEntry(2043700, 500000, 1, 1, (short)0));  // Wand Magic ATT 60%
+        allPossibleDrops.add(new MonsterDropEntry(2043800, 500000, 1, 1, (short)0));  // Staff Magic ATT 60%
+        allPossibleDrops.add(new MonsterDropEntry(2040804, 500000, 1, 1, (short)0));  // Gloves ATT 60%
+        allPossibleDrops.add(new MonsterDropEntry(2340000, 500000, 1, 1, (short)0));  // White Scroll
+        allPossibleDrops.add(new MonsterDropEntry(2049000, 500000, 1, 1, (short)0));  // Clean Slate 1%
+        allPossibleDrops.add(new MonsterDropEntry(2049001, 500000, 1, 1, (short)0));  // Clean Slate 3%
+        allPossibleDrops.add(new MonsterDropEntry(2049002, 500000, 1, 1, (short)0));  // Clean Slate 5%
+
+        List<MonsterDropEntry> customDrops = new ArrayList<>();
+        int numberOfDrops = 1+ Randomizer.nextInt(allPossibleDrops.size()-1);
+        while (numberOfDrops > 0)
+        {
+            numberOfDrops--;
+            customDrops.add(allPossibleDrops.get(Randomizer.nextInt(allPossibleDrops.size())));
+        }
+
+        drops.put(LOOT_LIZARD_ID, customDrops);
+
     }
 
     public final List<MonsterGlobalDropEntry> getRelevantGlobalDrops(int mapId) {
