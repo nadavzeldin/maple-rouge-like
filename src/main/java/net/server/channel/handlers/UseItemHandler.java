@@ -82,7 +82,7 @@ public final class UseItemHandler extends AbstractPacketHandler {
 
 
             if (toUse.getItemId() == ItemId.HAPPY_BIRTHDAY) {
-                chr.AddStrDexIntLuk();
+                chr.AddStrDexIntLuk(1);
             }
 
             
