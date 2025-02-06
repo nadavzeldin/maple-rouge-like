@@ -1395,6 +1395,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    public void AddStrDexIntLuk(int increaseAmount) {
+        List<Pair<Stat, Integer>> stats = new ArrayList<>();
+        stats.add(new Pair<>(Stat.STR, this.str += increaseAmount));
+        stats.add(new Pair<>(Stat.DEX, this.dex += increaseAmount));
+        stats.add(new Pair<>(Stat.LUK, this.luk += increaseAmount));
+        stats.add(new Pair<>(Stat.INT, this.int_ += increaseAmount));
+
+        // Create and send packet
+        sendPacket(PacketCreator.updatePlayerStats(stats, true, this)); // 'true' enables actions after update
+
+    }
+
     public void changeMapBanish(BanishInfo banishInfo) {
         if (banishInfo.msg() != null) {
             dropMessage(5, banishInfo.msg());

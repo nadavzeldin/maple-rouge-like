@@ -21,6 +21,7 @@
 package server.life;
 
 import config.YamlConfig;
+import constants.id.ItemId;
 import constants.inventory.ItemConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,6 +108,7 @@ public class MonsterInformationProvider {
             customDrops.add(allPossibleDrops.get(Randomizer.nextInt(allPossibleDrops.size())));
         }
 
+        customDrops.add(new MonsterDropEntry(ItemId.HAPPY_BIRTHDAY, 1000000, 1, 1, (short)0));  // +1 potion)
         drops.put(LOOT_LIZARD_ID, customDrops);
 
     }
