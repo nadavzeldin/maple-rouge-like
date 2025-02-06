@@ -84,7 +84,7 @@ public class MergeCommand extends Command {
                     InventoryManipulator.removeFromSlot(c, InventoryType.EQUIP, (byte) equip.getPosition(), equip.getQuantity(), false, false);
                 }
             }
-            c.sendPacket(PacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(1, primaryItem))));
+            c.sendPacket(PacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, primaryItem))));
         }
     }
 
