@@ -117,11 +117,13 @@ import server.events.RescueGaga;
 import server.events.gm.Fitness;
 import server.events.gm.Ola;
 import server.life.BanishInfo;
+import server.life.LifeFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.life.MobSkillId;
 import server.life.MobSkillType;
 import server.life.Monster;
+import server.life.MonsterStats;
 import server.life.PlayerNPC;
 import server.maps.AbstractAnimatedMapObject;
 import server.maps.Door;
@@ -191,6 +193,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static constants.game.GameConstants.LOOT_LIZARD_ID;
+import static constants.game.GameConstants.LOOT_LIZARD_SPAWN_COOLDOWN;
+import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -357,6 +362,7 @@ public class Character extends AbstractCharacterObject {
     private boolean pendingNameChange; //only used to change name on logout, not to be relied upon elsewhere
     private long loginTime;
     private boolean chasing = false;
+    private long lizardLastSpawnTime = 0;
 
     private Character() {
         super.setListener(new AbstractCharacterListener() {
@@ -1354,6 +1360,41 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    public void eventLootLizardSpawnLogic(){
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - this.lizardLastSpawnTime < LOOT_LIZARD_SPAWN_COOLDOWN) {
+            return; // Still on cooldown
+        }
+
+        if (Randomizer.nextInt(100) < GameConstants.LOOT_LIZARD_PERCENT)
+        {
+            MapleMap map_ = getWarpMap(mapid);
+            // Create weak boss with custom stats
+            Monster scrollCandle = LifeFactory.getMonster(LOOT_LIZARD_ID); // The Boss event version
+            MonsterStats stats = scrollCandle.getStats();
+
+            // Set weak stats
+            stats.setHp(100);
+            stats.setMp(10);
+            stats.setExp(500);
+            stats.setPADamage(0);
+            stats.setMADamage(0);
+            stats.setPDDamage(0);
+            stats.setMDDamage(0);
+
+
+            scrollCandle.setStartingHp(100);
+
+            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards!", LOOT_LIZARD_UI_BANNER);
+            // Spawn at random player spawn point
+            this.getMap().spawnMonsterOnGroundBelow(scrollCandle,
+                    map_.getRandomPlayerSpawnpoint().getPosition());
+
+            this.lizardLastSpawnTime = currentTime; // Update last spawn time
+
+        }
+    }
+
     public void changeMapBanish(BanishInfo banishInfo) {
         if (banishInfo.msg() != null) {
             dropMessage(5, banishInfo.msg());
@@ -1441,6 +1482,7 @@ public class Character extends AbstractCharacterObject {
         }
 
         eventAfterChangedMap(this.getMapId());
+        eventLootLizardSpawnLogic();
     }
 
     public void changeMap(final MapleMap target, final Point pos) {
@@ -6290,23 +6332,24 @@ public class Character extends AbstractCharacterObject {
             if (level < 30) // First job
             {
                 jobOptionList = Arrays.asList(Job.WARRIOR, Job.MAGICIAN, Job.THIEF,
-                        Job.BOWMAN, Job.PIRATE, Job.NOBLESSE);
+                        Job.BOWMAN, Job.PIRATE, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
+                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
             }
             else if (level < 70) // Second job
             {
                 jobOptionList = Arrays.asList(Job.FIGHTER, Job.PAGE, Job.SPEARMAN,
                         Job.FP_WIZARD, Job.IL_WIZARD, Job.CLERIC,
                         Job.HUNTER, Job.CROSSBOWMAN, Job.ASSASSIN, Job.BANDIT,
-                        Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
-                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
+                        Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR2, Job.BLAZEWIZARD2,
+                        Job.WINDARCHER2, Job.NIGHTWALKER2, Job.THUNDERBREAKER2);
             }
             else if (level < 90)  // Third job
             {
                 jobOptionList = Arrays.asList(Job.CRUSADER, Job.WHITEKNIGHT, Job.DRAGONKNIGHT,
                         Job.FP_MAGE, Job.IL_MAGE, Job.PRIEST,
                         Job.RANGER, Job.SNIPER, Job.HERMIT, Job.CHIEFBANDIT,
-                        Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR1, Job.BLAZEWIZARD1,
-                        Job.WINDARCHER1, Job.NIGHTWALKER1, Job.THUNDERBREAKER1);
+                        Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR3, Job.BLAZEWIZARD3,
+                        Job.WINDARCHER3, Job.NIGHTWALKER3, Job.THUNDERBREAKER3);
             }
             else // Firth Job not done yet
             {
