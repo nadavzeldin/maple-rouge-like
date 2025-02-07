@@ -40,6 +40,7 @@ import client.command.commands.gm0.RanksCommand;
 import client.command.commands.gm0.RatesCommand;
 import client.command.commands.gm0.ReadPointsCommand;
 import client.command.commands.gm0.ReportBugCommand;
+import client.command.commands.gm0.ResetStatsCommand;
 import client.command.commands.gm0.ShowRatesCommand;
 import client.command.commands.gm0.StaffCommand;
 import client.command.commands.gm0.StatDexCommand;
@@ -353,6 +354,7 @@ public class CommandsExecutor {
         addCommand("rates", RatesCommand.class);
         addCommand("online", OnlineCommand.class);
         addCommand("gm", GmCommand.class);
+        addCommand("resetAp", ResetStatsCommand.class);
         addCommand("reportbug", ReportBugCommand.class);
         addCommand("points", ReadPointsCommand.class);
         addCommand("joinevent", JoinEventCommand.class);

@@ -257,7 +257,7 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         this.mp = tmp;
     }
 
-    private void setRemainingAp(int remainingAp) {
+    public void setRemainingAp(int remainingAp) {
         this.remainingAp = remainingAp;
     }
 
@@ -567,19 +567,19 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
-    private void setStr(int str) {
+    public void setStr(int str) {
         this.str = str;
     }
 
-    private void setDex(int dex) {
+    public void setDex(int dex) {
         this.dex = dex;
     }
 
-    private void setInt(int int_) {
+    public void setInt(int int_) {
         this.int_ = int_;
     }
 
-    private void setLuk(int luk) {
+    public void setLuk(int luk) {
         this.luk = luk;
     }
 
