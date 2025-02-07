@@ -94,6 +94,7 @@ public class GameConstants {
         put("square", MapId.KERNING_SQUARE);
         put("neo", MapId.NEO_CITY);
         put("mushking", MapId.MUSHROOM_KINGDOM);
+        put("fm", MapId.FM_ENTRANCE);
     }};
 
     // "goto" command for only-GMs
@@ -116,7 +117,6 @@ public class GameConstants {
         put("keep", MapId.CRIMSONWOOD_KEEP);
         put("dojo", MapId.MU_LUNG_DOJO_HALL);
         put("bosspq", MapId.EXCLUSIVE_TRAINING_CENTER);
-        put("fm", MapId.FM_ENTRANCE);
     }};
 
     public static final List<String> GAME_SONGS = new ArrayList<>(170) {{
