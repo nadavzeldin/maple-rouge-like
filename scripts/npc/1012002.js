@@ -44,7 +44,7 @@ var equip;
 function start() {
     cm.getPlayer().setCS(true);
     var selStr = "Hello. I am Vicious, retired Sniper. However, I used to be the top student of Athena Pierce. Though I no longer hunt, I can make some archer items that will be useful for you...#b"
-    var options = ["Create a bow", "Create a crossbow", "Make a glove", "Upgrade a glove", "Create materials", "Create Arrows"];
+    var options = ["Create a bow", "Create a crossbow", "Make a glove", "Upgrade a glove", "Create materials", "Create Arrows", "Forging Weapon"];
     for (var i = 0; i < options.length; i++) {
         selStr += "\r\n#L" + i + "# " + options[i] + "#l";
     }
@@ -94,6 +94,12 @@ function action(mode, type, selection) {
             for (var i = 0; i < items.length; i++) {
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##l";
             }
+        }  else if (selection == 6) { //forging items
+            var selStr = "Bring me a #i2280001# #t2280001# and I'll merge your equipment to make them stronger.";
+            items = [2280001];  // Black Loud Machine
+            for (var i = 0; i < items.length; i++) {
+                selStr += "\r\n#L" + i + "##t" + items[i] + "##l";
+            }
         }
         selectedType = selection;
         cm.sendSimple(selStr);
@@ -136,6 +142,19 @@ function action(mode, type, selection) {
             var matSet = [[4003001, 4003004], [4003001, 4003004], [4011000, 4003001, 4003004], [4011000, 4003001, 4003004], [4011001, 4003001, 4003005], [4011001, 4003001, 4003005]];
             var matQtySet = [[1, 1], [1, 1], [1, 3, 10], [1, 3, 10], [1, 5, 15], [1, 5, 15]];
             var costSet = [0, 0, 0, 0, 0, 0]
+        } else if (selectedType == 6) { //forging item
+            if (!cm.haveItem(2280001, 1)) {
+                cm.sendOk("You need a #i2280001# #t2280001# to forge equipment.");
+                cm.dispose();
+                return;
+            }
+
+            cm.gainItem(2280001, -1); // Remove the Black Loud Machine
+            const MergeCommand = Java.type('client.command.commands.gm0.MergeCommand');
+            const processor = new MergeCommand();
+            processor.execute(cm.getClient(), ["@merge"]);
+            cm.sendOk("Your equipment has been successfully merged and enhanced!");
+            cm.dispose();
         }
         if (selectedType != 4) {
             item = items[selectedItem];
