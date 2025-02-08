@@ -45,7 +45,7 @@ function action(mode, type, selection) {
     if (status == 0) {
         var selStr = "What would you like me to do for you?\r\n";
         selStr += "#L0#Check my merchant items#l\r\n";
-        selStr += "#L1#Forge equipment#l";
+        selStr += "#L1#Merge equipment#l";
         cm.sendSimple(selStr);
     } else if (status == 1) {
         selectedType = selection;
@@ -72,7 +72,7 @@ function action(mode, type, selection) {
     } else if (status == 2) {
         if (selectedType == 1) {  // Forging process
             if (!cm.haveItem(2280001, 1)) {
-                cm.sendOk("You need a #i2280001# #t2280001# to forge equipment.");
+                cm.sendOk("You need a #i2280001# #t2280001# to merge equipment.");
                 cm.dispose();
                 return;
             }
