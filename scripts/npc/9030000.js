@@ -23,10 +23,10 @@
  * @author kevintjuh93
  */
 
-var status;
+var status = -1;
+var selectedType = -1;
 
 function start() {
-    status = -1;
     action(1, 0, 0);
 }
 
@@ -34,21 +34,55 @@ function action(mode, type, selection) {
     if (mode == 1) {
         status++;
     } else {
-        cm.dispose();
-        return;
-    }
-    if (status == 0) {
-        if (!cm.hasMerchant() && cm.hasMerchantItems()) {
-            cm.showFredrick();
-            cm.dispose();
+        if (status >= 2) {
+            status--;
         } else {
-            if (cm.hasMerchant()) {
-                cm.sendOk("You have a Merchant open.");
+            cm.dispose();
+            return;
+        }
+    }
+
+    if (status == 0) {
+        var selStr = "What would you like me to do for you?\r\n";
+        selStr += "#L0#Check my merchant items#l\r\n";
+        selStr += "#L1#Forge equipment#l";
+        cm.sendSimple(selStr);
+    } else if (status == 1) {
+        selectedType = selection;
+        if (selection == 0) {  // Original Fredrick functionality
+            if (!cm.hasMerchant() && cm.hasMerchantItems()) {
+                cm.showFredrick();
                 cm.dispose();
             } else {
-                cm.sendOk("You don't have any items or mesos to be retrieved.");
+                if (cm.hasMerchant()) {
+                    cm.sendOk("You have a Merchant open.");
+                } else {
+                    cm.sendOk("You don't have any items or mesos to be retrieved.");
+                }
                 cm.dispose();
             }
+        } else if (selection == 1) {  // Forging functionality
+            var selStr = "Bring me a #i2280001# #t2280001# and I'll merge your equipment to make them stronger.";
+            items = [2280001];  // Black Loud Machine
+            for (var i = 0; i < items.length; i++) {
+                selStr += "\r\n#L" + i + "##t" + items[i] + "##l";
+            }
+            cm.sendSimple(selStr);
+        }
+    } else if (status == 2) {
+        if (selectedType == 1) {  // Forging process
+            if (!cm.haveItem(2280001, 1)) {
+                cm.sendOk("You need a #i2280001# #t2280001# to forge equipment.");
+                cm.dispose();
+                return;
+            }
+
+            cm.gainItem(2280001, -1); // Remove the Black Loud Machine
+            const MergeCommand = Java.type('client.command.commands.gm0.MergeCommand');
+            const processor = new MergeCommand();
+            processor.execute(cm.getClient(), ["@merge"]);
+            cm.sendOk("Your equipment has been successfully merged and enhanced!");
+            cm.dispose();
         }
     }
 }
