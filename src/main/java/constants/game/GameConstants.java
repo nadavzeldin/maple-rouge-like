@@ -21,7 +21,7 @@ import java.util.*;
  */
 public class GameConstants {
     public static int LOOT_LIZARD_ID = 9400506;
-    public static int LOOT_LIZARD_PERCENT = 101;
+    public static int LOOT_LIZARD_PERCENT = 20;
     public static final long LOOT_LIZARD_SPAWN_COOLDOWN = 180000; // 3 minutes in milliseconds
     public static int LOOT_LIZARD_UI_BANNER = 5120008;
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};

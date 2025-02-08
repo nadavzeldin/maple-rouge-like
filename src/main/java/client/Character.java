@@ -1362,7 +1362,7 @@ public class Character extends AbstractCharacterObject {
 
     public void eventLootLizardSpawnLogic(){
         long currentTime = System.currentTimeMillis();
-        if (currentTime - this.lizardLastSpawnTime < LOOT_LIZARD_SPAWN_COOLDOWN) {
+        if (currentTime - this.lizardLastSpawnTime < LOOT_LIZARD_SPAWN_COOLDOWN && this.level > 10) {
             return; // Still on cooldown
         }
 
