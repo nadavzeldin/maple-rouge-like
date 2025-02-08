@@ -25,7 +25,8 @@ function action(mode, type, selection) {
                 "The job will be in same tier as you are (first job ..)\r\n\r\n" +
                 "#r3.#k Your #bbeginner Haste skills#k has been modify and greatly enhance\r\n\r\n" +
                 "#r4.#k A mysterious #bLoot Candle#k occasionally appears in maps,\r\ndropping #rvaluable scrolls#k and a #bunique potion#k that gives\r\n#rpermanent +1 to all stats#k for lucky adventurers\r\n\r\n" +
-                "#r5.#k Use #b@help#k to see other basic features\r\n\r\n" +
+                "#r5.#k Visit #bFredrick in FM#k to forge your equipment using #rBlack Loud Machine#k\r\nmaking them significantly stronger!\r\n\r\n" +
+                "#r6.#k Use #b@help#k to see other basic features\r\n\r\n" +
                 "Have fun, would you like to skip the tutorials and head straight to #bLith Harbor#k?");
         } else if (status == 1) {
             cm.warp(104000000, 0);
