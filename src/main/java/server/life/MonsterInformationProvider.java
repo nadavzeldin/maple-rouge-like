@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static constants.game.GameConstants.LOOT_LIZARD_ID;
+import static constants.id.ItemId.MERGE_COIN;
 
 public class MonsterInformationProvider {
     private static final Logger log = LoggerFactory.getLogger(MonsterInformationProvider.class);
@@ -109,6 +110,7 @@ public class MonsterInformationProvider {
         }
 
         customDrops.add(new MonsterDropEntry(ItemId.HAPPY_BIRTHDAY, 1000000, 1, 1, (short)0));  // +1 potion)
+        customDrops.add(new MonsterDropEntry(MERGE_COIN, 2500000, 1, 1, (short)0));  // +1 potion)
         drops.put(LOOT_LIZARD_ID, customDrops);
 
     }
