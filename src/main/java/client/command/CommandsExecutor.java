@@ -353,7 +353,6 @@ public class CommandsExecutor {
         addCommand("equiplv", EquipLvCommand.class);
         addCommand("showrates", ShowRatesCommand.class);
         addCommand("rates", RatesCommand.class);
-        addCommand("merge", MergeCommand.class);
         addCommand("online", OnlineCommand.class);
         addCommand("gm", GmCommand.class);
         addCommand("resetAp", ResetStatsCommand.class);
