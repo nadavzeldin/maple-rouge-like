@@ -82,6 +82,8 @@ import provider.wz.WZFiles;
 import server.StatEffect;
 import server.life.Element;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,6 +114,10 @@ public class SkillFactory {
         }
 
         skills = loadedSkills;
+    }
+
+    public static Collection<Skill> getSkills() {
+        return Collections.unmodifiableCollection(skills.values());
     }
 
     private static Skill loadFromData(int id, Data data) {
