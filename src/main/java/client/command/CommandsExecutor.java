@@ -353,7 +353,6 @@ public class CommandsExecutor {
         addCommand("equiplv", EquipLvCommand.class);
         addCommand("showrates", ShowRatesCommand.class);
         addCommand("rates", RatesCommand.class);
-        addCommand("merge", MergeCommand.class);
         addCommand("online", OnlineCommand.class);
         addCommand("gm", GmCommand.class);
         addCommand("resetAp", ResetStatsCommand.class);
@@ -562,6 +561,7 @@ public class CommandsExecutor {
         addCommand("removechannel", 6, ServerRemoveChannelCommand.class);
         addCommand("removeworld", 6, ServerRemoveWorldCommand.class);
         addCommand("devtest", 6, DevtestCommand.class);
+        addCommand("merge", MergeCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
     }
