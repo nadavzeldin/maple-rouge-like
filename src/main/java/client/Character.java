@@ -6358,14 +6358,18 @@ public class Character extends AbstractCharacterObject {
             else if (level < 90)  // Third job
             {
                 jobOptionList = Arrays.asList(Job.CRUSADER, Job.WHITEKNIGHT, Job.DRAGONKNIGHT,
-                        Job.FP_MAGE, Job.IL_MAGE, Job.PRIEST,
-                        Job.RANGER, Job.SNIPER, Job.HERMIT, Job.CHIEFBANDIT,
-                        Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR3, Job.BLAZEWIZARD3,
-                        Job.WINDARCHER3, Job.NIGHTWALKER3, Job.THUNDERBREAKER3);
+                    Job.FP_MAGE, Job.IL_MAGE, Job.PRIEST,
+                    Job.RANGER, Job.SNIPER, Job.HERMIT, Job.CHIEFBANDIT,
+                    Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR3, Job.BLAZEWIZARD3,
+                    Job.WINDARCHER3, Job.NIGHTWALKER3, Job.THUNDERBREAKER3);
             }
             else // Firth Job not done yet
             {
-                jobOptionList = Arrays.asList(Job.WARRIOR);
+                jobOptionList = Arrays.asList(Job.HERO, Job.HERO, Job.DARKKNIGHT,
+                        Job.DARKKNIGHT, Job.IL_ARCHMAGE, Job.BISHOP,
+                        Job.BOWMASTER, Job.MARKSMAN, Job.NIGHTLORD, Job.SHADOWER,
+                        Job.BUCCANEER, Job.CORSAIR, Job.DAWNWARRIOR4, Job.BLAZEWIZARD4,
+                        Job.WINDARCHER4, Job.NIGHTWALKER4, Job.THUNDERBREAKER4);
             }
             this.job = jobOptionList.get(random.nextInt(jobOptionList.size()));
         }

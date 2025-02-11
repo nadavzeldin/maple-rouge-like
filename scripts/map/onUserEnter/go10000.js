@@ -22,5 +22,8 @@
 
 function start(ms) {
     ms.unlockUI();
+
+    ms.openNpc(2007);
+
     ms.mapEffect("maplemap/enter/10000");
 }
