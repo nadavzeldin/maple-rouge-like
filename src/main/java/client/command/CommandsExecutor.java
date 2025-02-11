@@ -43,6 +43,7 @@ import client.command.commands.gm0.ReadPointsCommand;
 import client.command.commands.gm0.ReportBugCommand;
 import client.command.commands.gm0.ResetStatsCommand;
 import client.command.commands.gm0.SellCommand;
+import client.command.commands.gm0.ShopCommand;
 import client.command.commands.gm0.ShowRatesCommand;
 import client.command.commands.gm0.StaffCommand;
 import client.command.commands.gm0.StatDexCommand;
@@ -345,6 +346,7 @@ public class CommandsExecutor {
 
         addCommand(new String[]{"help", "commands"}, HelpCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
+        addCommand("shop", ShopCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("time", TimeCommand.class);
         addCommand("credits", StaffCommand.class);
