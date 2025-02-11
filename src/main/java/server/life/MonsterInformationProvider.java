@@ -110,7 +110,7 @@ public class MonsterInformationProvider {
         }
 
         customDrops.add(new MonsterDropEntry(ItemId.HAPPY_BIRTHDAY, 1000000, 1, 1, (short)0));  // +1 potion)
-        customDrops.add(new MonsterDropEntry(MERGE_COIN, 2500000, 1, 1, (short)0));  // +1 potion)
+        customDrops.add(new MonsterDropEntry(MERGE_COIN, 100000, 1, 1, (short)0));  // merge 10%
         drops.put(LOOT_LIZARD_ID, customDrops);
 
     }
