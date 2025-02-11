@@ -6371,7 +6371,10 @@ public class Character extends AbstractCharacterObject {
                         Job.BUCCANEER, Job.CORSAIR, Job.DAWNWARRIOR4, Job.BLAZEWIZARD4,
                         Job.WINDARCHER4, Job.NIGHTWALKER4, Job.THUNDERBREAKER4);
             }
-            this.job = jobOptionList.get(random.nextInt(jobOptionList.size()));
+            List<Job> availableJobs = jobOptionList.stream()
+                    .filter(job -> job != this.job)
+                    .collect(Collectors.toList());
+            this.job = availableJobs.get(random.nextInt(availableJobs.size()));
         }
         // Create a list of stats to update
         int jobId = this.job.getId();
