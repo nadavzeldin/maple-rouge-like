@@ -2,6 +2,7 @@ Common Commands:
 @help - Show available commands.
 @commands - Show available commands.
 @merge - Merges EQP items and makes them stronger
+@sell - Sells all items in an inventory tab.
 @droplimit - Check drop limit of current map.
 @time - Show current server time.
 @credits - Show credits. These people made the server possible.
