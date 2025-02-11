@@ -74,7 +74,3 @@ public class SellCommand extends Command {
     private final InventoryType[] allTypes = {InventoryType.EQUIP, InventoryType.USE, InventoryType.ETC, InventoryType.SETUP, InventoryType.CASH};
     private final Set<String> allTypesAsString = Set.of("equip", "use", "setup", "etc", "cash", "all");
 }
-
-// !item 1302000 1 sword
-// !item 1082002 1 glove
-// !item 2040806 10 glove dex
