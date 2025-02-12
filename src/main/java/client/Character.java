@@ -427,6 +427,11 @@ public class Character extends AbstractCharacterObject {
         setPosition(new Point(0, 0));
     }
 
+    public void resetInventory()
+    {
+        this.inventory = new Inventory[InventoryType.values().length];
+    }
+
     private static Job getJobStyleInternal(int jobid, byte opt) {
         int jobtype = jobid / 100;
 
