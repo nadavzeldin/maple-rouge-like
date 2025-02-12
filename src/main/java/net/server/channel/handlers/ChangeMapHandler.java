@@ -23,7 +23,9 @@ package net.server.channel.handlers;
 
 import client.Character;
 import client.Client;
+import client.inventory.Inventory;
 import client.inventory.InventoryType;
+import client.inventory.Item;
 import client.inventory.manipulator.InventoryManipulator;
 import constants.id.ItemId;
 import constants.id.MapId;
@@ -104,8 +106,22 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                             executeStandardPath = chr.getEventInstance().revivePlayer(chr);
                         }
                         if (executeStandardPath) {
-                            chr.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
-                            chr.respawn(MapId.JAIL); // one death - rouge like
+                            boolean hasUnkillable = false;
+
+                            for (Item item : chr.getInventory(InventoryType.EQUIPPED)) {
+                                if ("Unkillable".equals(item.getOwner())) {
+                                    hasUnkillable = true;
+                                    break; // Stop checking once we find it
+                                }
+                            }
+
+                            if (hasUnkillable) {
+                                chr.resetInventory();
+                                chr.respawn(MapId.HENESYS);
+                            } else {
+                                chr.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
+                                chr.respawn(MapId.JAIL); // one death - rogue-like
+                            }
                         }
                     }
                 } else {

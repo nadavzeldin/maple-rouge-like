@@ -1,28 +1,3 @@
-/*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/* Fredrick NPC (9030000)
- * @author kevintjuh93
- */
-
 var status = -1;
 var selectedType = -1;
 
@@ -45,7 +20,8 @@ function action(mode, type, selection) {
     if (status == 0) {
         var selStr = "What would you like me to do for you?\r\n";
         selStr += "#L0#Check my merchant items#l\r\n";
-        selStr += "#L1#Merge equipment#l";
+        selStr += "#L1#Merge equipment#l\r\n";
+        selStr += "#L2#How does merging effect work?#l"; // Moved below "Merge equipment"
         cm.sendSimple(selStr);
     } else if (status == 1) {
         selectedType = selection;
@@ -68,6 +44,45 @@ function action(mode, type, selection) {
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##l";
             }
             cm.sendSimple(selStr);
+        } else if (selection == 2) {  // Merging effect explanation
+            var explainStr = "Each merge attempt has these possible outcomes:\r\n\r\n";
+            explainStr += "#bCommon Effects (Medium Chance)#k\r\n\r\n";
+
+            explainStr += "#dHarry Potter:#k\r\n";
+            explainStr += "- Weapon: Increases #rMagic Attack#k\r\n";
+            explainStr += "- Armor: Increases #rIntelligence#k\r\n\r\n";
+
+            explainStr += "#dZoro:#k\r\n";
+            explainStr += "- Weapon: Increases #rAttack Power#k\r\n";
+            explainStr += "- Armor: Increases #rStrength#k\r\n\r\n";
+
+            explainStr += "#dLegolas:#k\r\n";
+            explainStr += "- Weapon: Increases #rAttack Power#k\r\n";
+            explainStr += "- Armor: Increases #rDexterity#k\r\n\r\n";
+
+            explainStr += "#dNinja:#k\r\n";
+            explainStr += "- Weapon: Increases #rAttack Power#k\r\n";
+            explainStr += "- Armor: Increases #rLuck#k\r\n\r\n";
+
+            explainStr += "#dBolder:#k\r\n";
+            explainStr += "- Weapon: Increases #rHP#k\r\n";
+            explainStr += "- Armor: Increases #rDefense#k\r\n\r\n";
+
+            explainStr += "#dMyst:#k\r\n";
+            explainStr += "- Weapon: Increases #rMP#k\r\n";
+            explainStr += "- Armor: Increases #rMagic Defense#k\r\n\r\n";
+
+            explainStr += "#rLegendary Effect:#k\r\n";
+            explainStr += "#rUnkillable#k (Extremely Rare)\r\n";
+            explainStr += "- Special Effect: Upon death, you'll be teleported to Henesys.\r\n";
+            explainStr += "  Your life is saved, but all equipment will be removed.\r\n\r\n";
+
+            explainStr += "#rNote: All stat bonuses scale with job advancement level!#k";
+
+            cm.sendOk(explainStr);
+            cm.dispose();
+
+
         }
     } else if (status == 2) {
         if (selectedType == 1) {  // Forging process
@@ -78,7 +93,7 @@ function action(mode, type, selection) {
             }
 
             cm.gainItem(2280001, -1); // Remove the Black Loud Machine
-            const MergeCommand = Java.type('client.command.commands.gm0.MergeCommand');
+            const MergeCommand = Java.type('client.command.commands.gm6.MergeCommand');
             const processor = new MergeCommand();
             processor.execute(cm.getClient(), ["@merge"]);
             cm.sendOk("Your equipment has been successfully merged and enhanced!");
