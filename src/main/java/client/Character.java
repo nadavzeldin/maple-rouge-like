@@ -6364,7 +6364,7 @@ public class Character extends AbstractCharacterObject {
                         Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR2, Job.BLAZEWIZARD2,
                         Job.WINDARCHER2, Job.NIGHTWALKER2, Job.THUNDERBREAKER2);
             }
-            else if (level < 90)  // Third job
+            else if (level < 120)  // Third job
             {
                 jobOptionList = Arrays.asList(Job.CRUSADER, Job.WHITEKNIGHT, Job.DRAGONKNIGHT,
                     Job.FP_MAGE, Job.IL_MAGE, Job.PRIEST,
