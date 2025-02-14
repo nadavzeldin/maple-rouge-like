@@ -6364,7 +6364,7 @@ public class Character extends AbstractCharacterObject {
                         Job.BRAWLER, Job.GUNSLINGER, Job.DAWNWARRIOR2, Job.BLAZEWIZARD2,
                         Job.WINDARCHER2, Job.NIGHTWALKER2, Job.THUNDERBREAKER2);
             }
-            else if (level < 90)  // Third job
+            else if (level < 120)  // Third job
             {
                 jobOptionList = Arrays.asList(Job.CRUSADER, Job.WHITEKNIGHT, Job.DRAGONKNIGHT,
                     Job.FP_MAGE, Job.IL_MAGE, Job.PRIEST,
@@ -6372,13 +6372,12 @@ public class Character extends AbstractCharacterObject {
                     Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR3, Job.BLAZEWIZARD3,
                     Job.WINDARCHER3, Job.NIGHTWALKER3, Job.THUNDERBREAKER3);
             }
-            else // Firth Job not done yet
+            else // Firth Job
             {
-                jobOptionList = Arrays.asList(Job.HERO, Job.HERO, Job.DARKKNIGHT,
-                        Job.DARKKNIGHT, Job.IL_ARCHMAGE, Job.BISHOP,
+                jobOptionList = Arrays.asList(Job.HERO, Job.PALADIN, Job.DARKKNIGHT,
+                        Job.FP_ARCHMAGE, Job.IL_ARCHMAGE, Job.BISHOP,
                         Job.BOWMASTER, Job.MARKSMAN, Job.NIGHTLORD, Job.SHADOWER,
-                        Job.BUCCANEER, Job.CORSAIR, Job.DAWNWARRIOR4, Job.BLAZEWIZARD4,
-                        Job.WINDARCHER4, Job.NIGHTWALKER4, Job.THUNDERBREAKER4);
+                        Job.BUCCANEER, Job.CORSAIR);
             }
             List<Job> availableJobs = jobOptionList.stream()
                     .filter(job -> job != this.job)
