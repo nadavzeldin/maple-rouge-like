@@ -45,7 +45,10 @@ function action(mode, type, selection) {
             }
             cm.sendSimple(selStr);
         } else if (selection == 2) {  // Merging effect explanation
-            var explainStr = "Each merge attempt has these possible outcomes:\r\n\r\n";
+            var explainStr = "To Merge Items, you must have at least two identical items in EQP slot, the more, the stronger the merge.\r\n\r\n";
+            explainStr += "The merging logic is setup with diminishing returns, the more you merge the same item\n, it will level up and the next merge will be #bweaker!\r\n\r\n"
+
+            explainStr += "Each merge attempt has these possible outcomes:\r\n\r\n";
             explainStr += "#bCommon Effects (Medium Chance)#k\r\n\r\n";
 
             explainStr += "#dHarry Potter:#k\r\n";
@@ -81,8 +84,6 @@ function action(mode, type, selection) {
 
             cm.sendOk(explainStr);
             cm.dispose();
-
-
         }
     } else if (status == 2) {
         if (selectedType == 1) {  // Forging process
@@ -92,7 +93,8 @@ function action(mode, type, selection) {
                 return;
             }
 
-            cm.gainItem(2280001, -1); // Remove the Black Loud Machine
+            // I will remove it in the command code, is if there is nothing to merge, they simply get a warning
+            // cm.gainItem(2280001, -1); // Remove the Black Loud Machine
             const MergeCommand = Java.type('client.command.commands.gm6.MergeCommand');
             const processor = new MergeCommand();
             processor.execute(cm.getClient(), ["@merge"]);
