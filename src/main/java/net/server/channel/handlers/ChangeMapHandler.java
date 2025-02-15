@@ -23,7 +23,6 @@ package net.server.channel.handlers;
 
 import client.Character;
 import client.Client;
-import client.inventory.Inventory;
 import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.manipulator.InventoryManipulator;
@@ -115,6 +114,8 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                                 }
                             }
 
+                            globalDeathMessage(chr, hasUnkillable);
+
                             if (hasUnkillable) {
                                 chr.resetInventory();
                                 chr.respawn(MapId.HENESYS);
@@ -192,6 +193,18 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
             e.printStackTrace();
         }
 
+    }
+
+    private static void globalDeathMessage(Character chr, boolean hasUnkillable) {
+        if (chr.getLevel() > 50)
+        {
+            String death_message = "OH NO! "+ chr.getName() + " has was killed in:" + chr.getMap().getMapName() +" " + chr.getMap().getStreetName();
+            if (hasUnkillable)
+            {
+                death_message += "but fear not because he has the UNKILLABLE ITEM!";
+            }
+            chr.getWorldServer().broadcastPacket(PacketCreator.serverNotice(6, death_message));
+        }
     }
 
     private void enterFromCashShop(Client c) {
