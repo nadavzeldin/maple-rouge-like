@@ -566,7 +566,7 @@ public class CommandsExecutor {
         addCommand("removechannel", 6, ServerRemoveChannelCommand.class);
         addCommand("removeworld", 6, ServerRemoveWorldCommand.class);
         addCommand("devtest", 6, DevtestCommand.class);
-        addCommand("merge", MergeCommand.class);
+        addCommand("merge",6 , MergeCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
     }
