@@ -56,6 +56,9 @@ public class SellCommand extends Command {
         }
         for (InventoryType inventoryType : allTypes) {
             if (isAll || inventoryType.name().toLowerCase().equals(type)) {
+                if (isAll && inventoryType == InventoryType.CASH) {
+                    continue;
+                }
                 for (short i = 0; i < 101; i++) {
                     Item tempItem = c.getPlayer().getInventory(inventoryType).getItem((byte) i);
                     if (tempItem != null) {
