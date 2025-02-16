@@ -174,6 +174,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -196,6 +197,7 @@ import java.util.stream.Collectors;
 import static constants.game.GameConstants.LOOT_LIZARD_ID;
 import static constants.game.GameConstants.LOOT_LIZARD_SPAWN_COOLDOWN;
 import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
+import static constants.game.GameConstants.Level_Up_Banner;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -6345,6 +6347,56 @@ public class Character extends AbstractCharacterObject {
 
 
 
+    public synchronized void itemAutoSend(int level) {
+        Map<Integer, Integer> levelToItem = new HashMap<>();
+        // level 20-80 rings, level 100 belt, level 120 eye, level 140 ear, level 160 pendent, level 180 forehead.
+        levelToItem.put(20, 1112300);
+        levelToItem.put(40, 1112408);
+        levelToItem.put(60, 1112405);
+        levelToItem.put(80, 1112401);
+        levelToItem.put(90, 1132009);
+        levelToItem.put(100, 1102166);
+        levelToItem.put(120, 1022082);
+        levelToItem.put(140, 1032033);
+        levelToItem.put(160, 1122003);
+        levelToItem.put(180, 1012070);
+
+        // Add more level-item pairs as needed
+        if(levelToItem.containsKey(level)) {
+            int itemId = levelToItem.get(level);
+            InventoryManipulator.addById(client, itemId, (short)1, getName(), -1,  ItemConstants.UNTRADEABLE, -1);
+            Equip newReceivedItem = (Equip) this.getInventory(InventoryType.EQUIP).findById(itemId);
+
+            // Here modify the item
+            newReceivedItem.setWatk((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setMatk((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setStr((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setDex((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setInt((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setLuk((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setSpeed((short) (5));
+            newReceivedItem.setJump((short) (5));
+            //newReceivedItem.setUpgradeSlots(5);
+            MapleMap map_ = getWarpMap(mapid);
+            map_.startMapEffect("Congratulations! You've leveled up and earned a powerful new item!", Level_Up_Banner);
+            client.sendPacket(PacketCreator.modifyInventory
+                    (true, Collections.singletonList
+                            (new ModifyInventory(0, newReceivedItem))));
+        }
+//
+
+
+
+
+//        if (level == 20)
+//        {
+//            primaryItem = new Item(1302000,(short) 0,(short) 1);
+//            client.sendPacket(PacketCreator.modifyInventory
+//                    (true, Collections.singletonList
+//                            (new ModifyInventory(0, primaryItem))));
+//        }
+    }
+
     public synchronized void jobUpdateLogic(int level){
         if (level % 10 == 0)
         {
@@ -6503,6 +6555,7 @@ public class Character extends AbstractCharacterObject {
         }
 
         level++;
+        itemAutoSend(level);
         jobUpdateLogic(level);
         if (level >= getMaxClassLevel()) {
             exp.set(0);
