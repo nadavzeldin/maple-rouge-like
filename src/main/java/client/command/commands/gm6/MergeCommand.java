@@ -386,7 +386,8 @@ public class MergeCommand extends Command {
                     .orElse(getter.apply(primaryItem));
 
             short additionalStat = (short) (currentMaxStat * scalingFactor * (Math.sqrt(equips.size())));
-            short newStatValue = (short) (currentMaxStat + additionalStat);
+            // check 16 bit overflow
+            short newStatValue = (short) (currentMaxStat + additionalStat > currentMaxStat ? currentMaxStat + additionalStat : currentMaxStat);
 
             log.info("The new Item stat for {} is {}", statName, newStatValue);
             statUpdaters.get(statName).accept(primaryItem, newStatValue);
