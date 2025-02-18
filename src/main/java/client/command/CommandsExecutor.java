@@ -41,6 +41,7 @@ import client.command.commands.gm0.RatesCommand;
 import client.command.commands.gm0.ReadPointsCommand;
 import client.command.commands.gm0.ReportBugCommand;
 import client.command.commands.gm0.ResetStatsCommand;
+import client.command.commands.gm0.RollCommand;
 import client.command.commands.gm0.SellCommand;
 import client.command.commands.gm0.ShopCommand;
 import client.command.commands.gm0.ShowRatesCommand;
@@ -349,6 +350,7 @@ public class CommandsExecutor {
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("shop", ShopCommand.class);
         addCommand("sell", SellCommand.class);
+        addCommand("roll", RollCommand.class);
         addCommand("time", TimeCommand.class);
         addCommand("credits", StaffCommand.class);
         addCommand("uptime", UptimeCommand.class);

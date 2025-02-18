@@ -37,18 +37,21 @@ import java.util.stream.Collectors;
 
 public class SellCommand extends Command {
     {
-        setDescription("Sells all items in an inventory tab.");
+        setDescription("Sells all items in an inventory tab, can set max slot number to sell");
     }
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
         if (params.length < 1) {
-            player.yellowMessage("Syntax: @sell <all, equip, use, setup, etc or cash.>");
+            player.yellowMessage("Syntax: @sell <all, equip, use, setup, etc or cash> <sell slot amount>");
             return;
         }
         String type = params[0];
         Shop shop = ShopFactory.getInstance().getShop(1337); // this is the GM shop
-
+        int sellSlotAmount = 101;
+        if (params.length >= 2) {
+            sellSlotAmount = Integer.parseInt(params[1]);
+        }
         boolean isAll = type.equals("all");
         if (!allTypesAsString.contains(type.toLowerCase())) {
             player.yellowMessage("Error: The specified slot type '" + type + "' does not exist.");
@@ -59,7 +62,7 @@ public class SellCommand extends Command {
                 if (isAll && inventoryType == InventoryType.CASH) {
                     continue;
                 }
-                for (short i = 0; i < 101; i++) {
+                for (short i = 0; i <= sellSlotAmount; i++) {
                     Item tempItem = c.getPlayer().getInventory(inventoryType).getItem((byte) i);
                     if (tempItem != null) {
                         shop.sell(c, inventoryType, i, tempItem.getQuantity());
