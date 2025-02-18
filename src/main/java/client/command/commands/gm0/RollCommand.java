@@ -19,22 +19,16 @@
 */
 
 /*
-   @Author: Roey Zeldin - command to sell all slots
+   @Author: Roey Zeldin - command to roll random number
 */
 package client.command.commands.gm0;
 
 import client.Character;
 import client.Client;
 import client.command.Command;
-import client.inventory.InventoryType;
-import client.inventory.Item;
-import server.Shop;
-import server.ShopFactory;
-
 import java.util.Random;
-import java.util.Set;
 
-import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
+import static constants.game.GameConstants.ROLL_UI_BANNER;
 
 public class RollCommand extends Command {
     {
@@ -43,7 +37,7 @@ public class RollCommand extends Command {
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
-        if (params.length < 1 || params.length > 3) {
+        if (params.length != 1 && params.length != 2) {
             player.yellowMessage("Syntax: @roll <n> OR @roll <min> <max>");
             return;
         }
@@ -53,13 +47,13 @@ public class RollCommand extends Command {
             int max = Integer.parseInt(params[1]);
             int result = random.nextInt(n, max);
             String message = String.format("The number you have rolled for %d to %d is %d", n, max, result);
-            c.getPlayer().getMap().startMapEffect(message, 5121001); // Korean Soccer Chant
+            c.getPlayer().getMap().startMapEffect(message, ROLL_UI_BANNER); // Korean Soccer Chant
             return;
         }
         // Roll random number from 0 to n
         int result = random.nextInt(n);
         String message = String.format("The number you have rolled for 0 to %d is %d", n, result);
-        c.getPlayer().getMap().startMapEffect(message, 5121001); // Korean Soccer Chant
+        c.getPlayer().getMap().startMapEffect(message, ROLL_UI_BANNER); // Korean Soccer Chant
     }
     private final Random random = new Random();
 }
