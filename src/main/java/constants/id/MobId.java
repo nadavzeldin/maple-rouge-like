@@ -9,6 +9,7 @@ public class MobId {
     public static final int DEJECTED_GREEN_MUSHROOM = 1110130;
     public static final int GREEN_MUSHROOM_QUEST = 9101000;
     public static final int ZOMBIE_MUSHROOM = 2230101;
+    public static final int MUSH_MOM = 6130101;
     public static final int ANNOYED_ZOMBIE_MUSHROOM = 2230131;
     public static final int ZOMBIE_MUSHROOM_QUEST = 9101001;
     public static final int GHOST_STUMP = 1140100;

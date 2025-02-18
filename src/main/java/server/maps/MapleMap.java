@@ -1516,6 +1516,14 @@ public class MapleMap {
         }
     }
 
+    // Func
+    public boolean monstersInMap() {
+        for (MapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.MONSTER))) {
+            return true;
+        }
+        return false;
+    }
+
     public final void destroyReactors(final int first, final int last) {
         List<Reactor> toDestroy = new ArrayList<>();
         List<MapObject> reactors = getReactors();
