@@ -6616,13 +6616,10 @@ public class Character extends AbstractCharacterObject {
 
         if (level % 20 == 0) {
             if (YamlConfig.config.server.USE_ADD_SLOTS_BY_LEVEL == true) {
-                if (!isGM()) {
-                    for (byte i = 1; i < 5; i++) {
-                        gainSlots(i, 4, true);
-                    }
-
-                    this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
+                for (byte i = 1; i < 5; i++) {
+                    gainSlots(i, 4, true);
                 }
+                this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
             }
             if (YamlConfig.config.server.USE_ADD_RATES_BY_LEVEL == true) { //For the rate upgrade
                 revertLastPlayerRates();
@@ -9341,7 +9338,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public boolean gainSlots(int type, int slots, boolean update) {
-        int newLimit = gainSlotsInternal(type, slots);
+        int newLimit = gainSlotsInternal(type, slots*5);
         if (newLimit != -1) {
             this.saveCharToDB();
             if (update) {
