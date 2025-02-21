@@ -366,18 +366,14 @@ public class ItemInformationProvider {
         if (slotMax != null) {
             return (short) (slotMax + getExtraSlotMaxFromPlayer(c, itemId));
         }
-        short ret = 0;
+        short ret = YamlConfig.config.server.MAX_ITEMS_PER_SLOT;
         Data item = getItemData(itemId);
         if (item != null) {
             Data smEntry = item.getChildByPath("info/slotMax");
             if (smEntry == null) {
                 if (ItemConstants.getInventoryType(itemId).getType() == InventoryType.EQUIP.getType()) {
                     ret = 1;
-                } else {
-                    ret = 100;
                 }
-            } else {
-                ret = (short) DataTool.getInt(smEntry);
             }
         }
 
