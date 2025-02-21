@@ -395,6 +395,9 @@ server:
     MAX_EQUIPMNT_STAT: 32767            #Max stat on an equipment by leveling up.
     USE_EQUIPMNT_LVLUP: 1               #All equips lvlup at max level of N, set 1 to disable.
 
+    # Inventory Configuration
+    MAX_ITEMS_PER_SLOT: 999
+
     #Map-Chair Configuration
     USE_CHAIR_EXTRAHEAL: false       #Enable map chairs to further recover player's HP and MP (player must have the Chair Mastery skill).
     CHAIR_EXTRA_HEAL_MULTIPLIER: 10    #Due to only being able to be send up-to-255 heal values, values being actually updated is the one displayed times this.
