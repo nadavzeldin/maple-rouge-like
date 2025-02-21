@@ -42,6 +42,8 @@ import client.keybind.QuickslotBinding;
 import client.newyear.NewYearCardRecord;
 import client.processor.action.PetAutopotProcessor;
 import client.processor.npc.FredrickProcessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import config.YamlConfig;
 import constants.game.ExpTable;
 import constants.game.GameConstants;
@@ -365,6 +367,8 @@ public class Character extends AbstractCharacterObject {
     private long loginTime;
     private boolean chasing = false;
     private long lizardLastSpawnTime = 0;
+    public AccountExtraDetails accountExtraDetails;
+
 
     private Character() {
         super.setListener(new AbstractCharacterListener() {
@@ -6911,13 +6915,23 @@ public class Character extends AbstractCharacterObject {
 
         try {
             ret.accountid = rs.getInt("accountid");
+
+            String extraDetails = rs.getString("extra_details");
+            if (extraDetails != null && !extraDetails.isEmpty()) {
+                try {
+                    ret.accountExtraDetails = new ObjectMapper().readValue(extraDetails, AccountExtraDetails.class);
+                } catch (JsonProcessingException e) {
+                    // Log the error but don't stop character loading
+                    log.error("Error parsing extra_details JSON for accountid: " + ret.accountid, e);
+                }
+            }
+
             ret.id = rs.getInt("id");
             ret.name = rs.getString("name");
             ret.gender = rs.getInt("gender");
             ret.skinColor = SkinColor.getById(rs.getInt("skincolor"));
             ret.face = rs.getInt("face");
             ret.hair = rs.getInt("hair");
-
             // skipping pets, probably unneeded here
 
             ret.level = rs.getInt("level");
@@ -7029,7 +7043,10 @@ public class Character extends AbstractCharacterObject {
             final World wserv;
 
             // Character info
-            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM characters WHERE id = ?")) {
+            try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT c.*, a.extra_details FROM characters c " +
+                            "LEFT JOIN accounts a ON c.accountid = a.id " +
+                            "WHERE c.id = ?")) {
                 ps.setInt(1, charid);
 
                 try (ResultSet rs = ps.executeQuery()) {
@@ -7072,6 +7089,15 @@ public class Character extends AbstractCharacterObject {
                     ret.hair = rs.getInt("hair");
                     ret.face = rs.getInt("face");
                     ret.accountid = rs.getInt("accountid");
+                    String extraDetails = rs.getString("extra_details");
+                    if (extraDetails != null && !extraDetails.isEmpty()) {
+                        try {
+                            ret.accountExtraDetails = new ObjectMapper().readValue(extraDetails, AccountExtraDetails.class);
+                        } catch (JsonProcessingException e) {
+                            // Log the error but don't stop character loading
+                            log.error("Error parsing extra_details JSON for accountid: " + ret.accountid, e);
+                        }
+                    }
                     ret.mapid = rs.getInt("map");
                     ret.jailExpiration = rs.getLong("jailexpire");
                     ret.initialSpawnPoint = rs.getInt("spawnpoint");
