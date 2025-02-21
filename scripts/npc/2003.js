@@ -25,7 +25,7 @@ function action(mode, type, selection) {
             cm.sendOk("#eLegends Never Die#k#n\r\n\r\nPlay testing achievers which manage to reach level 200 first are:\r\n\r\n#b1. #eChrollo#n#k\r\n#b2. #eKeen#n#k\r\n#b3. #eMiguel#n#k\r\n\r\n#d#eCongrads you legends!#k#n");
             cm.dispose();
         } else if (selection == 1) {
-            cm.sendOk("#eAscension Powers#k#n\r\n\r\n#dUpon reaching level 200, you have unlocked new command:#k\r\n#r@ascension <option>#k\r\n\r\n#eHere are the options:#n\r\n#b1. battlecry#k - give you abc...\r\n#b2. wig#k - ...");
+            cm.sendOk("#eAscension Powers#k#n\r\n\r\n#dUpon reaching level 200, you have unlocked new command:#k\r\n#r@ascension <option>#k\r\n\r\n#eHere are the options will be soon added#n");
             cm.dispose();
         }
     } else {
