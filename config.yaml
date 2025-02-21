@@ -162,7 +162,7 @@ server:
     DB_URL_FORMAT: "jdbc:mysql://%s:3306/cosmic" # If the docker ENV for DB_HOST is anything but "db", this string format should be changed from 3306 to 3307 (or whichever port it was changed to in docker) 
     DB_HOST: "localhost" 
     DB_USER: "root"
-    DB_PASS: "root"
+    DB_PASS: "123456"
     INIT_CONNECTION_POOL_TIMEOUT: 90    # Seconds
 
     #Login Configuration
@@ -396,7 +396,7 @@ server:
     USE_EQUIPMNT_LVLUP: 1               #All equips lvlup at max level of N, set 1 to disable.
 
     # Inventory Configuration
-    MAX_ITEMS_PER_SLOT: 999
+    MAX_ITEMS_PER_SLOT: 2000
 
     #Map-Chair Configuration
     USE_CHAIR_EXTRAHEAL: false       #Enable map chairs to further recover player's HP and MP (player must have the Chair Mastery skill).
