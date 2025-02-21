@@ -6457,6 +6457,54 @@ public class Character extends AbstractCharacterObject {
         return;
     }
 
+    public synchronized void checkAchievements(int level)
+    {
+        if (accountExtraDetails == null || accountExtraDetails.getAchievements() == null) {
+            return;
+        }
+
+        List<Achievement> achievements = accountExtraDetails.getAchievements();
+
+        for (Achievement achievement : achievements) {
+            String name = achievement.getName();
+
+            if (achievement.getStatus().equals("undone")) {
+                boolean shouldUpdate = false;
+
+                switch (name) {
+                    case "First time reach 30":
+                        shouldUpdate = level >= 30;
+                        this.gainMeso(1000000);
+                        break;
+                    case "First time reach 120":
+                        shouldUpdate = level >= 120;
+                        break;
+                    case "First time reach 200":
+                    case "Reach Level 200":
+                        shouldUpdate = level >= 200;
+                        break;
+                }
+
+                if (shouldUpdate) {
+                    achievement.setStatus("done");
+                    // Send message to player about achievement
+                    yellowMessage("Achievement Completed: " + name + " - Reward: " + achievement.getBonus());
+                    try (Connection con = DatabaseConnection.getConnection();
+                         PreparedStatement ps = con.prepareStatement("UPDATE accounts SET extra_details = ? WHERE id = ?")) {
+
+                        String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
+                        ps.setString(1, updatedJson);
+                        ps.setInt(2, this.accountid);
+                        ps.executeUpdate();
+
+                    } catch (Exception e) {
+                        log.error("Error updating achievements for accountid: " + accountid, e);
+                    }
+                }
+            }
+        }
+    }
+
     public synchronized void levelUp(boolean takeexp) {
         Skill improvingMaxHP = null;
         Skill improvingMaxMP = null;
@@ -6559,6 +6607,7 @@ public class Character extends AbstractCharacterObject {
         }
 
         level++;
+        checkAchievements(level);
         itemAutoSend(level);
         jobUpdateLogic(level);
         if (level >= getMaxClassLevel()) {
@@ -8270,7 +8319,58 @@ public class Character extends AbstractCharacterObject {
         setMaxMp(recipe.getMaxMp());
         hp = maxhp;
         mp = maxmp;
-        level = recipe.getLevel();
+        int startingLevel = recipe.getLevel();
+        Job startingJob = Job.BEGINNER;
+        try {
+            try (Connection con1 = DatabaseConnection.getConnection();
+                 PreparedStatement psAccount = con1.prepareStatement("SELECT extra_details FROM accounts WHERE id = ?")) {
+                psAccount.setInt(1, accountid);
+                try (ResultSet rs1 = psAccount.executeQuery()) {
+                    if (rs1.next()) {
+                        String extraDetails = rs1.getString("extra_details");
+                        if (extraDetails != null && !extraDetails.isEmpty()) {
+                            try {
+                                AccountExtraDetails accountDetails = new ObjectMapper().readValue(extraDetails, AccountExtraDetails.class);
+                                if (accountDetails != null && accountDetails.getAchievements() != null) {
+                                    for (Achievement achievement : accountDetails.getAchievements()) {
+                                        if (achievement.getName().equals("First time reach 120") &&
+                                                achievement.getStatus().equals("done")) {
+                                            startingLevel = 20;
+                                            startingJob = Job.THIEF;
+                                            str = 20;
+                                            dex = 20;
+                                            int_ = 20;
+                                            luk = 20;
+                                            // Update maxHP and maxMP for higher level
+                                            setMaxHp(500);  // Adjust these values as needed
+                                            setMaxMp(500);
+                                            hp = maxhp;
+                                            mp = maxmp;
+                                        }
+                                        if (achievement.getName().equals("First time reach 200") &&
+                                                achievement.getStatus().equals("done")) {
+                                            fame = 420;
+                                        }
+                                    }
+                                }
+                            } catch (JsonProcessingException e) {
+                                log.error("Error parsing extra_details for accountid: " + accountid, e);
+                            }
+
+                        }
+                    }
+                } catch (Throwable t) {
+                    log.error("Error");
+                }
+            } catch (Throwable t) {
+                log.error("Error");
+            }
+        }catch (Throwable e) {
+            log.error("Error parsing extra_details for accountid: " + accountid, e);
+        }
+
+        job = startingJob;
+        level = startingLevel;
         remainingAp = recipe.getRemainingAp();
         remainingSp[GameConstants.getSkillBook(job.getId())] = recipe.getRemainingSp();
         mapid = recipe.getMap();
@@ -8304,7 +8404,7 @@ public class Character extends AbstractCharacterObject {
                     ps.setInt(5, gmLevel);
                     ps.setInt(6, skinColor.getId());
                     ps.setInt(7, gender);
-                    ps.setInt(8, getJob().getId());
+                    ps.setInt(8, startingJob.getId());
                     ps.setInt(9, hair);
                     ps.setInt(10, face);
                     ps.setInt(11, mapid);

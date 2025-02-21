@@ -47,11 +47,9 @@ public class Achievement {
     public static List<Achievement> getInitialAchievements() {
         List<Achievement> achievements = new ArrayList<>();
         achievements.add(new Achievement("First Login", "done", "3,000 NX"));
-        achievements.add(new Achievement("First time reach 30", "undone", "+5 Speed (Account-wide)"));
-        achievements.add(new Achievement("First time reach 60", "undone", "+5 Speed (Account-wide)"));
-        achievements.add(new Achievement("First time reach 90", "undone", "+10 Jump (Account-wide)"));
-        achievements.add(new Achievement("First time reach 120", "undone", "+10 Jump (Account-wide)"));
-        achievements.add(new Achievement("First time reach 200", "undone", "+20 Speed, +20 Jump (Account-wide)"));
+        achievements.add(new Achievement("First time reach 30", "undone", "+1,000,000 Mesos"));
+        achievements.add(new Achievement("First time reach 120", "undone", "New characters start at level 20 (Account-wide)"));
+        achievements.add(new Achievement("First time reach 200", "undone", "New characters start with 420 Fame (Account-wide)"));
         achievements.add(new Achievement("Reach Level 200", "undone", "Unlock Ascension System"));
         return achievements;
     }
