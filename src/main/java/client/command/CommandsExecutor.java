@@ -24,6 +24,7 @@
 package client.command;
 
 import client.Client;
+import client.command.commands.gm0.AscensionCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
 import client.command.commands.gm0.DropLimitCommand;
@@ -351,6 +352,7 @@ public class CommandsExecutor {
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("shop", ShopCommand.class);
         addCommand("achievs", MyAchievementsCommand.class);
+        addCommand("ascend", AscensionCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("roll", RollCommand.class);
         addCommand("time", TimeCommand.class);

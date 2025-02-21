@@ -2775,6 +2775,10 @@ public class Character extends AbstractCharacterObject {
     }
 
     public void giveDebuff(final Disease disease, MobSkill skill) {
+        if (this.accountExtraDetails.getAscension().contains("Resilient"))
+        {
+            return;
+        }
         if (!hasDisease(disease) && getDiseasesSize() < 2) {
             if (!(disease == Disease.SEDUCE || disease == Disease.STUN)) {
                 if (hasActiveBuff(Bishop.HOLY_SHIELD)) {
@@ -5022,7 +5026,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getDropRate() {
-        return dropRate;
+        return this.accountExtraDetails.getAscension().contains("Hoarder") ? dropRate* 5 : dropRate;
     }
 
     public int getCouponDropRate() {
@@ -5039,7 +5043,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMesoRate() {
-        return mesoRate;
+        return this.accountExtraDetails.getAscension().contains("Hoarder") ? mesoRate* 5 : mesoRate;
     }
 
     public int getCouponMesoRate() {
@@ -6898,6 +6902,16 @@ public class Character extends AbstractCharacterObject {
         return toCommitEffect;
     }
 
+    public void updateRatesAscension()
+    {
+        if (this.accountExtraDetails.getAscension().contains("Hoarder"))
+        {
+            this.dropRate *= 5;
+            this.mesoRate *= 5;
+
+        }
+    }
+
     private void setActiveCoupons(Collection<Item> cashItems) {
         activeCoupons.clear();
         activeCouponRates.clear();
@@ -7006,7 +7020,6 @@ public class Character extends AbstractCharacterObject {
             ret.rankMove = rs.getInt("rankMove");
             ret.jobRank = rs.getInt("jobRank");
             ret.jobRankMove = rs.getInt("jobRankMove");
-
             if (equipped != null) {  // players can have no equipped items at all, ofc
                 Inventory inv = ret.inventory[InventoryType.EQUIPPED.ordinal()];
                 for (Item item : equipped) {
@@ -7597,6 +7610,7 @@ public class Character extends AbstractCharacterObject {
         } catch (SQLException | RuntimeException e) {
             e.printStackTrace();
         }
+        ret.updateRatesAscension();
         return null;
     }
 
