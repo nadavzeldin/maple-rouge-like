@@ -5026,7 +5026,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getDropRate() {
-        return this.accountExtraDetails.getAscension().contains("Hoarder") ? dropRate* 5 : dropRate;
+        return this.accountExtraDetails.getAscension().contains(AscensionConstants.Names.HOARDER) ? dropRate* 5 : dropRate;
     }
 
     public int getCouponDropRate() {
@@ -5043,7 +5043,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMesoRate() {
-        return this.accountExtraDetails.getAscension().contains("Hoarder") ? mesoRate* 5 : mesoRate;
+        return this.accountExtraDetails.getAscension().contains(AscensionConstants.Names.HOARDER) ? mesoRate* 5 : mesoRate;
     }
 
     public int getCouponMesoRate() {
@@ -6476,15 +6476,15 @@ public class Character extends AbstractCharacterObject {
                 boolean shouldUpdate = false;
 
                 switch (name) {
-                    case "First time reach 30":
+                    case AchievementConstants.Names.REACH_LEVEL_30:
                         shouldUpdate = level >= 30;
                         this.gainMeso(1000000);
                         break;
-                    case "First time reach 120":
+                    case AchievementConstants.Names.REACH_LEVEL_120:
                         shouldUpdate = level >= 120;
                         break;
-                    case "First time reach 200":
-                    case "Reach Level 200":
+                    case AchievementConstants.Names.REACH_LEVEL_200:
+                    case AchievementConstants.Names.LEVEL_200:
                         shouldUpdate = level >= 200;
                         break;
                 }
@@ -6902,15 +6902,6 @@ public class Character extends AbstractCharacterObject {
         return toCommitEffect;
     }
 
-    public void updateRatesAscension()
-    {
-        if (this.accountExtraDetails.getAscension().contains("Hoarder"))
-        {
-            this.dropRate *= 5;
-            this.mesoRate *= 5;
-
-        }
-    }
 
     private void setActiveCoupons(Collection<Item> cashItems) {
         activeCoupons.clear();
@@ -7610,7 +7601,6 @@ public class Character extends AbstractCharacterObject {
         } catch (SQLException | RuntimeException e) {
             e.printStackTrace();
         }
-        ret.updateRatesAscension();
         return null;
     }
 

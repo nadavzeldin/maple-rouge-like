@@ -25,6 +25,7 @@ package client.command.commands.gm0;
 
 import client.AccountExtraDetails;
 import client.Achievement;
+import client.AscensionConstants;
 import client.Character;
 import client.Client;
 import client.command.Command;
@@ -87,7 +88,7 @@ public class AscensionCommand extends Command {
 
 
 
-        String ascensionType = type == 1 ? "Hoarder" : "Resilient";
+        String ascensionType = type == 1 ? AscensionConstants.Names.HOARDER : AscensionConstants.Names.RESILIENT;
         if (!ascensions.contains(ascensionType)) {
             ascensions.add(ascensionType);
         }

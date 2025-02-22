@@ -4,8 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import static client.AchievementConstants.Names;
+import static client.AchievementConstants.Status;
+import static client.AchievementConstants.Rewards;
 
-// Class for achievement objects
+
 public class Achievement {
     private String name;
     private String status;
@@ -20,7 +23,6 @@ public class Achievement {
         this.bonus = bonus;
     }
 
-    // Getters and setters
     public String getName() {
         return name;
     }
@@ -46,11 +48,11 @@ public class Achievement {
     }
     public static List<Achievement> getInitialAchievements() {
         List<Achievement> achievements = new ArrayList<>();
-        achievements.add(new Achievement("First Login", "done", "3,000 NX"));
-        achievements.add(new Achievement("First time reach 30", "undone", "+1,000,000 Mesos"));
-        achievements.add(new Achievement("First time reach 120", "undone", "New characters start at level 20 (Account-wide)"));
-        achievements.add(new Achievement("First time reach 200", "undone", "New characters start with 420 Fame (Account-wide)"));
-        achievements.add(new Achievement("Reach Level 200", "undone", "Unlock Ascension System"));
+        achievements.add(new Achievement(Names.FIRST_LOGIN, Status.DONE, Rewards.NX_3000));
+        achievements.add(new Achievement(Names.REACH_LEVEL_30, Status.UNDONE, Rewards.MESOS_1M));
+        achievements.add(new Achievement(Names.REACH_LEVEL_120, Status.UNDONE, Rewards.LEVEL_20_START));
+        achievements.add(new Achievement(Names.REACH_LEVEL_200, Status.UNDONE, Rewards.FAME_420_START));
+        achievements.add(new Achievement(Names.LEVEL_200, Status.UNDONE, Rewards.ASCENSION_UNLOCK));
         return achievements;
     }
 
