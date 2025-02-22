@@ -91,7 +91,7 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
             if (targetMapId != -1) {
                 if (!chr.isAlive()) {
                     MapleMap map = chr.getMap();
-                    if (wheel && chr.haveItemWithId(ItemId.WHEEL_OF_FORTUNE, false)) {
+                    if (false) {  //wheel && chr.haveItemWithId(ItemId.WHEEL_OF_FORTUNE, false) remove wheel
                         // thanks lucasziron (lziron) for showing revivePlayer() triggering by Wheel
 
                         InventoryManipulator.removeById(c, InventoryType.CASH, ItemId.WHEEL_OF_FORTUNE, 1, true, false);
