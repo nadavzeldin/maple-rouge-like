@@ -33,6 +33,9 @@ import server.maps.MapleMap;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
 
@@ -40,29 +43,30 @@ public class DoomCommand extends Command {
     {
         setDescription("Start the Doom");
     }
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
-        player.getMap().startMapEffect("THE DOOM HAS STARTED, DO NOT DIE!", 5120011); // 5120011 is a test so far
+        player.getMap().startMapEffect("THE DOOM HAS STARTED, DO NOT DIE!", 5120011);
         final Point targetPoint = player.getPosition();
         final MapleMap targetMap = player.getMap();
 
-        for (int stage = 1; stage <= 3; stage++)
-        {
-//            try{
-//                Thread.sleep(10000); // sleep for 10 secs
-//            } catch (InterruptedException e) {
-//            }
-            String stringText = String.format("Starting stage number : %d goodLuck, you have 1 minute!", stage);
-            player.getMap().startMapEffect(stringText, 5120011); // 5120011 is a test so far
-            spawnDoomMonster(stage, targetPoint, targetMap);
-
-//            try {
-//                Thread.sleep(600000); // sleep for 1 minute
-//            } catch (InterruptedException e) {
-//            }
+        // Adjusted for cumulative delay
+        int initialDelay = 10; // delay before first stage
+        int stageDuration = 10; // duration of each stage in seconds
+        for (int stage = 1; stage <= 6; stage++) {
+            int delay = (stage - 1) * (stageDuration + initialDelay);
+            int finalStage = stage;
+            scheduler.schedule(() -> {
+                String stageText = String.format("Starting stage number : %d good luck, you have 1 minute!", finalStage);
+                player.getMap().startMapEffect(stageText, 5120011);
+                spawnDoomMonster(finalStage, targetPoint, targetMap);
+            }, delay, TimeUnit.SECONDS);
         }
+
+        // Ensure scheduler shuts down after all tasks are scheduled
+        scheduler.schedule(scheduler::shutdown, (6 * (stageDuration + initialDelay)), TimeUnit.SECONDS);
     }
 
     private void spawnDoomMonster(int stage, Point targetPoint, MapleMap targetMap)
