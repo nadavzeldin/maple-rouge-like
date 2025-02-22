@@ -1516,14 +1516,6 @@ public class MapleMap {
         }
     }
 
-    // Func
-    public boolean monstersInMap() {
-        for (MapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.MONSTER))) {
-            return true;
-        }
-        return false;
-    }
-
     public final void destroyReactors(final int first, final int last) {
         List<Reactor> toDestroy = new ArrayList<>();
         List<MapObject> reactors = getReactors();
@@ -4001,13 +3993,7 @@ public class MapleMap {
 
         return true;
     }
-
-    public void spwanZakumOnGroundBelow(final Point targetPoint) {
-        spawnFakeMonsterOnGroundBelow(LifeFactory.getMonster(MobId.ZAKUM_1), targetPoint);
-        for (int mobId = MobId.ZAKUM_ARM_1; mobId <= MobId.ZAKUM_ARM_8; mobId++) {
-            spawnMonsterOnGroundBelow(LifeFactory.getMonster(mobId), targetPoint);
-        }
-    }
+    
     public void spawnHorntailOnGroundBelow(final Point targetPoint) {   // ayy lmao
         Monster htIntro = LifeFactory.getMonster(MobId.SUMMON_HORNTAIL);
         spawnMonsterOnGroundBelow(htIntro, targetPoint);    // htintro spawn animation converting into horntail detected thanks to Arnah

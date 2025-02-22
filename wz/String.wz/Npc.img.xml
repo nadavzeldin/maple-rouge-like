@@ -2815,12 +2815,12 @@
   <imgdir name="2042003">
     <string name="name" value="Assistant Red"/>
     <string name="func" value="Monster Carnival"/>
-    <string name="n0" value="All of you will exit this place as soon as you talk to me."/>
+    <string name="n0" value="DOOM DOOM DOOM some is hard, others are harder."/>
   </imgdir>
   <imgdir name="2042004">
     <string name="name" value="Assistant Blue"/>
     <string name="func" value="Monster Carnival"/>
-    <string name="n0" value="All of you will exit this place as soon as you talk to me."/>
+    <string name="n0" value="First player to beat the DOOM will get extra prize!"/>
   </imgdir>
   <imgdir name="2042005">
     <string name="name" value="Spiegelmann"/>
@@ -2843,12 +2843,12 @@
   <imgdir name="2042008">
     <string name="name" value="Assistant Red"/>
     <string name="func" value="Monster Carnival"/>
-    <string name="n0" value="All of you will exit this place as soon as you talk to me."/>
+    <string name="n0" value="DOOM DOOM DOOM some is hard, others are harder!."/>
   </imgdir>
   <imgdir name="2042009">
     <string name="name" value="Assistant Blue"/>
     <string name="func" value="Monster Carnival"/>
-    <string name="n0" value="All of you will exit this place as soon as you talk to me."/>
+    <string name="n0" value="DOOM DOOM DOOM some is hard, others are harder!!!"/>
   </imgdir>
   <imgdir name="2043000">
     <string name="name" value="Papulatus"/>

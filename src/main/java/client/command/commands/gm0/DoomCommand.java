@@ -29,7 +29,9 @@ import client.command.Command;
 import constants.id.MobId;
 import server.ShopFactory;
 import server.life.LifeFactory;
+import server.maps.FieldLimit;
 import server.maps.MapleMap;
+import server.maps.MiniDungeonInfo;
 
 import java.awt.*;
 import java.util.Objects;
@@ -48,54 +50,24 @@ public class DoomCommand extends Command {
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
-        player.getMap().startMapEffect("THE DOOM HAS STARTED, DO NOT DIE!", 5120011);
-        final Point targetPoint = player.getPosition();
-        final MapleMap targetMap = player.getMap();
+        try {
+            MapleMap target = c.getChannelServer().getMapFactory().getMap(DOOM_MAP);
+            if (target == null) {
+                player.yellowMessage("Map ID " + params[0] + " is invalid.");
+                return;
+            }
 
-        // Adjusted for cumulative delay
-        int initialDelay = 10; // delay before first stage
-        int stageDuration = 10; // duration of each stage in seconds
-        for (int stage = 1; stage <= 6; stage++) {
-            int delay = (stage - 1) * (stageDuration + initialDelay);
-            int finalStage = stage;
-            scheduler.schedule(() -> {
-                String stageText = String.format("Starting stage number : %d good luck, you have 1 minute!", finalStage);
-                player.getMap().startMapEffect(stageText, 5120011);
-                spawnDoomMonster(finalStage, targetPoint, targetMap);
-            }, delay, TimeUnit.SECONDS);
-        }
+            if (!player.isAlive()) {
+                player.dropMessage(1, "This command cannot be used when you're dead.");
+                return;
+            }
 
-        // Ensure scheduler shuts down after all tasks are scheduled
-        scheduler.schedule(scheduler::shutdown, (6 * (stageDuration + initialDelay)), TimeUnit.SECONDS);
-    }
-
-    private void spawnDoomMonster(int stage, Point targetPoint, MapleMap targetMap)
-    {
-        switch (stage)
-        {
-            case 1:
-                targetMap.spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(MobId.ZOMBIE_MUSHROOM)), targetPoint);
-                return;
-            case 2:
-                for (int i = 0; i < 10; i++) {
-                    targetMap.spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(MobId.MUSH_MOM)), targetPoint);
-                }
-                return;
-            case 3:
-                return;
-            case 4:
-                targetMap.spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(MobId.PAPULATUS_CLOCK)), targetPoint);
-                return;
-            case 5:
-                // Spawn Zakum
-                targetMap.spawnFakeMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(MobId.ZAKUM_1)), targetPoint);
-                for (int mobId = MobId.ZAKUM_ARM_1; mobId <= MobId.ZAKUM_ARM_8; mobId++) {
-                    targetMap.spawnMonsterOnGroundBelow(Objects.requireNonNull(LifeFactory.getMonster(mobId)), targetPoint);
-                }
-                return;
-            case 6:
-                targetMap.spawnHorntailOnGroundBelow(targetPoint);
-                return;
+            player.saveLocationOnWarp();
+            player.changeMap(target, target.getRandomPlayerSpawnpoint());
+        } catch (Exception ex) {
+            player.yellowMessage("Map ID " + params[0] + " is invalid.");
         }
     }
+
+    private final int DOOM_MAP = 980000000;
 }

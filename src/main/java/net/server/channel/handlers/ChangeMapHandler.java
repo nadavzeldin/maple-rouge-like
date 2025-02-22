@@ -42,6 +42,9 @@ import tools.PacketCreator;
 import java.awt.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -107,6 +110,7 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                         }
                         if (executeStandardPath) {
                             boolean hasUnkillable = false;
+                            int mapid = c.getPlayer().getMap().getId();
 
                             for (Item item : chr.getInventory(InventoryType.EQUIPPED)) {
                                 if ("Unkillable".equals(item.getOwner())) {
@@ -115,7 +119,7 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                                 }
                             }
 
-                            if (hasUnkillable) {
+                            if (hasUnkillable || LEGAL_DEATH_MAPS.contains(mapid)) {
                                 chr.resetInventory();
                                 chr.respawn(MapId.HENESYS);
                             } else {
@@ -215,4 +219,8 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
             ex.printStackTrace();
         }
     }
+
+    private static final Set<Integer> LEGAL_DEATH_MAPS = new HashSet<>(Arrays.asList(
+            980000100, 980000200, 980000300, 980000400, 980000500, 980000600
+    ));
 }
