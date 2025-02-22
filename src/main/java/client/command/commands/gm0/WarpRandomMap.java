@@ -21,13 +21,6 @@ public class WarpRandomMap extends Command  {
             return;
         }
 
-        if (!player.isGM()) {
-            if (player.getEventInstance() != null || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit())) {
-                player.dropMessage(1, "This command cannot be used in this map.");
-                return;
-            }
-        }
-
         // **Predefined List of Valid Map IDs**
         int[] validMaps = {0,
                 1,

@@ -7,7 +7,7 @@ import net.server.world.World;
 
 public class LastWordsCommand extends Command {
     {
-        setDescription("Set your last words before dying.");
+        setDescription("Set your last words before dying, need to redfine for now each loggin");
     }
 
     @Override
