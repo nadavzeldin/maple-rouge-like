@@ -24,6 +24,7 @@
 package client.command;
 
 import client.Client;
+import client.command.commands.gm0.AscensionCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
 import client.command.commands.gm0.DropLimitCommand;
@@ -35,6 +36,7 @@ import client.command.commands.gm0.HelpCommand;
 import client.command.commands.gm0.JoinEventCommand;
 import client.command.commands.gm0.LeaveEventCommand;
 import client.command.commands.gm0.MapOwnerClaimCommand;
+import client.command.commands.gm0.MyAchievementsCommand;
 import client.command.commands.gm0.OnlineCommand;
 import client.command.commands.gm0.RanksCommand;
 import client.command.commands.gm0.RatesCommand;
@@ -349,6 +351,8 @@ public class CommandsExecutor {
         addCommand(new String[]{"help", "commands"}, HelpCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("shop", ShopCommand.class);
+        addCommand("achievs", MyAchievementsCommand.class);
+        addCommand("ascend", AscensionCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("roll", RollCommand.class);
         addCommand("time", TimeCommand.class);
