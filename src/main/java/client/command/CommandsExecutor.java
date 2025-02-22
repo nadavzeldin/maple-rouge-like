@@ -24,8 +24,10 @@
 package client.command;
 
 import client.Client;
+import client.command.commands.gm0.AscensionCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
+import client.command.commands.gm0.DoomCommand;
 import client.command.commands.gm0.DropLimitCommand;
 import client.command.commands.gm0.EnableAuthCommand;
 import client.command.commands.gm0.EquipLvCommand;
@@ -36,12 +38,14 @@ import client.command.commands.gm0.JoinEventCommand;
 import client.command.commands.gm0.LastWordsCommand;
 import client.command.commands.gm0.LeaveEventCommand;
 import client.command.commands.gm0.MapOwnerClaimCommand;
+import client.command.commands.gm0.MyAchievementsCommand;
 import client.command.commands.gm0.OnlineCommand;
 import client.command.commands.gm0.RanksCommand;
 import client.command.commands.gm0.RatesCommand;
 import client.command.commands.gm0.ReadPointsCommand;
 import client.command.commands.gm0.ReportBugCommand;
 import client.command.commands.gm0.ResetStatsCommand;
+import client.command.commands.gm0.RollCommand;
 import client.command.commands.gm0.SellCommand;
 import client.command.commands.gm0.ShopCommand;
 import client.command.commands.gm0.ShowRatesCommand;
@@ -353,7 +357,11 @@ public class CommandsExecutor {
         addCommand("randomMap", WarpRandomMap.class);
         addCommand("shop", ShopCommand.class);
         addCommand("lastwords", LastWordsCommand.class);
+        addCommand("achievs", MyAchievementsCommand.class);
+        addCommand("ascend", AscensionCommand.class);
+        addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
+        addCommand("roll", RollCommand.class);
         addCommand("time", TimeCommand.class);
         addCommand("credits", StaffCommand.class);
         addCommand("uptime", UptimeCommand.class);
@@ -570,7 +578,7 @@ public class CommandsExecutor {
         addCommand("removechannel", 6, ServerRemoveChannelCommand.class);
         addCommand("removeworld", 6, ServerRemoveWorldCommand.class);
         addCommand("devtest", 6, DevtestCommand.class);
-        addCommand("merge", MergeCommand.class);
+        addCommand("merge",6 , MergeCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
     }

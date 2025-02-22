@@ -1,6 +1,6 @@
 var status = -1;
 var selectedType = -1;
-
+var MERGE_COIN = 2022280;
 function start() {
     action(1, 0, 0);
 }
@@ -38,8 +38,8 @@ function action(mode, type, selection) {
                 cm.dispose();
             }
         } else if (selection == 1) {  // Forging functionality
-            var selStr = "Bring me a #i2280001# #t2280001# and I'll merge your equipment to make them stronger.";
-            items = [2280001];  // Black Loud Machine
+            var selStr = "Bring me a #i2022280# #t2022280# and I'll merge your equipment to make them stronger.";
+            items = [MERGE_COIN];  // Black Loud Machine
             for (var i = 0; i < items.length; i++) {
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##l";
             }
@@ -87,8 +87,8 @@ function action(mode, type, selection) {
         }
     } else if (status == 2) {
         if (selectedType == 1) {  // Forging process
-            if (!cm.haveItem(2280001, 1)) {
-                cm.sendOk("You need a #i2280001# #t2280001# to merge equipment.");
+            if (!cm.haveItem(MERGE_COIN, 1)) {
+                cm.sendOk("You need a #i2022280# #t2022280# to merge equipment.");
                 cm.dispose();
                 return;
             }

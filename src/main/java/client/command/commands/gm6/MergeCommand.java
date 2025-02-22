@@ -386,18 +386,25 @@ public class MergeCommand extends Command {
                     .orElse(getter.apply(primaryItem));
 
             short additionalStat = (short) (currentMaxStat * scalingFactor * (Math.sqrt(equips.size())));
-            short newStatValue = (short) (currentMaxStat + additionalStat);
+            // check 16 bit overflow
+            short newStatValue = (short) (currentMaxStat + additionalStat > currentMaxStat ? currentMaxStat + additionalStat : currentMaxStat);
 
             log.info("The new Item stat for {} is {}", statName, newStatValue);
             statUpdaters.get(statName).accept(primaryItem, newStatValue);
         });
-        primaryItem.setItemLevel((byte) (maxItemLevel + 1)); // level up the Item
+        if (maxItemLevel != 30) {
+            primaryItem.setItemLevel((byte) (maxItemLevel + 1)); // level up the Item
+        }
         return primaryItem;
     }
 
     private final Map<String, java.util.function.BiConsumer<Equip, Short>> statUpdaters = Map.of(
             "Watk", Equip::setWatk,
             "Wdef", Equip::setWdef,
+            "Matk", Equip::setMatk,
+            "Mdef", Equip::setMdef,
+            "HP", Equip::setHp,
+            "MP", Equip::setMp,
             "Str", Equip::setStr,
             "Dex", Equip::setDex,
             "Luk", Equip::setLuk,
@@ -407,6 +414,10 @@ public class MergeCommand extends Command {
     private final Map<String, java.util.function.Function<Equip, Short>> statGetters = Map.of(
             "Watk", Equip::getWatk,
             "Wdef", Equip::getWdef,
+            "Matk", Equip::getMatk,
+            "Mdef", Equip::getMdef,
+            "HP", Equip::getHp,
+            "MP", Equip::getMp,
             "Str", Equip::getStr,
             "Dex", Equip::getDex,
             "Luk", Equip::getLuk,

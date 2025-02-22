@@ -243,6 +243,9 @@ public class ServerConfig {
     public int MAX_EQUIPMNT_STAT;
     public int USE_EQUIPMNT_LVLUP;
 
+    // Inventory Configuration
+    public short MAX_ITEMS_PER_SLOT;
+
     //Map-Chair Configuration
     public boolean USE_CHAIR_EXTRAHEAL;
     public byte CHAIR_EXTRA_HEAL_MULTIPLIER;
