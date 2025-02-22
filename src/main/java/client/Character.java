@@ -6478,14 +6478,16 @@ public class Character extends AbstractCharacterObject {
                 switch (name) {
                     case AchievementConstants.Names.REACH_LEVEL_30:
                         shouldUpdate = level >= 30;
-                        this.gainMeso(1000000);
+                        if (shouldUpdate) {
+                            this.gainMeso(1000000);
+                        }
                         break;
                     case AchievementConstants.Names.REACH_LEVEL_120:
                         shouldUpdate = level >= 120;
                         break;
                     case AchievementConstants.Names.REACH_LEVEL_200:
                     case AchievementConstants.Names.LEVEL_200:
-                        shouldUpdate = level >= 200;
+                        shouldUpdate = level == 200;
                         break;
                 }
 
