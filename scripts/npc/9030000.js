@@ -1,6 +1,6 @@
 var status = -1;
 var selectedType = -1;
-
+var MERGE_COIN = 2022280;
 function start() {
     action(1, 0, 0);
 }
@@ -38,14 +38,17 @@ function action(mode, type, selection) {
                 cm.dispose();
             }
         } else if (selection == 1) {  // Forging functionality
-            var selStr = "Bring me a #i2280001# #t2280001# and I'll merge your equipment to make them stronger.";
-            items = [2280001];  // Black Loud Machine
+            var selStr = "Bring me a #i2022280# #t2022280# and I'll merge your equipment to make them stronger.";
+            items = [MERGE_COIN];  // Black Loud Machine
             for (var i = 0; i < items.length; i++) {
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##l";
             }
             cm.sendSimple(selStr);
         } else if (selection == 2) {  // Merging effect explanation
-            var explainStr = "Each merge attempt has these possible outcomes:\r\n\r\n";
+            var explainStr = "To Merge Items, you must have at least two identical items in EQP slot, the more, the stronger the merge.\r\n\r\n";
+            explainStr += "The merging logic is setup with diminishing returns, the more you merge the same item\n, it will level up and the next merge will be #bweaker!\r\n\r\n"
+
+            explainStr += "Each merge attempt has these possible outcomes:\r\n\r\n";
             explainStr += "#bCommon Effects (Medium Chance)#k\r\n\r\n";
 
             explainStr += "#dHarry Potter:#k\r\n";
@@ -81,18 +84,17 @@ function action(mode, type, selection) {
 
             cm.sendOk(explainStr);
             cm.dispose();
-
-
         }
     } else if (status == 2) {
         if (selectedType == 1) {  // Forging process
-            if (!cm.haveItem(2280001, 1)) {
-                cm.sendOk("You need a #i2280001# #t2280001# to merge equipment.");
+            if (!cm.haveItem(MERGE_COIN, 1)) {
+                cm.sendOk("You need a #i2022280# #t2022280# to merge equipment.");
                 cm.dispose();
                 return;
             }
 
-            cm.gainItem(2280001, -1); // Remove the Black Loud Machine
+            // I will remove it in the command code, is if there is nothing to merge, they simply get a warning
+            // cm.gainItem(2280001, -1); // Remove the Black Loud Machine
             const MergeCommand = Java.type('client.command.commands.gm6.MergeCommand');
             const processor = new MergeCommand();
             processor.execute(cm.getClient(), ["@merge"]);

@@ -24,6 +24,8 @@ public class GameConstants {
     public static int LOOT_LIZARD_PERCENT = 20;
     public static final long LOOT_LIZARD_SPAWN_COOLDOWN = 180000; // 3 minutes in milliseconds
     public static int LOOT_LIZARD_UI_BANNER = 5120008;
+    public static int ROLL_UI_BANNER = 5121001;
+    public static int Level_Up_Banner = 5120009;
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
     public static final String[] stats = {"tuc", "reqLevel", "reqJob", "reqSTR", "reqDEX", "reqINT", "reqLUK", "reqPOP", "cash", "cursed", "success", "setItemID", "equipTradeBlock", "durability", "randOption", "randStat", "masterLevel", "reqSkillLevel", "elemDefault", "incRMAS", "incRMAF", "incRMAI", "incRMAL", "canLevel", "skill", "charmEXP"};
     public static final int[] CASH_DATA = new int[]{50200004, 50200069, 50200117, 50100008, 50000047};

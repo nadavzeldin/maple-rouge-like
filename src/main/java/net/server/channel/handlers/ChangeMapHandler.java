@@ -23,7 +23,6 @@ package net.server.channel.handlers;
 
 import client.Character;
 import client.Client;
-import client.inventory.Inventory;
 import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.manipulator.InventoryManipulator;
@@ -95,7 +94,7 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
             if (targetMapId != -1) {
                 if (!chr.isAlive()) {
                     MapleMap map = chr.getMap();
-                    if (wheel && chr.haveItemWithId(ItemId.WHEEL_OF_FORTUNE, false)) {
+                    if (false) {  //wheel && chr.haveItemWithId(ItemId.WHEEL_OF_FORTUNE, false) remove wheel
                         // thanks lucasziron (lziron) for showing revivePlayer() triggering by Wheel
 
                         InventoryManipulator.removeById(c, InventoryType.CASH, ItemId.WHEEL_OF_FORTUNE, 1, true, false);
@@ -118,6 +117,8 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                                     break; // Stop checking once we find it
                                 }
                             }
+
+                            globalDeathMessage(chr, hasUnkillable);
 
                             if (hasUnkillable || LEGAL_DEATH_MAPS.contains(mapid)) {
                                 chr.resetInventory();
@@ -196,6 +197,18 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
             e.printStackTrace();
         }
 
+    }
+
+    private static void globalDeathMessage(Character chr, boolean hasUnkillable) {
+        if (chr.getLevel() > 50)
+        {
+            String death_message = "OH NO! "+ chr.getName() + " has was killed in:" + chr.getMap().getMapName() +" " + chr.getMap().getStreetName();
+            if (hasUnkillable)
+            {
+                death_message += "but fear not because he has the UNKILLABLE ITEM!";
+            }
+            chr.getWorldServer().broadcastPacket(PacketCreator.serverNotice(6, death_message));
+        }
     }
 
     private void enterFromCashShop(Client c) {

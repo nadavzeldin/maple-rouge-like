@@ -42,6 +42,8 @@ import client.keybind.QuickslotBinding;
 import client.newyear.NewYearCardRecord;
 import client.processor.action.PetAutopotProcessor;
 import client.processor.npc.FredrickProcessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import config.YamlConfig;
 import constants.game.ExpTable;
 import constants.game.GameConstants;
@@ -174,6 +176,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -196,6 +199,7 @@ import java.util.stream.Collectors;
 import static constants.game.GameConstants.LOOT_LIZARD_ID;
 import static constants.game.GameConstants.LOOT_LIZARD_SPAWN_COOLDOWN;
 import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
+import static constants.game.GameConstants.Level_Up_Banner;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -363,6 +367,8 @@ public class Character extends AbstractCharacterObject {
     private long loginTime;
     private boolean chasing = false;
     private long lizardLastSpawnTime = 0;
+    public AccountExtraDetails accountExtraDetails;
+
 
     private Character() {
         super.setListener(new AbstractCharacterListener() {
@@ -2769,6 +2775,10 @@ public class Character extends AbstractCharacterObject {
     }
 
     public void giveDebuff(final Disease disease, MobSkill skill) {
+        if (this.accountExtraDetails.getAscension().contains("Resilient"))
+        {
+            return;
+        }
         if (!hasDisease(disease) && getDiseasesSize() < 2) {
             if (!(disease == Disease.SEDUCE || disease == Disease.STUN)) {
                 if (hasActiveBuff(Bishop.HOLY_SHIELD)) {
@@ -5016,7 +5026,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getDropRate() {
-        return dropRate;
+        return this.accountExtraDetails.getAscension().contains(AscensionConstants.Names.HOARDER) ? dropRate* 5 : dropRate;
     }
 
     public int getCouponDropRate() {
@@ -5033,7 +5043,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMesoRate() {
-        return mesoRate;
+        return this.accountExtraDetails.getAscension().contains(AscensionConstants.Names.HOARDER) ? mesoRate* 5 : mesoRate;
     }
 
     public int getCouponMesoRate() {
@@ -6345,6 +6355,56 @@ public class Character extends AbstractCharacterObject {
 
 
 
+    public synchronized void itemAutoSend(int level) {
+        Map<Integer, Integer> levelToItem = new HashMap<>();
+        // level 20-80 rings, level 100 belt, level 120 eye, level 140 ear, level 160 pendent, level 180 forehead.
+        levelToItem.put(20, 1112300);
+        levelToItem.put(40, 1112408);
+        levelToItem.put(60, 1112405);
+        levelToItem.put(80, 1112401);
+        levelToItem.put(90, 1132009);
+        levelToItem.put(100, 1102166);
+        levelToItem.put(120, 1022082);
+        levelToItem.put(140, 1032033);
+        levelToItem.put(160, 1122003);
+        levelToItem.put(180, 1012070);
+
+        // Add more level-item pairs as needed
+        if(levelToItem.containsKey(level)) {
+            int itemId = levelToItem.get(level);
+            InventoryManipulator.addById(client, itemId, (short)1, getName(), -1,  ItemConstants.UNTRADEABLE, -1);
+            Equip newReceivedItem = (Equip) this.getInventory(InventoryType.EQUIP).findById(itemId);
+
+            // Here modify the item
+            newReceivedItem.setWatk((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setMatk((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setStr((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setDex((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setInt((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setLuk((short) (5 + Math.sqrt(level) * 2));
+            newReceivedItem.setSpeed((short) (5));
+            newReceivedItem.setJump((short) (5));
+            //newReceivedItem.setUpgradeSlots(5);
+            MapleMap map_ = getWarpMap(mapid);
+            map_.startMapEffect("Congratulations! You've leveled up and earned a powerful new item!", Level_Up_Banner);
+            client.sendPacket(PacketCreator.modifyInventory
+                    (true, Collections.singletonList
+                            (new ModifyInventory(0, newReceivedItem))));
+        }
+//
+
+
+
+
+//        if (level == 20)
+//        {
+//            primaryItem = new Item(1302000,(short) 0,(short) 1);
+//            client.sendPacket(PacketCreator.modifyInventory
+//                    (true, Collections.singletonList
+//                            (new ModifyInventory(0, primaryItem))));
+//        }
+    }
+
     public synchronized void jobUpdateLogic(int level){
         if (level % 10 == 0)
         {
@@ -6399,6 +6459,54 @@ public class Character extends AbstractCharacterObject {
         // Send the stat update packet to the client
         sendPacket(PacketCreator.updatePlayerStats(stats, true, this)); // 'true' enables actions after update
         return;
+    }
+
+    public synchronized void checkAchievements(int level)
+    {
+        if (accountExtraDetails == null || accountExtraDetails.getAchievements() == null) {
+            return;
+        }
+
+        List<Achievement> achievements = accountExtraDetails.getAchievements();
+
+        for (Achievement achievement : achievements) {
+            String name = achievement.getName();
+
+            if (achievement.getStatus().equals("undone")) {
+                boolean shouldUpdate = false;
+
+                switch (name) {
+                    case AchievementConstants.Names.REACH_LEVEL_30:
+                        shouldUpdate = level >= 30;
+                        this.gainMeso(1000000);
+                        break;
+                    case AchievementConstants.Names.REACH_LEVEL_120:
+                        shouldUpdate = level >= 120;
+                        break;
+                    case AchievementConstants.Names.REACH_LEVEL_200:
+                    case AchievementConstants.Names.LEVEL_200:
+                        shouldUpdate = level >= 200;
+                        break;
+                }
+
+                if (shouldUpdate) {
+                    achievement.setStatus("done");
+                    // Send message to player about achievement
+                    yellowMessage("Achievement Completed: " + name + " - Reward: " + achievement.getBonus());
+                    try (Connection con = DatabaseConnection.getConnection();
+                         PreparedStatement ps = con.prepareStatement("UPDATE accounts SET extra_details = ? WHERE id = ?")) {
+
+                        String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
+                        ps.setString(1, updatedJson);
+                        ps.setInt(2, this.accountid);
+                        ps.executeUpdate();
+
+                    } catch (Exception e) {
+                        log.error("Error updating achievements for accountid: " + accountid, e);
+                    }
+                }
+            }
+        }
     }
 
     public synchronized void levelUp(boolean takeexp) {
@@ -6503,6 +6611,8 @@ public class Character extends AbstractCharacterObject {
         }
 
         level++;
+        checkAchievements(level);
+        itemAutoSend(level);
         jobUpdateLogic(level);
         if (level >= getMaxClassLevel()) {
             exp.set(0);
@@ -6563,13 +6673,10 @@ public class Character extends AbstractCharacterObject {
 
         if (level % 20 == 0) {
             if (YamlConfig.config.server.USE_ADD_SLOTS_BY_LEVEL == true) {
-                if (!isGM()) {
-                    for (byte i = 1; i < 5; i++) {
-                        gainSlots(i, 4, true);
-                    }
-
-                    this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
+                for (byte i = 1; i < 5; i++) {
+                    gainSlots(i, 4, true);
                 }
+                this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
             }
             if (YamlConfig.config.server.USE_ADD_RATES_BY_LEVEL == true) { //For the rate upgrade
                 revertLastPlayerRates();
@@ -6795,6 +6902,7 @@ public class Character extends AbstractCharacterObject {
         return toCommitEffect;
     }
 
+
     private void setActiveCoupons(Collection<Item> cashItems) {
         activeCoupons.clear();
         activeCouponRates.clear();
@@ -6861,13 +6969,23 @@ public class Character extends AbstractCharacterObject {
 
         try {
             ret.accountid = rs.getInt("accountid");
+
+            String extraDetails = rs.getString("extra_details");
+            if (extraDetails != null && !extraDetails.isEmpty()) {
+                try {
+                    ret.accountExtraDetails = new ObjectMapper().readValue(extraDetails, AccountExtraDetails.class);
+                } catch (JsonProcessingException e) {
+                    // Log the error but don't stop character loading
+                    log.error("Error parsing extra_details JSON for accountid: " + ret.accountid, e);
+                }
+            }
+
             ret.id = rs.getInt("id");
             ret.name = rs.getString("name");
             ret.gender = rs.getInt("gender");
             ret.skinColor = SkinColor.getById(rs.getInt("skincolor"));
             ret.face = rs.getInt("face");
             ret.hair = rs.getInt("hair");
-
             // skipping pets, probably unneeded here
 
             ret.level = rs.getInt("level");
@@ -6893,7 +7011,6 @@ public class Character extends AbstractCharacterObject {
             ret.rankMove = rs.getInt("rankMove");
             ret.jobRank = rs.getInt("jobRank");
             ret.jobRankMove = rs.getInt("jobRankMove");
-
             if (equipped != null) {  // players can have no equipped items at all, ofc
                 Inventory inv = ret.inventory[InventoryType.EQUIPPED.ordinal()];
                 for (Item item : equipped) {
@@ -6979,7 +7096,10 @@ public class Character extends AbstractCharacterObject {
             final World wserv;
 
             // Character info
-            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM characters WHERE id = ?")) {
+            try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT c.*, a.extra_details FROM characters c " +
+                            "LEFT JOIN accounts a ON c.accountid = a.id " +
+                            "WHERE c.id = ?")) {
                 ps.setInt(1, charid);
 
                 try (ResultSet rs = ps.executeQuery()) {
@@ -7022,6 +7142,15 @@ public class Character extends AbstractCharacterObject {
                     ret.hair = rs.getInt("hair");
                     ret.face = rs.getInt("face");
                     ret.accountid = rs.getInt("accountid");
+                    String extraDetails = rs.getString("extra_details");
+                    if (extraDetails != null && !extraDetails.isEmpty()) {
+                        try {
+                            ret.accountExtraDetails = new ObjectMapper().readValue(extraDetails, AccountExtraDetails.class);
+                        } catch (JsonProcessingException e) {
+                            // Log the error but don't stop character loading
+                            log.error("Error parsing extra_details JSON for accountid: " + ret.accountid, e);
+                        }
+                    }
                     ret.mapid = rs.getInt("map");
                     ret.jailExpiration = rs.getLong("jailexpire");
                     ret.initialSpawnPoint = rs.getInt("spawnpoint");
@@ -8194,7 +8323,58 @@ public class Character extends AbstractCharacterObject {
         setMaxMp(recipe.getMaxMp());
         hp = maxhp;
         mp = maxmp;
-        level = recipe.getLevel();
+        int startingLevel = recipe.getLevel();
+        Job startingJob = Job.BEGINNER;
+        try {
+            try (Connection con1 = DatabaseConnection.getConnection();
+                 PreparedStatement psAccount = con1.prepareStatement("SELECT extra_details FROM accounts WHERE id = ?")) {
+                psAccount.setInt(1, accountid);
+                try (ResultSet rs1 = psAccount.executeQuery()) {
+                    if (rs1.next()) {
+                        String extraDetails = rs1.getString("extra_details");
+                        if (extraDetails != null && !extraDetails.isEmpty()) {
+                            try {
+                                AccountExtraDetails accountDetails = new ObjectMapper().readValue(extraDetails, AccountExtraDetails.class);
+                                if (accountDetails != null && accountDetails.getAchievements() != null) {
+                                    for (Achievement achievement : accountDetails.getAchievements()) {
+                                        if (achievement.getName().equals("First time reach 120") &&
+                                                achievement.getStatus().equals("done")) {
+                                            startingLevel = 20;
+                                            startingJob = Job.THIEF;
+                                            str = 20;
+                                            dex = 20;
+                                            int_ = 20;
+                                            luk = 20;
+                                            // Update maxHP and maxMP for higher level
+                                            setMaxHp(500);  // Adjust these values as needed
+                                            setMaxMp(500);
+                                            hp = maxhp;
+                                            mp = maxmp;
+                                        }
+                                        if (achievement.getName().equals("First time reach 200") &&
+                                                achievement.getStatus().equals("done")) {
+                                            fame = 420;
+                                        }
+                                    }
+                                }
+                            } catch (JsonProcessingException e) {
+                                log.error("Error parsing extra_details for accountid: " + accountid, e);
+                            }
+
+                        }
+                    }
+                } catch (Throwable t) {
+                    log.error("Error");
+                }
+            } catch (Throwable t) {
+                log.error("Error");
+            }
+        }catch (Throwable e) {
+            log.error("Error parsing extra_details for accountid: " + accountid, e);
+        }
+
+        job = startingJob;
+        level = startingLevel;
         remainingAp = recipe.getRemainingAp();
         remainingSp[GameConstants.getSkillBook(job.getId())] = recipe.getRemainingSp();
         mapid = recipe.getMap();
@@ -8228,7 +8408,7 @@ public class Character extends AbstractCharacterObject {
                     ps.setInt(5, gmLevel);
                     ps.setInt(6, skinColor.getId());
                     ps.setInt(7, gender);
-                    ps.setInt(8, getJob().getId());
+                    ps.setInt(8, startingJob.getId());
                     ps.setInt(9, hair);
                     ps.setInt(10, face);
                     ps.setInt(11, mapid);
@@ -9288,7 +9468,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public boolean gainSlots(int type, int slots, boolean update) {
-        int newLimit = gainSlotsInternal(type, slots);
+        int newLimit = gainSlotsInternal(type, slots*5);
         if (newLimit != -1) {
             this.saveCharToDB();
             if (update) {

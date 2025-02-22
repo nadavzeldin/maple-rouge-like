@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static constants.id.ItemId.MERGE_COIN;
+
 public class MergeCommand extends Command {
     private static final Logger log = LoggerFactory.getLogger(MergeCommand.class);
 
@@ -73,6 +75,8 @@ public class MergeCommand extends Command {
             itemsById.computeIfAbsent(equip.getItemId(), k -> new ArrayList<>()).add(equip);
         }
         // Process each group of items with the same ID
+        boolean foundItemToMerge = false;
+
         for (Map.Entry<Integer, ArrayList<Equip>> entry : itemsById.entrySet()) {
             ArrayList<Equip> equips = entry.getValue();
 
@@ -80,7 +84,7 @@ public class MergeCommand extends Command {
             if (equips.size() <= 1) {
                 continue;
             }
-
+            foundItemToMerge = true;
             // Calculate the percentage boost to be added
             Equip primaryItem = mergeEquipStats(equips);
 
@@ -92,6 +96,14 @@ public class MergeCommand extends Command {
             }
             addItemSpecialEffect(primaryItem, player);
             c.sendPacket(PacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, primaryItem))));
+        }
+
+        // No item has been merge, no reason to remove item
+        if (!foundItemToMerge) {
+            player.yellowMessage("You don't have any equips to merge, will not use up the Black Loud Machine!");
+        } else {
+            short mergedCoinPosition = getMergeCoinSlot(player);
+            InventoryManipulator.removeFromSlot(c, InventoryType.USE, (byte) mergedCoinPosition, (short)1, false, false);
         }
     }
 
@@ -161,6 +173,21 @@ public class MergeCommand extends Command {
             int boost = getJobTierBoost(jobTier, statType);
             updateStat(primaryItem, statType, boost);
         }
+    }
+
+    private short getMergeCoinSlot(Character player)
+    {
+        for (short i = 0; i < 101; i++) {
+            Item tempItem = player.getInventory(InventoryType.USE).getItem((byte) i);
+            if (tempItem == null) {
+                continue;
+            }
+            if (tempItem.getItemId() == MERGE_COIN)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void updateStat(Equip item, String statType, int boost) {
@@ -316,7 +343,6 @@ public class MergeCommand extends Command {
         }
     }
 
-
     private boolean isWeapon(int itemId) {
         int subCategory = (itemId / 10000) % 100;  // Get weapon type digits
 
@@ -341,9 +367,17 @@ public class MergeCommand extends Command {
         );
     }
 
-
     private Equip mergeEquipStats(ArrayList<Equip> equips) {
         Equip primaryItem = equips.getFirst();
+        byte maxItemLevel = equips.stream()
+                .map(Equip::getItemLevel)
+                .max(Short::compare)
+                .orElse((byte)1);
+
+        maxItemLevel = maxItemLevel > 0 ? maxItemLevel : 1; // not to dived by zero
+        double dampingScale = 5;
+        double scalingFactor = (double) 1 / (dampingScale * (maxItemLevel * maxItemLevel));
+
         statGetters.forEach((statName, getter) -> {
             // Get the max stat for the equips array on the getter func
             short currentMaxStat = equips.stream()
@@ -351,20 +385,26 @@ public class MergeCommand extends Command {
                     .max(Short::compare)
                     .orElse(getter.apply(primaryItem));
 
-            short additionalStat = (short) (currentMaxStat * statsMultiplier * (equips.size() - 1));
-            short newStatValue = (short) (currentMaxStat + additionalStat);
+            short additionalStat = (short) (currentMaxStat * scalingFactor * (Math.sqrt(equips.size())));
+            // check 16 bit overflow
+            short newStatValue = (short) (currentMaxStat + additionalStat > currentMaxStat ? currentMaxStat + additionalStat : currentMaxStat);
 
             log.info("The new Item stat for {} is {}", statName, newStatValue);
             statUpdaters.get(statName).accept(primaryItem, newStatValue);
         });
-
+        if (maxItemLevel != 30) {
+            primaryItem.setItemLevel((byte) (maxItemLevel + 1)); // level up the Item
+        }
         return primaryItem;
     }
 
-    private final double statsMultiplier = 0.1;
     private final Map<String, java.util.function.BiConsumer<Equip, Short>> statUpdaters = Map.of(
             "Watk", Equip::setWatk,
             "Wdef", Equip::setWdef,
+            "Matk", Equip::setMatk,
+            "Mdef", Equip::setMdef,
+            "HP", Equip::setHp,
+            "MP", Equip::setMp,
             "Str", Equip::setStr,
             "Dex", Equip::setDex,
             "Luk", Equip::setLuk,
@@ -374,6 +414,10 @@ public class MergeCommand extends Command {
     private final Map<String, java.util.function.Function<Equip, Short>> statGetters = Map.of(
             "Watk", Equip::getWatk,
             "Wdef", Equip::getWdef,
+            "Matk", Equip::getMatk,
+            "Mdef", Equip::getMdef,
+            "HP", Equip::getHp,
+            "MP", Equip::getMp,
             "Str", Equip::getStr,
             "Dex", Equip::getDex,
             "Luk", Equip::getLuk,
@@ -384,3 +428,4 @@ public class MergeCommand extends Command {
 // !item 1302000 1 sword
 // !item 1082002 1 glove
 // !item 2040806 10 glove dex
+// !item 2280001 1 MERGE_COIN

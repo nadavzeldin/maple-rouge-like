@@ -7,7 +7,7 @@ public class ItemId {
     public static final int PENDANT_OF_THE_SPIRIT = 1122017;
     public static final int HEART_SHAPED_CHOCOLATE = 5110000;
     public static final int HAPPY_BIRTHDAY = 2022153;
-    public static final int MERGE_COIN = 2280001;
+    public static final int MERGE_COIN = 2022280;
     public static final int FISHING_CHAIR = 3011000;
     public static final int MINI_GAME_BASE = 4080000;
     public static final int MATCH_CARDS = 4080100;

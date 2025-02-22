@@ -34,6 +34,7 @@ import server.ItemInformationProvider;
 import tools.DatabaseConnection;
 import tools.Pair;
 import tools.Randomizer;
+import java.util.Random;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -109,8 +110,13 @@ public class MonsterInformationProvider {
             customDrops.add(allPossibleDrops.get(Randomizer.nextInt(allPossibleDrops.size())));
         }
 
+
         customDrops.add(new MonsterDropEntry(ItemId.HAPPY_BIRTHDAY, 1000000, 1, 1, (short)0));  // +1 potion)
-        customDrops.add(new MonsterDropEntry(MERGE_COIN, 100000, 1, 1, (short)0));  // merge 10%
+        Random random = new Random();
+        int dropCount = random.nextInt(5) + 1; // Random number between 1 and 5
+        for (int i = 0; i < dropCount; i++) {
+            customDrops.add(new MonsterDropEntry(MERGE_COIN, 100000, 1, 1, (short)0));
+        }
         drops.put(LOOT_LIZARD_ID, customDrops);
 
     }
