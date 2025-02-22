@@ -348,7 +348,7 @@ public class CommandsExecutor {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
 
         addCommand(new String[]{"help", "commands"}, HelpCommand.class);
-        addCommand(new String[]{"warpto", "reach", "follow"}, 0, ReachCommand.class);
+        addCommand(new String[]{"warpto", "reach", "follow"},  0, ReachCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("randomMap", WarpRandomMap.class);
         addCommand("shop", ShopCommand.class);

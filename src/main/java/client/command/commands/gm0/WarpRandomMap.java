@@ -7,7 +7,7 @@ import server.maps.FieldLimit;
 import server.maps.MapleMap;
 import java.util.Random;
 
-public class WarpRandomMap extends Command {
+public class WarpRandomMap extends Command  {
     {
         setDescription("Warp to a random map.");
     }
