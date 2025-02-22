@@ -27,6 +27,7 @@ import client.Client;
 import client.command.commands.gm0.AscensionCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
+import client.command.commands.gm0.DoomCommand;
 import client.command.commands.gm0.DropLimitCommand;
 import client.command.commands.gm0.EnableAuthCommand;
 import client.command.commands.gm0.EquipLvCommand;
@@ -353,6 +354,7 @@ public class CommandsExecutor {
         addCommand("shop", ShopCommand.class);
         addCommand("achievs", MyAchievementsCommand.class);
         addCommand("ascend", AscensionCommand.class);
+        addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("roll", RollCommand.class);
         addCommand("time", TimeCommand.class);
