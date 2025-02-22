@@ -32,13 +32,19 @@ function action(mode, type, selection) {
             status--;
         }
         if (status == 0) {
-            cm.sendYesNo("Would you like to doom?");
+            cm.sendYesNo("#b[Welcome to DoomMS]#k\r\n\r\n" +
+                "Prepare yourself for the ultimate survival challenge with our unique DOOM wave battle system:\r\n\r\n" +
+                "#r1.#k Face off against #b5 waves of relentless enemies#k, ranging from #reasy fodder to nearly impossible demons#k.\r\n\r\n" +
+                "#r2.#k Survive without the fear of losing your character! Death here means a respawn, not the end!\r\n\r\n" +
+                "#r3.#k Conquer all five waves to earn #bMusical Coins#k, which you can use to unlock exclusive rewards and power-ups.\r\n\r\n" +
+                "#r4.#k GOOD LUCK, I created something I think is impoessible to beat!");
+
         } else if (status == 1) {
             var mapId = 980000100; // Example Map ID, replace with actual Map ID
             var map = cm.getClient().getChannelServer().getMapFactory().getMap(mapId);
             const LifeFactory = Java.type('server.life.LifeFactory');
             const Point = Java.type('java.awt.Point');
-            var bossMobid = 2230101; // Zombie
+            var bossMobid = 6130101; // Mushmom
             var boss = LifeFactory.getMonster(bossMobid);
             var bossPos = new Point(201, 80);
             map.spawnMonsterOnGroundBelow(boss, bossPos);

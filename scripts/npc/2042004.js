@@ -28,7 +28,9 @@ function action(mode, type, selection) {
                     cm.sendYesNo("good job completing the doom, start next wave?");
                 } else if (status == 1) {
                     var map = cm.getClient().getChannelServer().getMapFactory().getMap(stage3);
-                    map.spawnHorntailOnGroundBelow(bossPos);
+                    for (var i = 9500172; i < 9500179; i++) {
+                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(i), bossPos);
+                    }
                     cm.warpParty(stage3, 0);
                     cm.dispose();
                 }
