@@ -5376,7 +5376,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMaxClassLevel() {
-        return isCygnus() ? 120 : 200;
+        return 200;
     }
 
     public int getMaxLevel() {
@@ -6437,11 +6437,12 @@ public class Character extends AbstractCharacterObject {
                 jobOptionList = Arrays.asList(Job.HERO, Job.PALADIN, Job.DARKKNIGHT,
                         Job.FP_ARCHMAGE, Job.IL_ARCHMAGE, Job.BISHOP,
                         Job.BOWMASTER, Job.MARKSMAN, Job.NIGHTLORD, Job.SHADOWER,
-                        Job.BUCCANEER, Job.CORSAIR);
+                        Job.BUCCANEER, Job.CORSAIR,Job.DAWNWARRIOR4, Job.BLAZEWIZARD4,
+                        Job.WINDARCHER4, Job.NIGHTWALKER4, Job.THUNDERBREAKER4);
             }
             List<Job> availableJobs = jobOptionList.stream()
                     .filter(job -> job != this.job)
-                    .collect(Collectors.toList());
+                    .toList();
             this.job = availableJobs.get(random.nextInt(availableJobs.size()));
         }
         // Create a list of stats to update
@@ -8341,12 +8342,12 @@ public class Character extends AbstractCharacterObject {
                                     for (Achievement achievement : accountDetails.getAchievements()) {
                                         if (achievement.getName().equals("First time reach 120") &&
                                                 achievement.getStatus().equals("done")) {
-                                            startingLevel = 20;
-                                            startingJob = Job.THIEF;
-                                            str = 20;
-                                            dex = 20;
-                                            int_ = 20;
-                                            luk = 20;
+                                            startingLevel = 1;
+                                            startingJob = Job.BEGINNER;
+                                            str = 40;
+                                            dex = 40;
+                                            int_ = 40;
+                                            luk = 40;
                                             // Update maxHP and maxMP for higher level
                                             setMaxHp(500);  // Adjust these values as needed
                                             setMaxMp(500);

@@ -50,7 +50,7 @@ public class Achievement {
         List<Achievement> achievements = new ArrayList<>();
         achievements.add(new Achievement(Names.FIRST_LOGIN, Status.DONE, Rewards.NX_3000));
         achievements.add(new Achievement(Names.REACH_LEVEL_30, Status.UNDONE, Rewards.MESOS_1M));
-        achievements.add(new Achievement(Names.REACH_LEVEL_120, Status.UNDONE, Rewards.LEVEL_20_START));
+        achievements.add(new Achievement(Names.REACH_LEVEL_120, Status.UNDONE, Rewards.LEVEL_1_START_EXTRA_BUFFS));
         achievements.add(new Achievement(Names.REACH_LEVEL_200, Status.UNDONE, Rewards.FAME_420_START));
         achievements.add(new Achievement(Names.LEVEL_200, Status.UNDONE, Rewards.ASCENSION_UNLOCK));
         return achievements;
