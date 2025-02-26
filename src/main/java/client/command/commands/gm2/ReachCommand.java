@@ -28,7 +28,7 @@ import client.Client;
 import client.command.Command;
 import server.maps.MapleMap;
 
-public class ReachCommand extends Command {
+public class ReachCommand  extends Command {
     {
         setDescription("Warp to a player.");
     }

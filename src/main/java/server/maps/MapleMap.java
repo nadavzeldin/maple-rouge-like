@@ -3993,7 +3993,7 @@ public class MapleMap {
 
         return true;
     }
-
+    
     public void spawnHorntailOnGroundBelow(final Point targetPoint) {   // ayy lmao
         Monster htIntro = LifeFactory.getMonster(MobId.SUMMON_HORNTAIL);
         spawnMonsterOnGroundBelow(htIntro, targetPoint);    // htintro spawn animation converting into horntail detected thanks to Arnah
