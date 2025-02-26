@@ -17,7 +17,7 @@ public class AchievementConstants {
     public static class Rewards {
         public static final String NX_3000 = "3,000 NX";
         public static final String MESOS_1M = "+1,000,000 Mesos";
-        public static final String LEVEL_20_START = "New characters start at level 20 (Account-wide)";
+        public static final String LEVEL_1_START_EXTRA_BUFFS = "New characters start at level 1 with high stats (Account-wide)";
         public static final String FAME_420_START = "New characters start with 420 Fame (Account-wide)";
         public static final String ASCENSION_UNLOCK = "Unlock Ascension System";
     }
