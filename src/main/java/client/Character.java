@@ -6448,7 +6448,7 @@ public class Character extends AbstractCharacterObject {
         int jobId = this.job.getId();
         for (Skill skill : SkillFactory.getSkills()) {
             if (GameConstants.isInJobTree(skill.getId(), jobId)) {
-                // Set skill to max level
+                // Set skill to max levels
                 int maxLevel = skill.getMaxLevel();
                 changeSkillLevel(skill, (byte)maxLevel, maxLevel, -1);
             }
