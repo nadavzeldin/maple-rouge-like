@@ -111,7 +111,7 @@ public class MonsterInformationProvider {
         }
 
 
-        customDrops.add(new MonsterDropEntry(ItemId.HAPPY_BIRTHDAY, 1000000, 1, 1, (short)0));  // +1 potion)
+        //customDrops.add(new MonsterDropEntry(ItemId.HAPPY_BIRTHDAY, 1000000, 1, 1, (short)0));  // +1 potion)
         Random random = new Random();
         int dropCount = random.nextInt(5) + 1; // Random number between 1 and 5
         for (int i = 0; i < dropCount; i++) {
