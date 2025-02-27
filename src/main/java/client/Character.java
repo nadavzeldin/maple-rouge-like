@@ -6615,8 +6615,8 @@ public class Character extends AbstractCharacterObject {
 
         level++;
         checkAchievements(level);
-        itemAutoSend(level);
         jobUpdateLogic(level);
+        itemAutoSend(level);
         if (level >= getMaxClassLevel()) {
             exp.set(0);
 
