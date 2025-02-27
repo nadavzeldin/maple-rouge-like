@@ -38,6 +38,8 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 public class AscensionCommand extends Command {
     {
         setDescription("Change language settings.");
@@ -104,6 +106,7 @@ public class AscensionCommand extends Command {
         } catch (Exception e) {
             player.yellowMessage("Error");
         }
+        player.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
         player.changeMap(MapId.JAIL);
 
     }
