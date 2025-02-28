@@ -24,7 +24,6 @@ package net.server.channel.handlers;
 import client.Character;
 import client.Client;
 import client.Disease;
-import client.command.commands.gm6.MergeCommand;
 import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.manipulator.InventoryManipulator;
@@ -39,15 +38,11 @@ import server.StatEffect;
 import tools.PacketCreator;
 
 import static constants.inventory.ItemConstants.USE_POTION_COOLDOWN;
-import static constants.inventory.ItemConstants.isConsumable;
-import static constants.inventory.ItemConstants.isPotion;
 
 /**
  * @author Matze
  */
 public final class UseItemHandler extends AbstractPacketHandler {
-    private static final Logger log = LoggerFactory.getLogger(UseItemHandler.class);
-
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();
@@ -61,16 +56,12 @@ public final class UseItemHandler extends AbstractPacketHandler {
         short slot = p.readShort();
         int itemId = p.readInt();
         Item toUse = chr.getInventory(InventoryType.USE).getItem(slot);
-        log.info("We are here using an item itemID is {}", itemId);
         long curTime = System.currentTimeMillis();
         if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
             // use item is on cooldown
-            log.info("We are here");
             return;
         }
         chr.setUsedPotionTime(curTime); // set the time we used a potion (or any use item)
-        log.info("use time is {}, cur time is {} diff is {}",chr.getUsedPotionTime(), curTime, curTime - chr.getUsedPotionTime());
-        log.info("We are here1");
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemId) {
             if (itemId == ItemId.ALL_CURE_POTION) {
                 chr.dispelDebuffs();
