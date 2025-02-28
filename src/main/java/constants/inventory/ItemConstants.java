@@ -47,6 +47,7 @@ public final class ItemConstants {
     public final static short PET_COME = 0x80;
     public final static short ACCOUNT_SHARING = 0x100;
     public final static short MERGE_UNTRADEABLE = 0x200;
+    public final static long USE_POTION_COOLDOWN = 2000;
 
     public final static boolean EXPIRING_ITEMS = true;
     public final static Set<Integer> permanentItemids = new HashSet<>();
