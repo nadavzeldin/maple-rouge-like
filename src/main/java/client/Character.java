@@ -6405,6 +6405,12 @@ public class Character extends AbstractCharacterObject {
 //        }
     }
 
+    public synchronized void addBonusHealthMana(int level){
+        if (level == 70 || level==120) {
+            this.addMaxHP(1000);
+            this.addMaxMP(1000);
+        }
+    }
     public synchronized void jobUpdateLogic(int level){
         if (level % 10 == 0)
         {
@@ -6614,9 +6620,10 @@ public class Character extends AbstractCharacterObject {
         }
 
         level++;
+        addBonusHealthMana(level);
         checkAchievements(level);
-        itemAutoSend(level);
         jobUpdateLogic(level);
+        itemAutoSend(level);
         if (level >= getMaxClassLevel()) {
             exp.set(0);
 
