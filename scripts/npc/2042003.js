@@ -13,7 +13,7 @@ var status = -1;
 // Configuration for each stage that requires handling
 var stageConfig = {
     [stage1]: {
-        prizeId: 4001129,
+        prizeId: 4310000,
         prizeAmount: 1,
         nextStage: stage2,
         killAllText: "Dang, just kill the Mush mom, this is the first stage, go away!",
@@ -27,8 +27,8 @@ var stageConfig = {
     },
     [stage3]: {
         nextStage: stage4,
-        prizeId: 4001129,
-        prizeAmount: 10,
+        prizeId: 4310000,
+        prizeAmount: 25,
         killAllText: "Looks like you have not killed all enemies here, while I understand why, I will not let you exit yet",
         spawn: function(map) {
             const LifeFactory = Java.type('server.life.LifeFactory');
@@ -40,8 +40,8 @@ var stageConfig = {
     },
     [stage5]: {
         nextStage: stage6,
-        prizeId: 4001254,
-        prizeAmount: 10,
+        prizeId: 4310000,
+        prizeAmount: 50,
         killAllText: "I'll be honest, I didn't think you would get this far, but kill all to exit!",
         spawn: function(map) {
             const LifeFactory = Java.type('server.life.LifeFactory');

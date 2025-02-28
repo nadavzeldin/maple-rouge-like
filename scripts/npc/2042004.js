@@ -16,8 +16,8 @@ var Point = Java.type('java.awt.Point');
 // Configuration for stages handled by this script
 var stageConfig = {
     [stage2]: {
-        prizeId: 4001129,
-        prizeAmount: 5,
+        prizeId: 4310000,
+        prizeAmount: 10,
         nextStage: stage3,
         killAllText: "This is one of my fav bosses, you will kill it to exit.",
         bossPos: new Point(201, 80),
@@ -32,8 +32,8 @@ var stageConfig = {
     },
     [stage4]: {
         nextStage: stage5,
-        prizeId: 4001254,
-        prizeAmount: 1,
+        prizeId: 4310000,
+        prizeAmount: 40,
         killAllText: "This is an easy stage, just kill pink bean, that easy!",
         bossPos: new Point(190, 80),
         spawn: function(nextMap) {
