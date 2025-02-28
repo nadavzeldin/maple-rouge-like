@@ -992,7 +992,7 @@ public class WarpRandomMap extends Command  {
                 209000014,
                 209000015,
                 209000100,
-                209080000,
+                //209080000,  - map auto kill without gloves
                 211000000,
                 211000001,
                 211000100,
