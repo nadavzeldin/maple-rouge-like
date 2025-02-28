@@ -573,6 +573,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         this.npcOid = oid;
         this.scriptName = scriptName;
         this.itemScript = itemScript;
+
+        if (npc == 9100100) //gacha
+        {
+            initializeItemPools();
+        }
     }
 
     public int getNpc() {
@@ -897,40 +902,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 break;
 
             case 2: // Rings, Capes, Gloves, Face & Accessories
-                // Rings (IDs typically start with 111)
-                addItemsToPool(itemPool, 1112000, 1112999);
-                // Capes (IDs typically start with 110)
-                addItemsToPool(itemPool, 1102000, 1102999);
-                // Gloves (IDs typically start with 108)
-                addItemsToPool(itemPool, 1082000, 1082999);
-                // Face accessories (IDs typically start with 101)
-                addItemsToPool(itemPool, 1012000, 1012999);
-                // Eye accessories (IDs typically start with 102)
-                addItemsToPool(itemPool, 1022000, 1022999);
+                itemPool = ACCESSORIES_ITEMS;
                 break;
 
             case 3: // Cap, Coat, Longcoat, Pants & Shoes
-                // Caps (IDs typically start with 100)
-                addItemsToPool(itemPool, 1002000, 1002999);
-                // Coats (IDs typically start with 104)
-                addItemsToPool(itemPool, 1040000, 1042999);
-                // Longcoats (IDs typically start with 105)
-                addItemsToPool(itemPool, 1050000, 1052999);
-                // Pants (IDs typically start with 106)
-                addItemsToPool(itemPool, 1060000, 1062999);
-                // Shoes (IDs typically start with 107)
-                addItemsToPool(itemPool, 1072000, 1072999);
+                itemPool = EQUIPMENT_ITEMS;
                 break;
 
             case 4: // Uses
-                // Potions & Consumables (IDs typically start with 20)
-                addItemsToPool(itemPool, 2000000, 2000999);
-                // Scrolls (IDs typically start with 204)
-                addItemsToPool(itemPool, 2040000, 2049999);
-                // Throwing Stars & Bullets (IDs typically start with 207)
-                addItemsToPool(itemPool, 2070000, 2079999);
-                // Special consumables & event items
-                addItemsToPool(itemPool, 2100000, 2119999);
+                itemPool = USE_ITEMS;
                 break;
         }
 
@@ -944,7 +924,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         // Get a random item from the pool
         int randomIndex = (int) (Math.random() * itemPool.size());
         int itemId = itemPool.get(randomIndex);
-
+        log.info("Gachapon random item id: {}", itemId);
         // Create a GachaponItem object (you may need to adjust this based on your implementation)
 
         // Give the item to the player
