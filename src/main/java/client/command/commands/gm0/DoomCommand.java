@@ -40,6 +40,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
+import static constants.id.MapId.DOOM_MAPS;
 
 public class DoomCommand extends Command {
     {
@@ -50,6 +51,11 @@ public class DoomCommand extends Command {
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
+        // if player is in doom map already, i.e. where there are monsters, disable tp
+        if (DOOM_MAPS.contains(c.getPlayer().getMapId())){
+            player.yellowMessage("YOU CAN NOT TP OUT OF THE DOOM");
+            return;
+        }
         try {
             MapleMap target = c.getChannelServer().getMapFactory().getMap(DOOM_MAP);
             if (target == null) {

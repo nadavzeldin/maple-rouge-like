@@ -1,5 +1,9 @@
 package constants.id;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MapId {
     // Special
     public static final int NONE = 999999999;
@@ -278,4 +282,9 @@ public class MapId {
     public static final int CRIMSONWOOD_KEEP = 610020006;
     public static final int MU_LUNG_DOJO_HALL = 925020001;
     public static final int EXCLUSIVE_TRAINING_CENTER = 970030000;
+
+    // DOOM MAPS
+    public static final Set<Integer> DOOM_MAPS = new HashSet<>(Arrays.asList(
+            980000100, 980000200, 980000300, 980000400, 980000500, 980000600
+    ));
 }
