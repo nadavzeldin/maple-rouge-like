@@ -59,6 +59,7 @@ public final class UseItemHandler extends AbstractPacketHandler {
         long curTime = System.currentTimeMillis();
         if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
             // use item is on cooldown
+            chr.yellowMessage("Potion is on cooldown!");
             return;
         }
         chr.setUsedPotionTime(curTime); // set the time we used a potion (or any use item)
