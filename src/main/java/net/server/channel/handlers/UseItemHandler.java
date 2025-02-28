@@ -31,9 +31,13 @@ import constants.id.ItemId;
 import constants.inventory.ItemConstants;
 import net.AbstractPacketHandler;
 import net.packet.InPacket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import server.ItemInformationProvider;
 import server.StatEffect;
 import tools.PacketCreator;
+
+import static constants.inventory.ItemConstants.USE_POTION_COOLDOWN;
 
 /**
  * @author Matze
@@ -52,6 +56,13 @@ public final class UseItemHandler extends AbstractPacketHandler {
         short slot = p.readShort();
         int itemId = p.readInt();
         Item toUse = chr.getInventory(InventoryType.USE).getItem(slot);
+        long curTime = System.currentTimeMillis();
+        if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
+            // use item is on cooldown
+            chr.yellowMessage("Potion is on cooldown!");
+            return;
+        }
+        chr.setUsedPotionTime(curTime); // set the time we used a potion (or any use item)
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemId) {
             if (itemId == ItemId.ALL_CURE_POTION) {
                 chr.dispelDebuffs();
@@ -80,13 +91,10 @@ public final class UseItemHandler extends AbstractPacketHandler {
 
             remove(c, slot);
 
-
             if (toUse.getItemId() == ItemId.HAPPY_BIRTHDAY) {
                 chr.AddStrDexIntLuk(1);
             }
 
-            
-            
             if (toUse.getItemId() != ItemId.HAPPY_BIRTHDAY) {
                 ii.getItemEffect(toUse.getItemId()).applyTo(chr);
             } else {

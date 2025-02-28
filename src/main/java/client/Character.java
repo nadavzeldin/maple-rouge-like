@@ -367,6 +367,7 @@ public class Character extends AbstractCharacterObject {
     private long loginTime;
     private boolean chasing = false;
     private long lizardLastSpawnTime = 0;
+    private long usedPotionTime = System.currentTimeMillis();
     public AccountExtraDetails accountExtraDetails;
 
 
@@ -9333,6 +9334,8 @@ public class Character extends AbstractCharacterObject {
         return true;
     }
 
+    public long getUsedPotionTime() {return usedPotionTime;}
+    public void setUsedPotionTime(long usedPotionTime) {this.usedPotionTime = usedPotionTime;}
     public void setInventory(InventoryType type, Inventory inv) {
         inventory[type.ordinal()] = inv;
     }
