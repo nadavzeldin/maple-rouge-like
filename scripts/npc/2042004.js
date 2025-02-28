@@ -28,8 +28,11 @@ function action(mode, type, selection) {
                     cm.sendYesNo("good job completing the doom, start next wave?");
                 } else if (status == 1) {
                     var map = cm.getClient().getChannelServer().getMapFactory().getMap(stage3);
-                    for (var i = 9500172; i < 9500179; i++) {
-                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(i), bossPos);
+                    // only spawn in next map if there are no monsters
+                    if (map.countMonsters() == 0) {
+                        for (var i = 9500172; i < 9500179; i++) {
+                            map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(i), bossPos);
+                        }
                     }
                     cm.warpParty(stage3, 0);
                     cm.dispose();
@@ -51,12 +54,15 @@ function action(mode, type, selection) {
                 cm.sendYesNo("good job completing the doom, start next wave?");
             } else if (status == 1) {
                 var map = cm.getClient().getChannelServer().getMapFactory().getMap(stage5);
-                map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420547), bossPos);
-                map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420548), bossPos);
-                map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420549), bossPos);
-                map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420542), bossPos);
-                map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420543), bossPos);
-                map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420544), bossPos);
+                // only spawn in next map if there are no monsters
+                if (map.countMonsters() == 0) {
+                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420547), bossPos);
+                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420548), bossPos);
+                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420549), bossPos);
+                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420542), bossPos);
+                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420543), bossPos);
+                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9420544), bossPos);
+                }
                 cm.warpParty(stage5, 0);
                 cm.dispose();
             }

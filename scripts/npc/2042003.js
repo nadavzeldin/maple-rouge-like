@@ -29,7 +29,10 @@ function action(mode, type, selection) {
                     cm.sendYesNo("good job completing the doom, start next wave?");
                 } else if (status == 1) {
                     var map = cm.getClient().getChannelServer().getMapFactory().getMap(stage2);
-                    map.spawnMonsterOnGroundBelow(boss, bossPos);
+                    // only spawn in next map if there are no monsters
+                    if (map.countMonsters() == 0) {
+                        map.spawnMonsterOnGroundBelow(boss, bossPos);
+                    }
                     cm.warpParty(stage2, 0);
                     cm.dispose();
                 }
@@ -51,7 +54,10 @@ function action(mode, type, selection) {
                     cm.sendYesNo("good job completing the doom, start next wave?");
                 } else if (status == 1) {
                     var map = cm.getClient().getChannelServer().getMapFactory().getMap(stage4);
-                    map.spawnMonsterOnGroundBelow(boss, bossPos);
+                    // only spawn in next map if there are no monsters
+                    if (map.countMonsters() == 0) {
+                        map.spawnMonsterOnGroundBelow(boss, bossPos);
+                    }
                     cm.warpParty(stage4, 0);
                     cm.dispose();
                 }
@@ -71,15 +77,17 @@ function action(mode, type, selection) {
                     const LifeFactory = Java.type('server.life.LifeFactory');
                     const Point = Java.type('java.awt.Point');
                     var bossPos = new Point(190, 80);
-                    for (var i = 9300291; i <= 9300294; i++) {
-                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(i), bossPos);
+                    // only spawn in next map if there are no monsters
+                    if (map.countMonsters() == 0) {
+                        for (var i = 9300291; i <= 9300294; i++) {
+                            map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(i), bossPos);
+                        }
+                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(8800000), new Point(150, 80)); // zakum num 1
+                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(8820001), new Point(50, 80)); // pink bean
+                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9400121), new Point(50, 80)); // female boss
+                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9400300), new Point(50, 80)); // the boss
+                        map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9400014), new Point(50, 80)); // Black Crow
                     }
-                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(8800000), new Point(150, 80)); // zakum num 1
-                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(8820001), new Point(50, 80)); // pink bean
-                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9400121), new Point(50, 80)); // female boss
-                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9400300), new Point(50, 80)); // the boss
-                    map.spawnMonsterOnGroundBelow(LifeFactory.getMonster(9400014), new Point(50, 80)); // Black Crow
-
 
                     cm.warpParty(stage6, 0);
                     cm.dispose();
