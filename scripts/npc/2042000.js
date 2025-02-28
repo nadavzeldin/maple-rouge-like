@@ -45,9 +45,11 @@ function action(mode, type, selection) {
             const LifeFactory = Java.type('server.life.LifeFactory');
             const Point = Java.type('java.awt.Point');
             var bossMobid = 6130101; // Mushmom
-            var boss = LifeFactory.getMonster(bossMobid);
-            var bossPos = new Point(201, 80);
-            map.spawnMonsterOnGroundBelow(boss, bossPos);
+            if (map.countMonsters() === 0) {
+                var boss = LifeFactory.getMonster(bossMobid);
+                var bossPos = new Point(201, 80);
+                map.spawnMonsterOnGroundBelow(boss, bossPos);
+            }
             cm.warpParty(980000100, 0);
             cm.dispose();
         }

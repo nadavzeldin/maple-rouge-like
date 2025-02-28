@@ -1,4 +1,5 @@
 // Stage constants
+var doomLobby = 980000000;
 var stage1 = 980000100;
 var stage2 = 980000200;
 var stage3 = 980000300;
@@ -12,7 +13,10 @@ var status = -1;
 // Configuration for each stage that requires handling
 var stageConfig = {
     [stage1]: {
+        prizeId: 4001129,
+        prizeAmount: 1,
         nextStage: stage2,
+        killAllText: "Dang, just kill the Mush mom, this is the first stage, go away!",
         spawn: function(map) {
             const LifeFactory = Java.type('server.life.LifeFactory');
             const Point = Java.type('java.awt.Point');
@@ -23,6 +27,9 @@ var stageConfig = {
     },
     [stage3]: {
         nextStage: stage4,
+        prizeId: 4001129,
+        prizeAmount: 10,
+        killAllText: "Looks like you have not killed all enemies here, while I understand why, I will not let you exit yet",
         spawn: function(map) {
             const LifeFactory = Java.type('server.life.LifeFactory');
             const Point = Java.type('java.awt.Point');
@@ -33,6 +40,9 @@ var stageConfig = {
     },
     [stage5]: {
         nextStage: stage6,
+        prizeId: 4001254,
+        prizeAmount: 10,
+        killAllText: "I'll be honest, I didn't think you would get this far, but kill all to exit!",
         spawn: function(map) {
             const LifeFactory = Java.type('server.life.LifeFactory');
             const Point = Java.type('java.awt.Point');
@@ -68,21 +78,10 @@ function action(mode, type, selection) {
         cm.dispose();
         return;
     }
-
+    // Look up the configuration for the current stage
     // Retrieve the current map object
     var currentMap = getMapById(curMap);
 
-    // Check if there are still monsters left; if so, prompt the player to finish them first
-    if (currentMap.countMonsters() > 0) {
-        cm.sendOk("Please kill all monsters before proceeding.");
-        cm.dispose();
-        return;
-    }
-
-    // Increment the conversation status
-    status++;
-
-    // Look up the configuration for the current stage
     var config = stageConfig[curMap];
     if (!config) {
         // If no configuration exists for this map, simply dispose
@@ -90,18 +89,45 @@ function action(mode, type, selection) {
         return;
     }
 
+    // Check if there are still monsters left; if so, prompt the player to finish them first
+    if (currentMap.countMonsters() > 0) {
+        cm.sendOk(config.killAllText);
+        cm.dispose();
+        return;
+    }
+
+    // Increment the conversation status
+    status++;
+
     // At the initial status, ask the player if they're ready to start the next wave
     if (status === 0) {
-        cm.sendYesNo("Good job completing the doom, start next wave?");
+        var doomChoice = makeChoices(config.prizeId, config.prizeAmount); // 4001129 is maple coin
+        cm.sendSimple(doomChoice);
     }
     // On confirmation, spawn the next wave and move the party to the next map
     else if (status === 1) {
-        var nextMap = getMapById(config.nextStage);
-        // Only spawn monsters if the next map is currently clear
-        if (nextMap.countMonsters() === 0) {
-            config.spawn(nextMap);
+        if (selection === 0) {
+            var nextMap = getMapById(config.nextStage);
+            // Only spawn monsters if the next map is currently clear
+            if (nextMap.countMonsters() === 0) {
+                config.spawn(nextMap);
+            }
+            cm.warpParty(config.nextStage, 0);
+        } else {
+            if (cm.canHold(config.prizeId)) {
+                cm.gainItem(config.prizeId, config.prizeAmount);
+                cm.warpParty(doomLobby, 0);
+            } else {
+                cm.sendOk("Make sure you have a free spot in your ETC inventory.");
+            }
         }
-        cm.warpParty(config.nextStage, 0);
         cm.dispose();
     }
+}
+
+function makeChoices(itemIdToGive, numberOfItemToGive) {
+    var result = "good job completing the doom stage, would you like to exit, or delve deeper into the DOOM\r\n\r\n";
+    result += "#L" + 0 + "##l I am a manly man or a womanly woman with some chess hair take me deeper!\r\n";
+    result += "Exit, you will get: " + numberOfItemToGive + " #L" + 1 + "\n ##v" + itemIdToGive + "##t" + itemIdToGive + "##l\r\n";
+    return result;
 }
