@@ -216,6 +216,19 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         WEAPON_SHIELD_ITEMS.add(1472023); // Blood Gigantic
         WEAPON_SHIELD_ITEMS.add(1472062); // Black Hole
 
+        //others
+        WEAPON_SHIELD_ITEMS.add(1322027); // frying pan
+        WEAPON_SHIELD_ITEMS.add(1322027); // pink tube
+        WEAPON_SHIELD_ITEMS.add(1322021); // Black Tube - (no description)
+        WEAPON_SHIELD_ITEMS.add(1322022); // Red Flowery Tube - (no description)
+        WEAPON_SHIELD_ITEMS.add(1322023); // Blue Flowery Tube - (no description)
+        WEAPON_SHIELD_ITEMS.add(1322024); // Purple Tube - (no description)
+        WEAPON_SHIELD_ITEMS.add(1322025); // Emergency Rescue Tube - (no description)
+        WEAPON_SHIELD_ITEMS.add(1322026); // Colorful Tube - (no description)
+        WEAPON_SHIELD_ITEMS.add(1442021); // Yellow Mop - (no description)
+        WEAPON_SHIELD_ITEMS.add(1442022); // White Mop - (no description)
+        WEAPON_SHIELD_ITEMS.add(1442023); // Maroon Mop - (no description)
+
         // Knucklers
         WEAPON_SHIELD_ITEMS.add(1482008); // Psycho Claw
         WEAPON_SHIELD_ITEMS.add(1482022); // Maple Golden Claw
@@ -247,6 +260,25 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1112414); // Lilin's Ring
         ACCESSORIES_ITEMS.add(1112908); // Aura Ring (explicitly mentions +1 to all stats)
         ACCESSORIES_ITEMS.add(1112916); // Solo Ring
+        ACCESSORIES_ITEMS.add(1122003); // bow
+        ACCESSORIES_ITEMS.add(1122000); // Horntail Necklace
+        ACCESSORIES_ITEMS.add(1122001); // Bow-tie(Green)
+        ACCESSORIES_ITEMS.add(1022071); //  Red Shutter Shades
+        ACCESSORIES_ITEMS.add(1122002); // Bow-tie (Red) - (no description)
+        ACCESSORIES_ITEMS.add(1122004); // Bow-tie (Pink) - (no description)
+        ACCESSORIES_ITEMS.add(1122005); // Bow-tie (Black) - (no description)
+        ACCESSORIES_ITEMS.add(1122006); // Bow-tie (Blue) - (no description)
+        ACCESSORIES_ITEMS.add(1122007); // Spiegelmann's Necklace - (no description)
+        ACCESSORIES_ITEMS.add(1122010); // Horus' Eye - (no description)
+        ACCESSORIES_ITEMS.add(1122014); // Silver Deputy Star - A badge of honor given by Lita Lawless for vanquishing monsters in defense of NLC. You're part of the law now!
+
+        ACCESSORIES_ITEMS.add(1022069); // Orange Shutter Shades - (no description)
+        ACCESSORIES_ITEMS.add(1012134); // Tear Drop Face Tattoo - Express your soft side with this teary-eyed Tattoo!
+        ACCESSORIES_ITEMS.add(1122059); // mark of nar
+
+        ACCESSORIES_ITEMS.add(1032060); // Altair Earrings - (no description)
+        ACCESSORIES_ITEMS.add(1022073); // Broken Glasses - (no description)
+        ACCESSORIES_ITEMS.add(1032061); // (no description)
 
         // Stat-giving Capes
         ACCESSORIES_ITEMS.add(1102000); // Green Napoleon
