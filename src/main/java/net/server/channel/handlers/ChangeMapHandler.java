@@ -109,23 +109,25 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
                         }
                         if (executeStandardPath) {
                             boolean hasUnkillable = false;
-                            int mapid = c.getPlayer().getMap().getId();
-
-                            for (Item item : chr.getInventory(InventoryType.EQUIPPED)) {
-                                if ("Unkillable".equals(item.getOwner())) {
-                                    hasUnkillable = true;
-                                    break; // Stop checking once we find it
-                                }
-                            }
-
-                            globalDeathMessage(chr, hasUnkillable);
-
-                            if (hasUnkillable || LEGAL_DEATH_MAPS.contains(mapid)) {
-                                chr.resetInventory();
-                                chr.respawn(MapId.HENESYS);
+                            // if player is in LEGAL_DEATH_MAPS, just do regular stuff
+                            if (LEGAL_DEATH_MAPS.contains(c.getPlayer().getMap().getId())) {
+                                chr.respawn(map.getReturnMapId());
                             } else {
-                                chr.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
-                                chr.respawn(MapId.JAIL); // one death - rogue-like
+                                for (Item item : chr.getInventory(InventoryType.EQUIPPED)) {
+                                    if ("Unkillable".equals(item.getOwner())) {
+                                        hasUnkillable = true;
+                                        break; // Stop checking once we find it
+                                    }
+                                }
+
+                                globalDeathMessage(chr, hasUnkillable);
+                                if (hasUnkillable) {
+                                    chr.resetInventory();
+                                    chr.respawn(MapId.HENESYS);
+                                } else {
+                                    chr.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
+                                    chr.respawn(MapId.JAIL); // one death - rogue-like
+                                }
                             }
                         }
                     }

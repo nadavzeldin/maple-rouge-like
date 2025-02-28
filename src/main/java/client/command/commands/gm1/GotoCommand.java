@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static constants.id.MapId.DOOM_MAPS;
+
 public class GotoCommand extends Command {
 
     {
@@ -79,6 +81,11 @@ public class GotoCommand extends Command {
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
+        // if player is in doom map already, i.e. where there are monsters, disable tp
+        if (DOOM_MAPS.contains(c.getPlayer().getMapId())){
+            player.yellowMessage("YOU CAN NOT TP OUT OF THE DOOM");
+            return;
+        }
         if (params.length < 1) {
             String sendStr = "Syntax: #b@goto <map name>#k. Available areas:\r\n\r\n#rTowns:#k\r\n" + GOTO_TOWNS_INFO;
             if (player.isGM()) {
