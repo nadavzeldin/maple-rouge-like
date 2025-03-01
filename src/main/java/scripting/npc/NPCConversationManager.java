@@ -207,14 +207,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         WEAPON_SHIELD_ITEMS.add(1092059); // Timeless List
         WEAPON_SHIELD_ITEMS.add(1092060); // Blue Dragon Shield
         WEAPON_SHIELD_ITEMS.add(1092061); // Crossheider
-        WEAPON_SHIELD_ITEMS.add(1092062); // Maple Girl Shield
 
         // One-handed swords
         WEAPON_SHIELD_ITEMS.add(1302080); // Maplemas Lights
         WEAPON_SHIELD_ITEMS.add(1302081); // Timeless Executioners
 
         // One-handed axes
-        WEAPON_SHIELD_ITEMS.add(1312032); // Maple Steel Axe
         WEAPON_SHIELD_ITEMS.add(1312037); // Timeless Bardiche
 
         // One-handed blunt weapons
@@ -405,9 +403,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1082168); // Blue Dragon Gauntlet
         ACCESSORIES_ITEMS.add(1082173); // Lightning Gloves
         ACCESSORIES_ITEMS.add(1082216); // Canopus Glove
-        ACCESSORIES_ITEMS.add(1082217); // Wolf Gauntlets
         ACCESSORIES_ITEMS.add(1082218); // Dragon Gauntlet
-        ACCESSORIES_ITEMS.add(1082221); // Golden Gloves
         ACCESSORIES_ITEMS.add(1082222); // Mechanical Glove
         ACCESSORIES_ITEMS.add(1082223); // Stormcaster Gloves
         ACCESSORIES_ITEMS.add(1082234); // Timeless Bergamot
@@ -441,8 +437,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2070011); // Maple Throwing-Stars
         USE_ITEMS.add(2070012); // Paper Fighter Plane
         USE_ITEMS.add(2070013); // Orange
-        USE_ITEMS.add(2070014); // Devil Rain Throwing Star
-        USE_ITEMS.add(2070015); // A Beginner Thief's Throwing Stars
         USE_ITEMS.add(2070016); // Crystal Ilbi Throwing-Stars
         USE_ITEMS.add(2070018); // Balanced Fury
         USE_ITEMS.add(2210000); // Orange Mushroom Piece
