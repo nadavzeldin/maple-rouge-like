@@ -28,7 +28,7 @@ var curMapName = "";
 var selection;
 var amount = 0;
 var selectedOption = -1;
-var MESO_COST_PER_ROLL = 1000000; // 1 million mesos per roll
+var MESO_COST_PER_ROLL = 10000000; // 10 million mesos per roll
 
 // Prize groups
 var prizeGroups = [
