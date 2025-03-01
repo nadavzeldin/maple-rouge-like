@@ -36,7 +36,8 @@ var prizeGroups = [
     "Weapons & Shields",
     "Rings, Capes, Gloves & Accessories",
     "Cap & Shoes",
-    "Uses"
+    "Uses",
+    "Setups"
 ];
 
 function start() {

@@ -83,6 +83,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     private static final List<Integer> ACCESSORIES_ITEMS = new ArrayList<>();
     private static final List<Integer> EQUIPMENT_ITEMS = new ArrayList<>();
     private static final List<Integer> USE_ITEMS = new ArrayList<>();
+    private static final List<Integer> SET_UP = new ArrayList<>();
     private static boolean poolsInitialized = false;
 
     private final int npc;
@@ -106,6 +107,61 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     private static synchronized void initializeItemPools() {
         if (poolsInitialized) return;
+        // Chair Setup
+        SET_UP.add(3010000); // The Relaxer
+        SET_UP.add(3010001); // Sky-blue Wooden Chair
+        SET_UP.add(3010002); // Green Chair
+        SET_UP.add(3010003); // Red Chair
+        SET_UP.add(3010004); // The Yellow Relaxer
+        SET_UP.add(3010005); // The Red Relaxer
+        SET_UP.add(3010006); // Yellow Chair
+        SET_UP.add(3010007); // Pink Seal Cushion
+        SET_UP.add(3010008); // Blue Seal Cushion
+        SET_UP.add(3010009); // Red Round Chair
+        SET_UP.add(3010010); // White Seal Cushion
+        SET_UP.add(3010011); // Amorian Relaxer
+        SET_UP.add(3010012); // Warrior Throne
+        SET_UP.add(3010013); // Beach Chair
+        SET_UP.add(3010014); // Moon Star Chair
+        SET_UP.add(3010015); // The Red Relaxer
+        SET_UP.add(3010016); // Grey Seal Cushion
+        SET_UP.add(3010017); // Gold Seal Cushion
+        SET_UP.add(3010018); // Palm Tree Beach Chair
+        SET_UP.add(3010019); // Kadomatsu
+        SET_UP.add(3010025); // Under the Maple Tree...
+        SET_UP.add(3011000); // Fishing Chair
+        SET_UP.add(3010040); // The Stirge Seat
+        SET_UP.add(3010041); // Skull Throne
+        SET_UP.add(3010043); // Halloween Broomstick Chair
+        SET_UP.add(3010044); // Winter Red Chair
+        SET_UP.add(3010045); // Ice Chair
+        SET_UP.add(3010046); // Dragon Chair(Inferno)
+        SET_UP.add(3010047); // Dragon Chair(Abyss)
+        SET_UP.add(3010057); // BloodyRose
+        SET_UP.add(3010058); // WorldEnd
+        SET_UP.add(3010060); // Noblesse Chair
+        SET_UP.add(3010061); // Underneath the Maple Tree
+        SET_UP.add(3010062); // Bamboo Chair
+        SET_UP.add(3010063); // Moon and Star Cushion
+        SET_UP.add(3010064); // Male Desert Rabbit Cushion
+        SET_UP.add(3010065); // Pink Beach Parasol
+        SET_UP.add(3010066); // Navy Velvet Sofa
+        SET_UP.add(3010067); // Red Designer Chair
+        SET_UP.add(3010069); // Yellow Robot Chair
+        SET_UP.add(3010071); // Mini Shinsoo Chair
+        SET_UP.add(3010072); // Miwok Chief's Chair
+        SET_UP.add(3010073); // Giant Pink Bean Cushion
+        SET_UP.add(3010085); // Olivia's Chair
+        SET_UP.add(3010098); // TV Recliner
+        SET_UP.add(3010099); // Cuddly Polar Bear
+        SET_UP.add(3010101); // Christmas Gift Box
+        SET_UP.add(3010106); // Ryko Chair
+        SET_UP.add(3010111); // Tiger Skin Chair
+        SET_UP.add(3010116); // The Spirit of Rock Chair
+        SET_UP.add(3012005); // Amorian Loveseat
+        SET_UP.add(3012010); // Half-Heart Chocolate Cake Chair
+        SET_UP.add(3012011); // Chocolate Fondue Chair
+
 
         // Taming items
         TAMING_ITEMS.add(1902000); // Hog
@@ -943,6 +999,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
             case 4: // Uses
                 itemPool = USE_ITEMS;
+                break;
+            case 5: // Setups
+                itemPool = SET_UP;
                 break;
         }
 
