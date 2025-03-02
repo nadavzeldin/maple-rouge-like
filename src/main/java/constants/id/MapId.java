@@ -8,7 +8,7 @@ public class MapId {
     // Special
     public static final int NONE = 999999999;
     public static final int GM_MAP = 180000000;
-    public static final int JAIL = 200090060; // "Cellar: Camp Conference Room"  FROM_LITH_TO_RIEN = 200090060;
+    public static final int JAIL = 300000012; // "Cellar: Camp Conference Room"
     public static final int DEVELOPERS_HQ = 777777777;
 
     // Misc

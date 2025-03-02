@@ -1498,6 +1498,10 @@ public class Character extends AbstractCharacterObject {
 
         eventChangedMap(target.getId());    // player can be dropped from an event here, hence the new warping target.
         MapleMap to = getWarpMap(target.getId());
+        if (this.jailExpiration != 0)
+        {
+            to=getWarpMap(MapId.JAIL);
+        }
         if (pto == null) {
             pto = to.getPortal(0);
         }
