@@ -1498,6 +1498,10 @@ public class Character extends AbstractCharacterObject {
 
         eventChangedMap(target.getId());    // player can be dropped from an event here, hence the new warping target.
         MapleMap to = getWarpMap(target.getId());
+        if (this.jailExpiration != 0)
+        {
+            to=getWarpMap(MapId.JAIL);
+        }
         if (pto == null) {
             pto = to.getPortal(0);
         }
@@ -5377,7 +5381,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMaxClassLevel() {
-        return 200;
+        return 200 + 20 * this.accountExtraDetails.getAscension().size();
     }
 
     public int getMaxLevel() {
@@ -8350,12 +8354,13 @@ public class Character extends AbstractCharacterObject {
                                     for (Achievement achievement : accountDetails.getAchievements()) {
                                         if (achievement.getName().equals("First time reach 120") &&
                                                 achievement.getStatus().equals("done")) {
+                                            int bonus_stats = 40 + accountDetails.getAscension().size() * 5;
                                             startingLevel = 1;
                                             startingJob = Job.BEGINNER;
-                                            str = 40;
-                                            dex = 40;
-                                            int_ = 40;
-                                            luk = 40;
+                                            str = bonus_stats;
+                                            dex = bonus_stats;
+                                            int_ = bonus_stats;
+                                            luk = bonus_stats;
                                             // Update maxHP and maxMP for higher level
                                             setMaxHp(500);  // Adjust these values as needed
                                             setMaxMp(500);

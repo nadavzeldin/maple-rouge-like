@@ -42,55 +42,61 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class AscensionCommand extends Command {
     {
-        setDescription("Change language settings.");
+        setDescription("Show ascension status.");
     }
 
     @Override
     public void execute(Client c, String[] params) {
         int type;
-        type = Integer.parseInt(params[0]);
         Character player = c.getPlayer();
         if (params.length < 1) {
-            player.yellowMessage("Syntax: @ascension <0=ShowMyAscensions, 1=Hoarder, 2=Resilient>");
+            player.yellowMessage("Syntax: @ascension <0=ShowMyAscensions, 1=Hoarder, 2=Resilient, 3=Lucky>");
             return;
         }
+
+        try {
+            type = Integer.parseInt(params[0]);
+        } catch (NumberFormatException e) {
+            player.yellowMessage("Invalid number format. Use 0 to show ascensions, 1 for Hoarder, 2 for Resilient, or 3 for Lucky.");
+            return;
+        }
+
         AccountExtraDetails details = player.accountExtraDetails;
         if (details == null || details.getAchievements() == null) {
             player.yellowMessage("No achievements found.");
             return;
         }
+
         List<String> ascensions = details.getAscension();
-        if (type==0)
-        {
+        if (type == 0) {
             player.yellowMessage("My ascensions are: " + ascensions);
             return;
         }
 
-        if (player.getLevel()<200)
-        {
-            player.yellowMessage("require level 200 at least.");
+        if (player.getLevel() < 200) {
+            player.yellowMessage("Require level 200 at least.");
             return;
         }
 
-        try {
-            if (type < 0 || type > 2) {
-                player.yellowMessage("Invalid ascension type. Use 1 for Hoarder or 2 for Resilient.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            player.yellowMessage("Invalid number format. Use 1 for Hoarder or 2 for Resilient.");
+        if (type < 0 || type > 3) {
+            player.yellowMessage("Invalid ascension type. Use 1 for Hoarder, 2 for Resilient, or 3 for Lucky.");
             return;
         }
-
 
         if (ascensions == null) {
             ascensions = new ArrayList<>();
             details.setAscension(ascensions);
         }
 
+        String ascensionType;
+        if (type == 1) {
+            ascensionType = AscensionConstants.Names.HOARDER;
+        } else if (type == 2) {
+            ascensionType = AscensionConstants.Names.RESILIENT;
+        } else {
+            ascensionType = AscensionConstants.Names.LUCKY;
+        }
 
-
-        String ascensionType = type == 1 ? AscensionConstants.Names.HOARDER : AscensionConstants.Names.RESILIENT;
         if (!ascensions.contains(ascensionType)) {
             ascensions.add(ascensionType);
         }
@@ -108,6 +114,5 @@ public class AscensionCommand extends Command {
         }
         player.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
         player.changeMap(MapId.JAIL);
-
     }
 }

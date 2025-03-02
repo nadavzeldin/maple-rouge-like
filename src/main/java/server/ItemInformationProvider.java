@@ -1057,7 +1057,7 @@ public class ItemInformationProvider {
         return freeUpgradeCount + appliedScrollCount < totalUpgradeCount + viciousCount;
     }
 
-    public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, int vegaItemId, boolean isGM) {
+    public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, int vegaItemId, boolean isGM, boolean isLuckyAscension) {
         boolean assertGM = (isGM && YamlConfig.config.server.USE_PERFECT_GM_SCROLL);
 
         if (equip instanceof Equip nEquip) {
@@ -1065,7 +1065,6 @@ public class ItemInformationProvider {
 
             if (((nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId))) || assertGM) {
                 double prop = (double) stats.get("success");
-
                 switch (vegaItemId) {
                     case ItemId.VEGAS_SPELL_10:
                         if (prop == 10.0f) {
@@ -1081,7 +1080,7 @@ public class ItemInformationProvider {
                         prop = 100.0f;
                         break;
                 }
-
+                prop = isLuckyAscension ? Math.max(90.0f, prop) : prop;
                 if (assertGM || rollSuccessChance(prop)) {
                     short flag = nEquip.getFlag();
                     switch (scrollId) {
