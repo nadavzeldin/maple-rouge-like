@@ -2347,7 +2347,7 @@ public class MapleMap {
             chr.sendPacket(PacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(() -> {
                 if (chr.getMapId() == MapId.FROM_LITH_TO_RIEN) {
-                    chr.changeMap(MapId.DANGEROUS_FOREST, 0);
+                    chr.changeMap(MapId.FROM_LITH_TO_RIEN, 0);
                 }
             }, travelTime);
         } else if (mapid == MapId.FROM_RIEN_TO_LITH) { // To Lith Harbor
