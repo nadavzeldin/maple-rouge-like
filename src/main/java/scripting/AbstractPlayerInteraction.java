@@ -631,7 +631,8 @@ public class AbstractPlayerInteraction {
                         if (!(c.getPlayer().isGM() && YamlConfig.config.server.USE_PERFECT_GM_SCROLL)) {
                             eqp.setUpgradeSlots((byte) (eqp.getUpgradeSlots() + 1));
                         }
-                        item = ItemInformationProvider.getInstance().scrollEquipWithId(item, ItemId.CHAOS_SCROll_60, true, ItemId.CHAOS_SCROll_60, c.getPlayer().isGM());
+                        Character player = (Character) c.getPlayer();
+                        item = ItemInformationProvider.getInstance().scrollEquipWithId(item, ItemId.CHAOS_SCROll_60, true, ItemId.CHAOS_SCROll_60, player.isGM(), player.accountExtraDetails.getAscension().contains(AscensionConstants.Names.LUCKY));
                     }
                 }
             } else {

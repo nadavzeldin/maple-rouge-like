@@ -21,6 +21,7 @@
  */
 package net.server.channel.handlers;
 
+import client.AscensionConstants;
 import client.Character;
 import client.Client;
 import client.Skill;
@@ -103,7 +104,7 @@ public final class ScrollHandler extends AbstractPacketHandler {
                     }
                 }
 
-                Equip scrolled = (Equip) ii.scrollEquipWithId(toScroll, scroll.getItemId(), whiteScroll, 0, chr.isGM());
+                Equip scrolled = (Equip) ii.scrollEquipWithId(toScroll, scroll.getItemId(), whiteScroll, 0, chr.isGM(), chr.accountExtraDetails.getAscension().contains(AscensionConstants.Names.LUCKY));
                 ScrollResult scrollSuccess = Equip.ScrollResult.FAIL; // fail
                 if (scrolled == null) {
                     scrollSuccess = Equip.ScrollResult.CURSE;

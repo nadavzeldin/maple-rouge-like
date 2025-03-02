@@ -19,6 +19,7 @@
 */
 package client.processor.action;
 
+import client.AscensionConstants;
 import client.Character;
 import client.Client;
 import client.inventory.Equip;
@@ -387,7 +388,8 @@ public class MakerProcessor {
             if (!(c.getPlayer().isGM() && YamlConfig.config.server.USE_PERFECT_GM_SCROLL)) {
                 eqp.setUpgradeSlots((byte) (eqp.getUpgradeSlots() + 1));
             }
-            item = ItemInformationProvider.getInstance().scrollEquipWithId(eqp, ItemId.CHAOS_SCROll_60, true, ItemId.CHAOS_SCROll_60, c.getPlayer().isGM());
+            Character player = c.getPlayer();
+            item = ItemInformationProvider.getInstance().scrollEquipWithId(eqp, ItemId.CHAOS_SCROll_60, true, ItemId.CHAOS_SCROll_60, player.isGM(), player.accountExtraDetails.getAscension().contains(AscensionConstants.Names.LUCKY));
         }
 
         if (!reagentids.isEmpty()) {
