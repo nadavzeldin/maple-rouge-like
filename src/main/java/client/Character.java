@@ -5377,7 +5377,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMaxClassLevel() {
-        return 200;
+        return 200 + 20 * this.accountExtraDetails.getAscension().size();
     }
 
     public int getMaxLevel() {

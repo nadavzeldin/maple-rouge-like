@@ -42,7 +42,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class AscensionCommand extends Command {
     {
-        setDescription("Change language settings.");
+        setDescription("Show ascension status.");
     }
 
     @Override
