@@ -1558,7 +1558,7 @@ public class StatEffect {
     }
 
     private boolean isResurrection() {
-        return sourceid == Bishop.RESURRECTION || sourceid == GM.RESURRECTION || sourceid == SuperGM.RESURRECTION;
+        return sourceid == GM.RESURRECTION || sourceid == SuperGM.RESURRECTION;
     }
 
     private boolean isTimeLeap() {
