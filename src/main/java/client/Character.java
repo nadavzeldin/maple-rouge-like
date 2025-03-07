@@ -6448,8 +6448,7 @@ public class Character extends AbstractCharacterObject {
                 jobOptionList = Arrays.asList(Job.HERO, Job.PALADIN, Job.DARKKNIGHT,
                         Job.FP_ARCHMAGE, Job.IL_ARCHMAGE, Job.BISHOP,
                         Job.BOWMASTER, Job.MARKSMAN, Job.NIGHTLORD, Job.SHADOWER,
-                        Job.BUCCANEER, Job.CORSAIR,Job.DAWNWARRIOR4, Job.BLAZEWIZARD4,
-                        Job.WINDARCHER4, Job.NIGHTWALKER4, Job.THUNDERBREAKER4);
+                        Job.BUCCANEER, Job.CORSAIR);
             }
             List<Job> availableJobs = jobOptionList.stream()
                     .filter(job -> job != this.job)
