@@ -200,6 +200,7 @@ import static constants.game.GameConstants.LOOT_LIZARD_ID;
 import static constants.game.GameConstants.LOOT_LIZARD_SPAWN_COOLDOWN;
 import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
 import static constants.game.GameConstants.Level_Up_Banner;
+import static java.lang.Math.min;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -840,7 +841,7 @@ public class Character extends AbstractCharacterObject {
                     weapMulti = 4.2;
                 }
 
-                int attack = (int) Math.min(Math.floor((2 * getLevel() + 31) / 3), 31);
+                int attack = (int) min(Math.floor((2 * getLevel() + 31) / 3), 31);
                 maxbasedamage = (int) Math.ceil((localstr * weapMulti + localdex) * attack / 100.0);
             } else {
                 maxbasedamage = 1;
@@ -873,7 +874,7 @@ public class Character extends AbstractCharacterObject {
         if (count < combocounter) {
             cancelEffectFromBuffStat(BuffStat.ARAN_COMBO);
         }
-        combocounter = (short) Math.min(30000, count);
+        combocounter = (short) min(30000, count);
         if (count > 0) {
             sendPacket(PacketCreator.showCombo(combocounter));
         }
@@ -3193,7 +3194,7 @@ public class Character extends AbstractCharacterObject {
             party = Integer.MAX_VALUE;  // integer overflow, heh.
         }
 
-        int equip = (int) Math.min((long) (gain / 10) * pendantExp, Integer.MAX_VALUE);
+        int equip = (int) min((long) (gain / 10) * pendantExp, Integer.MAX_VALUE);
 
         gainExpInternal(gain, equip, party, show, inChat, white);
     }
@@ -3207,7 +3208,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     private void announceExpGain(long gain, int equip, int party, boolean inChat, boolean white) {
-        gain = Math.min(gain, Integer.MAX_VALUE);
+        gain = min(gain, Integer.MAX_VALUE);
         if (gain == 0) {
             if (party == 0) {
                 return;
@@ -5381,7 +5382,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMaxClassLevel() {
-        return 200 + 20 * this.accountExtraDetails.getAscension().size();
+        return min(200 + 10 * this.accountExtraDetails.getAscension().size(), 255);
     }
 
     public int getMaxLevel() {
@@ -5645,7 +5646,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public void setGMLevel(int level) {
-        this.gmLevel = Math.min(level, 6);
+        this.gmLevel = min(level, 6);
         this.gmLevel = Math.max(level, 1);
 
         whiteChat = gmLevel >= 4;   // thanks ozanrijen for suggesting default white chat
@@ -6338,7 +6339,7 @@ public class Character extends AbstractCharacterObject {
     private int getSpGain(int spGain, int curSp, Job job) {
         int maxSp = getJobMaxSp(job);
 
-        spGain = Math.min(spGain, maxSp - curSp);
+        spGain = min(spGain, maxSp - curSp);
         int jobBranch = GameConstants.getJobBranch(job);
         return spGain;
     }
@@ -6443,13 +6444,12 @@ public class Character extends AbstractCharacterObject {
                     Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR3, Job.BLAZEWIZARD3,
                     Job.WINDARCHER3, Job.NIGHTWALKER3, Job.THUNDERBREAKER3);
             }
-            else // Firth Job
+            else // Fourth Job
             {
                 jobOptionList = Arrays.asList(Job.HERO, Job.PALADIN, Job.DARKKNIGHT,
                         Job.FP_ARCHMAGE, Job.IL_ARCHMAGE, Job.BISHOP,
                         Job.BOWMASTER, Job.MARKSMAN, Job.NIGHTLORD, Job.SHADOWER,
-                        Job.BUCCANEER, Job.CORSAIR,Job.DAWNWARRIOR4, Job.BLAZEWIZARD4,
-                        Job.WINDARCHER4, Job.NIGHTWALKER4, Job.THUNDERBREAKER4);
+                        Job.BUCCANEER, Job.CORSAIR);
             }
             List<Job> availableJobs = jobOptionList.stream()
                     .filter(job -> job != this.job)
@@ -7922,7 +7922,7 @@ public class Character extends AbstractCharacterObject {
 
             recalcEquipStats();
 
-            localmagic = Math.min(localmagic, 2000);
+            localmagic = min(localmagic, 2000);
 
             Integer hbhp = getBuffedValue(BuffStat.HYPERBODYHP);
             if (hbhp != null) {
@@ -7933,8 +7933,8 @@ public class Character extends AbstractCharacterObject {
                 localmaxmp += (hbmp.doubleValue() / 100) * localmaxmp;
             }
 
-            localmaxhp = Math.min(30000, localmaxhp);
-            localmaxmp = Math.min(30000, localmaxmp);
+            localmaxhp = min(30000, localmaxhp);
+            localmaxmp = min(30000, localmaxmp);
 
             StatEffect combo = getBuffEffect(BuffStat.ARAN_COMBO);
             if (combo != null) {
@@ -9055,7 +9055,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public void setDojoEnergy(int x) {
-        this.dojoEnergy = Math.min(x, 10000);
+        this.dojoEnergy = min(x, 10000);
     }
 
     public void setDojoPoints(int x) {
@@ -9140,7 +9140,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public void addMerchantMesos(int add) {
-        final int newAmount = (int) Math.min((long) merchantmeso + add, Integer.MAX_VALUE);
+        final int newAmount = (int) min((long) merchantmeso + add, Integer.MAX_VALUE);
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("UPDATE characters SET MerchantMesos = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
@@ -9259,7 +9259,7 @@ public class Character extends AbstractCharacterObject {
 
     private int calcHpRatioUpdate(int curpoint, int maxpoint, int diffpoint) {
         int curMax = maxpoint;
-        int nextMax = Math.min(30000, maxpoint + diffpoint);
+        int nextMax = min(30000, maxpoint + diffpoint);
 
         float temp = curpoint * nextMax;
         int ret = (int) Math.ceil(temp / curMax);
@@ -9270,7 +9270,7 @@ public class Character extends AbstractCharacterObject {
 
     private int calcMpRatioUpdate(int curpoint, int maxpoint, int diffpoint) {
         int curMax = maxpoint;
-        int nextMax = Math.min(30000, maxpoint + diffpoint);
+        int nextMax = min(30000, maxpoint + diffpoint);
 
         float temp = curpoint * nextMax;
         int ret = (int) Math.ceil(temp / curMax);
@@ -11217,7 +11217,7 @@ public class Character extends AbstractCharacterObject {
         }
         try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET world = ?, meso = ?, guildid = ?, guildrank = ? WHERE id = ?")) {
             ps.setInt(1, newWorld);
-            ps.setInt(2, Math.min(mesos, 1000000)); // might want a limit in "YamlConfig.config.server" for this
+            ps.setInt(2, min(mesos, 1000000)); // might want a limit in "YamlConfig.config.server" for this
             ps.setInt(3, 0);
             ps.setInt(4, 5);
             ps.setInt(5, characterId);

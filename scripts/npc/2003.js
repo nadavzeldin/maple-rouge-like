@@ -27,7 +27,7 @@ function action(mode, type, selection) {
         } else if (selection == 1) {
             cm.sendOk("#eAscension Powers#k#n\r\n\r\n" +
                 "#dUpon reaching level 200, you have unlocked new command:#k\r\n" +
-                "#r@ascension <option>#k\r\n\r\n" +
+                "#r@ascend <option>#k\r\n\r\n" +
                 "#eAvailable Options:#n\r\n" +
                 "0 - View your active ascensions\r\n" +
                 "1 - Hoarder Ascension: Gain 5x EXP and drop rates for all characters\r\n" +

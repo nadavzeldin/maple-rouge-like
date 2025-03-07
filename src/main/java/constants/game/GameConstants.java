@@ -97,6 +97,12 @@ public class GameConstants {
         put("neo", MapId.NEO_CITY);
         put("mushking", MapId.MUSHROOM_KINGDOM);
         put("fm", MapId.FM_ENTRANCE);
+        put("balrog", MapId.CURSED_SANCTUARY);
+        put("zakum", MapId.DOOR_TO_ZAKUM);
+        put("papu", MapId.ORIGIN_OF_CLOCKTOWER);
+        put("skelegon", MapId.DRAGON_NEST_LEFT_BEHIND);
+        put("pianus", MapId.CAVE_OF_PIANUS);
+        put("horntail", MapId.ENTRANCE_TO_HORNTAILS_CAVE);
     }};
 
     // "goto" command for only-GMs
