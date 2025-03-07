@@ -50,7 +50,7 @@ public class AscensionCommand extends Command {
         int type;
         Character player = c.getPlayer();
         if (params.length < 1) {
-            player.yellowMessage("Syntax: @ascension <0=ShowMyAscensions, 1=Hoarder, 2=Resilient, 3=Lucky>");
+            player.yellowMessage("Syntax: @ascend <0=ShowMyAscensions, 1=Hoarder, 2=Resilient, 3=Lucky>");
             return;
         }
 

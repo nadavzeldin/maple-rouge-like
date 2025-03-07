@@ -5381,7 +5381,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public int getMaxClassLevel() {
-        return 200 + 20 * this.accountExtraDetails.getAscension().size();
+        return Math.min(200 + 10 * this.accountExtraDetails.getAscension().size(), 255);
     }
 
     public int getMaxLevel() {
@@ -6443,7 +6443,7 @@ public class Character extends AbstractCharacterObject {
                     Job.MARAUDER, Job.OUTLAW, Job.DAWNWARRIOR3, Job.BLAZEWIZARD3,
                     Job.WINDARCHER3, Job.NIGHTWALKER3, Job.THUNDERBREAKER3);
             }
-            else // Firth Job
+            else // Fourth Job
             {
                 jobOptionList = Arrays.asList(Job.HERO, Job.PALADIN, Job.DARKKNIGHT,
                         Job.FP_ARCHMAGE, Job.IL_ARCHMAGE, Job.BISHOP,

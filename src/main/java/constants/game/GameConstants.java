@@ -97,6 +97,13 @@ public class GameConstants {
         put("neo", MapId.NEO_CITY);
         put("mushking", MapId.MUSHROOM_KINGDOM);
         put("fm", MapId.FM_ENTRANCE);
+        put("balrog", MapId.CURSED_SANCTUARY);
+        put("zakum", MapId.DOOR_TO_ZAKUM);
+        put("papu", MapId.ORIGIN_OF_CLOCKTOWER);
+        put("skelegon", MapId.DRAGON_NEST_LEFT_BEHIND);
+        put("pianus", MapId.CAVE_OF_PIANUS);
+        put("horntail", MapId.ENTRANCE_TO_HORNTAILS_CAVE);
+        put("pinkbean", MapId.FORGOTTEN_TWILIGHT);
     }};
 
     // "goto" command for only-GMs
@@ -107,15 +114,8 @@ public class GameConstants {
         put("griffey", MapId.GRIFFEY_FOREST);
         put("manon", MapId.MANONS_FOREST);
         put("horseman", MapId.HOLLOWED_GROUND);
-        put("balrog", MapId.CURSED_SANCTUARY);
-        put("zakum", MapId.DOOR_TO_ZAKUM);
-        put("papu", MapId.ORIGIN_OF_CLOCKTOWER);
         put("guild", MapId.GUILD_HQ);
-        put("skelegon", MapId.DRAGON_NEST_LEFT_BEHIND);
         put("hpq", MapId.HENESYS_PARK);
-        put("pianus", MapId.CAVE_OF_PIANUS);
-        put("horntail", MapId.ENTRANCE_TO_HORNTAILS_CAVE);
-        put("pinkbean", MapId.FORGOTTEN_TWILIGHT);
         put("keep", MapId.CRIMSONWOOD_KEEP);
         put("dojo", MapId.MU_LUNG_DOJO_HALL);
         put("bosspq", MapId.EXCLUSIVE_TRAINING_CENTER);

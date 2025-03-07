@@ -25,9 +25,9 @@ function action(mode, type, selection) {
             cm.sendOk("#eLegends Never Die#k#n\r\n\r\nPlay testing achievers which manage to reach level 200 first are:\r\n\r\n#b1. #eChrollo#n#k\r\n#b2. #eKeen#n#k\r\n#b3. #eMiguel#n#k\r\n\r\n#d#eCongrads you legends!#k#n");
             cm.dispose();
         } else if (selection == 1) {
-            cm.sendOk("#eAscension Powers#k#n\r\n\r\n" +
+            cm.sendOk("#ascend  Powers#k#n\r\n\r\n" +
                 "#dUpon reaching level 200, you have unlocked new command:#k\r\n" +
-                "#r@ascension <option>#k\r\n\r\n" +
+                "#r@ascend  <option>#k\r\n\r\n" +
                 "#eAvailable Options:#n\r\n" +
                 "0 - View your active ascensions\r\n" +
                 "1 - Hoarder Ascension: Gain 5x EXP and drop rates for all characters\r\n" +
