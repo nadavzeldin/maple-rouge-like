@@ -9485,7 +9485,7 @@ public class Character extends AbstractCharacterObject {
     }
 
     public boolean gainSlots(int type, int slots, boolean update) {
-        int newLimit = gainSlotsInternal(type, slots*5);
+        int newLimit = gainSlotsInternal(type, slots*3);
         if (newLimit != -1) {
             this.saveCharToDB();
             if (update) {
