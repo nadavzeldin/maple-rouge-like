@@ -434,9 +434,26 @@ public class Character extends AbstractCharacterObject {
         setPosition(new Point(0, 0));
     }
 
-    public void resetInventory()
-    {
-        this.inventory = new Inventory[InventoryType.values().length];
+   public void resetInventory(Client c) {
+        for (InventoryType type : InventoryType.values()) {
+
+            int numSlots = c.getPlayer().getInventory(type).getSlotLimit();
+            for (int i = 0; i < numSlots; i++) {
+                Item tempItem = c.getPlayer().getInventory(type).getItem((byte) i);
+                if (tempItem != null) {
+                    InventoryManipulator.removeFromSlot(c, type, (byte) i, tempItem.getQuantity(), false, false);
+                }
+            }
+        }
+        // Handle EQUIPPED inventory separately
+        List<Item> equippedItems = new ArrayList<>(c.getPlayer().getInventory(InventoryType.EQUIPPED).list());
+        for (Item equippedItem : equippedItems) {
+            if (equippedItem != null) {
+                InventoryManipulator.removeFromSlot(c, InventoryType.EQUIPPED, equippedItem.getPosition(), equippedItem.getQuantity(), false, false);
+            }
+        }
+        // Reset mesos to 0
+        c.getPlayer().gainMeso(-c.getPlayer().getMeso(), true);
     }
 
     private static Job getJobStyleInternal(int jobid, byte opt) {

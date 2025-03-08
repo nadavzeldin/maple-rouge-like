@@ -122,8 +122,9 @@ public final class ChangeMapHandler extends AbstractPacketHandler {
 
                                 globalDeathMessage(chr, hasUnkillable);
                                 if (hasUnkillable) {
-                                    chr.resetInventory();
+                                    //change order or its finnicky idk why
                                     chr.respawn(MapId.HENESYS);
+                                    chr.resetInventory();
                                 } else {
                                     chr.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
                                     chr.respawn(MapId.JAIL); // one death - rogue-like
