@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class SellCommand extends Command {
     {
-        setDescription("Sells all items in an inventory tab or a specific item by name.");
+        setDescription("Sells all items in an inventory tab or a specific item by name, with optional exclusion.");
     }
 
     @Override
@@ -23,14 +23,27 @@ public class SellCommand extends Command {
         Character player = c.getPlayer();
 
         if (params.length < 1) {
-            player.yellowMessage("Syntax: @sell <all/equip/use/etc/setup/cash/item> [item_name or sell slot amount]");
+            player.yellowMessage("Syntax: @sell <all/equip/use/etc/setup/cash> [exclude <item_name>]");
             return;
         }
 
         String type = params[0].toLowerCase();
         Shop shop = ShopFactory.getInstance().getShop(1337); // GM Shop
-        int sellSlotAmount = 101;
+        String excludeItemName = null;
 
+        // Check if the command includes "exclude"
+        if (params.length >= 3 && params[1].equalsIgnoreCase("exclude")) {
+            excludeItemName = String.join(" ", Arrays.copyOfRange(params, 2, params.length)).toLowerCase();
+            player.yellowMessage("Excluding item: " + excludeItemName);
+        }
+
+        // If the type is an inventory type, process the command accordingly
+        if (!allTypesAsString.contains(type) && !type.equals("all")) {
+            player.yellowMessage("Error: The specified inventory type '" + type + "' does not exist.");
+            return;
+        }
+
+        // Process the "item" type to sell specific items by name
         if (type.equals("item")) {
             if (params.length < 2) {
                 player.yellowMessage("Syntax: @sell item <item_name> [amount]");
@@ -39,23 +52,11 @@ public class SellCommand extends Command {
 
             String itemName = String.join(" ", Arrays.copyOfRange(params, 1, params.length - 1)).toLowerCase();
             int amount = params.length > 2 ? Integer.parseInt(params[params.length - 1]) : 0; // Amount can be passed after item name
-            sellItemByName(c, shop, player, itemName, amount);
+            sellItemByName(c, shop, player, itemName, amount, excludeItemName);
             return;
         }
 
-        if (!allTypesAsString.contains(type)) {
-            player.yellowMessage("Error: The specified inventory type '" + type + "' does not exist.");
-            return;
-        }
-
-        if (params.length >= 2) {
-            try {
-                sellSlotAmount = Integer.parseInt(params[1]);
-            } catch (NumberFormatException e) {
-                player.yellowMessage("Invalid slot amount. Using default value: 101.");
-            }
-        }
-
+        // Handle the case where the "exclude" feature is applied
         boolean isAll = type.equals("all");
 
         for (InventoryType inventoryType : allTypes) {
@@ -71,6 +72,14 @@ public class SellCommand extends Command {
                 for (short i = 0; i < inventory.getSlotLimit(); i++) {
                     Item tempItem = inventory.getItem((byte) i);
                     if (tempItem != null) {
+                        String tempItemName = ItemInformationProvider.getInstance().getName(tempItem.getItemId()).toLowerCase();
+
+                        // Skip item if it matches the excluded name
+                        if (excludeItemName != null && tempItemName.equals(excludeItemName)) {
+                            player.yellowMessage("Excluding item: " + tempItemName);
+                            continue;
+                        }
+
                         player.yellowMessage("Found item: ID " + tempItem.getItemId() + " in slot " + i);
                         shop.sell(c, inventoryType, i, tempItem.getQuantity());
                     }
@@ -82,10 +91,11 @@ public class SellCommand extends Command {
                 }
             }
         }
+
         player.yellowMessage("All applicable inventory items have been sold!");
     }
 
-    private void sellItemByName(Client c, Shop shop, Character player, String itemName, int amount) {
+    private void sellItemByName(Client c, Shop shop, Character player, String itemName, int amount, String excludeItemName) {
         ItemInformationProvider itemInfoProvider = ItemInformationProvider.getInstance();
         boolean itemFound = false;
 
@@ -99,26 +109,27 @@ public class SellCommand extends Command {
             for (byte i = 0; i < inventory.getSlotLimit(); i++) {
                 Item tempItem = inventory.getItem(i);
                 if (tempItem != null) {
-                    String tempItemName = itemInfoProvider.getName(tempItem.getItemId());
+                    String tempItemName = itemInfoProvider.getName(tempItem.getItemId()).toLowerCase();
 
-                    if (tempItemName != null) {
-                        String lowerCaseTempItemName = tempItemName.toLowerCase();
+                    // Skip item if it matches the excluded name
+                    if (excludeItemName != null && tempItemName.equals(excludeItemName)) {
+                        player.yellowMessage("Excluding item: " + tempItemName);
+                        continue;
+                    }
 
-                        // Compare item names without considering case
-                        if (lowerCaseTempItemName.equals(lowerCaseItemName)) {
-                            short quantityInStack = tempItem.getQuantity();
-                            short quantityToSell = (short) Math.min(amount, quantityInStack); // Cast to short to avoid type issue
+                    if (tempItemName.equals(lowerCaseItemName)) {
+                        short quantityInStack = tempItem.getQuantity();
+                        short quantityToSell = (short) Math.min(amount, quantityInStack); // Cast to short to avoid type issue
 
-                            player.yellowMessage("Selling " + quantityToSell + " of " + tempItemName);
-                            shop.sell(c, inventoryType, i, quantityToSell);
+                        player.yellowMessage("Selling " + quantityToSell + " of " + tempItemName);
+                        shop.sell(c, inventoryType, i, quantityToSell);
 
-                            amount -= quantityToSell; // Decrease the remaining amount to sell
-                            itemFound = true;
+                        amount -= quantityToSell; // Decrease the remaining amount to sell
+                        itemFound = true;
 
-                            if (amount <= 0) {
-                                player.yellowMessage("Sold " + itemName + "!");
-                                return;
-                            }
+                        if (amount <= 0) {
+                            player.yellowMessage("Sold " + itemName + "!");
+                            return;
                         }
                     }
                 }
