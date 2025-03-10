@@ -24,6 +24,7 @@ package net.server.channel.handlers;
 import client.Character;
 import client.Client;
 import client.Disease;
+import client.command.CommandsExecutor;
 import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.manipulator.InventoryManipulator;
@@ -31,8 +32,6 @@ import constants.id.ItemId;
 import constants.inventory.ItemConstants;
 import net.AbstractPacketHandler;
 import net.packet.InPacket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import server.ItemInformationProvider;
 import server.StatEffect;
 import tools.PacketCreator;
@@ -57,10 +56,17 @@ public final class UseItemHandler extends AbstractPacketHandler {
         int itemId = p.readInt();
         Item toUse = chr.getInventory(InventoryType.USE).getItem(slot);
         long curTime = System.currentTimeMillis();
+        boolean macro = false;
+        // if itemId in 2022529,2022530,2022531,2022536,2022537
+        if (itemId == 2022529 || itemId == 2022530 || itemId == 2022531 || itemId == 2022536 || itemId == 2022537) {
+            macro = true;
+        }
         if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
-            // use item is on cooldown
-            chr.yellowMessage("Potion is on cooldown!");
-            return;
+            if (!macro){
+                // use item is on cooldown
+                chr.yellowMessage("Potion is on cooldown!");
+                return;
+            }
         }
         chr.setUsedPotionTime(curTime); // set the time we used a potion (or any use item)
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemId) {
@@ -87,9 +93,43 @@ public final class UseItemHandler extends AbstractPacketHandler {
                     remove(c, slot);
                 }
                 return;
+            
+            } else if(itemId == 2022529){
+                String[] macros = chr.getUserMacros();
+                if (macros != null && macros.length > 0) {
+                    String command = macros[0];
+                    CommandsExecutor.getInstance().handle(c, command);
+                }
+            } else if(itemId == 2022530){
+                String[] macros = chr.getUserMacros();
+                if (macros != null && macros.length > 1) {
+                    String command = macros[1];
+                    CommandsExecutor.getInstance().handle(c, command);
+                }
+            } else if(itemId == 2022531){
+                String[] macros = chr.getUserMacros();
+                if (macros != null && macros.length > 2) {
+                    String command = macros[2];
+                    CommandsExecutor.getInstance().handle(c, command);
+                }
+            } else if(itemId == 2022536){
+                String[] macros = chr.getUserMacros();
+                if (macros != null && macros.length > 3) {
+                    String command = macros[3];
+                    CommandsExecutor.getInstance().handle(c, command);
+                }
+            } else if(itemId == 2022537){
+                String[] macros = chr.getUserMacros();
+                if (macros != null && macros.length > 4) {
+                    String command = macros[4];
+                    CommandsExecutor.getInstance().handle(c, command);
+                }
             }
+            
 
-            remove(c, slot);
+            if(!macro){
+                remove(c, slot);
+            }
 
             if (toUse.getItemId() == ItemId.HAPPY_BIRTHDAY) {
                 chr.AddStrDexIntLuk(1);
