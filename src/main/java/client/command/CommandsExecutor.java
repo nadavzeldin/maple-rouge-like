@@ -256,15 +256,20 @@ public class CommandsExecutor {
     }
 
     public void handle(Client client, String message) {
-        if (client.tryacquireClient()) {
-            try {
-                handleInternal(client, message);
-            } finally {
-                client.releaseClient();
+        String[] commandsSplit = message.split("[@!]");
+        commandsSplit = Arrays.stream(commandsSplit).filter(s -> !s.isEmpty()).toArray(String[]::new);
+        for (String command : commandsSplit) {
+            if (client.tryacquireClient()) {
+                try {
+                    handleInternal(client, "@" + command);
+                } finally {
+                    client.releaseClient();
+                }
+            } else {
+                client.getPlayer().dropMessage(5, "Try again in a while... Latest commands are currently being processed.");
             }
-        } else {
-            client.getPlayer().dropMessage(5, "Try again in a while... Latest commands are currently being processed.");
         }
+
     }
 
     private void handleInternal(Client client, String message) {
