@@ -285,6 +285,7 @@ public class Character extends AbstractCharacterObject {
     private final Set<NewYearCardRecord> newyears = new LinkedHashSet<>();
     private final SavedLocation[] savedLocations;
     private final SkillMacro[] skillMacros = new SkillMacro[5];
+    private final String[] macros = new String[5];
     private List<Integer> lastmonthfameids;
     private final List<WeakReference<MapleMap>> lastVisitedMaps = new LinkedList<>();
     private WeakReference<MapleMap> ownedMap = new WeakReference<>(null);
@@ -7549,6 +7550,33 @@ public class Character extends AbstractCharacterObject {
                     }
                 }
 
+                // CREATE TABLE marco (
+                //     id INT AUTO_INCREMENT PRIMARY KEY,
+                //     characterid INT NOT NULL,
+                //     skill1 VARCHAR(255),
+                //     skill2 VARCHAR(255),
+                //     skill3 VARCHAR(255),
+                //     skill4 VARCHAR(255),
+                //     skill5 VARCHAR(255)
+                // );
+                // use this to fecth the skills string and save it to use later
+                try (PreparedStatement ps = con.prepareStatement("SELECT * FROM macro WHERE characterid = ?")){
+                    ps.setInt(1, charid);
+
+                    try (ResultSet rs = ps.executeQuery()){
+                        while (rs.next()){
+                            // String[] macros = new String[5];
+                            for (int i = 0; i < 5; i++){
+                                String macro = rs.getString("skill" + (i + 1));
+                                if (macro != null){
+                                    ret.macros[i] = macro;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+
                 // Key config
                 try (PreparedStatement ps = con.prepareStatement("SELECT `key`,`type`,`action` FROM keymap WHERE characterid = ?")) {
                     ps.setInt(1, charid);
@@ -7633,6 +7661,10 @@ public class Character extends AbstractCharacterObject {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String[] getUserMacros() {
+        return macros;
     }
 
     public void reloadQuestExpirations() {
@@ -11482,4 +11514,19 @@ public class Character extends AbstractCharacterObject {
     public void setChasing(boolean chasing) {
         this.chasing = chasing;
     }
+
+	public void updateMacro(int slot, String command) {
+		// update the slot with the command
+        macros[slot-1] = command;
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement("UPDATE macro SET skill" + slot + " = ? WHERE characterid = ?")) {
+            ps.setString(1, command);
+            ps.setInt(2, getId());
+            ps.executeUpdate();
+            // update the marcos too
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
 }
