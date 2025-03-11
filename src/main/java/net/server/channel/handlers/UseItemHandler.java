@@ -38,10 +38,19 @@ import tools.PacketCreator;
 
 import static constants.inventory.ItemConstants.USE_POTION_COOLDOWN;
 
+import java.util.Map;
+
 /**
  * @author Matze
  */
 public final class UseItemHandler extends AbstractPacketHandler {
+    // 2022529 - Meaning of Azaleas
+    // 2022530 - Meaning of Forsythias
+    // 2022531 - Meaning of Clovers
+    // 2022536 - Underground Temple's Seal
+    // 2022537 - Gladius' Strength
+    private static final Map<Integer, Integer> MACRO_ITEMS_DICT = Map.of(2022529, 1, 2022530, 2, 2022531, 3, 2022536, 4, 2022537, 5);
+    
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();
@@ -57,8 +66,8 @@ public final class UseItemHandler extends AbstractPacketHandler {
         Item toUse = chr.getInventory(InventoryType.USE).getItem(slot);
         long curTime = System.currentTimeMillis();
         boolean macro = false;
-        // if itemId in 2022529,2022530,2022531,2022536,2022537
-        if (itemId == 2022529 || itemId == 2022530 || itemId == 2022531 || itemId == 2022536 || itemId == 2022537) {
+        // if itemId in MACRO_ITEMS_DICT
+        if (MACRO_ITEMS_DICT.containsKey(itemId)) {
             macro = true;
         }
         if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
@@ -94,36 +103,13 @@ public final class UseItemHandler extends AbstractPacketHandler {
                 }
                 return;
             
-            } else if(itemId == 2022529){
+            } else if(macro){
                 String[] macros = chr.getUserMacros();
-                if (macros != null && macros.length > 0) {
-                    String command = macros[0];
+                int idx = MACRO_ITEMS_DICT.get(itemId) - 1;
+                if (macros != null && macros.length > idx) {
+                    String command = macros[idx];
                     CommandsExecutor.getInstance().handle(c, command);
-                }
-            } else if(itemId == 2022530){
-                String[] macros = chr.getUserMacros();
-                if (macros != null && macros.length > 1) {
-                    String command = macros[1];
-                    CommandsExecutor.getInstance().handle(c, command);
-                }
-            } else if(itemId == 2022531){
-                String[] macros = chr.getUserMacros();
-                if (macros != null && macros.length > 2) {
-                    String command = macros[2];
-                    CommandsExecutor.getInstance().handle(c, command);
-                }
-            } else if(itemId == 2022536){
-                String[] macros = chr.getUserMacros();
-                if (macros != null && macros.length > 3) {
-                    String command = macros[3];
-                    CommandsExecutor.getInstance().handle(c, command);
-                }
-            } else if(itemId == 2022537){
-                String[] macros = chr.getUserMacros();
-                if (macros != null && macros.length > 4) {
-                    String command = macros[4];
-                    CommandsExecutor.getInstance().handle(c, command);
-                }
+                    }
             }
             
 

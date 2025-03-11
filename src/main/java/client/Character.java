@@ -7550,22 +7550,13 @@ public class Character extends AbstractCharacterObject {
                     }
                 }
 
-                // CREATE TABLE marco (
-                //     id INT AUTO_INCREMENT PRIMARY KEY,
-                //     characterid INT NOT NULL,
-                //     skill1 VARCHAR(255),
-                //     skill2 VARCHAR(255),
-                //     skill3 VARCHAR(255),
-                //     skill4 VARCHAR(255),
-                //     skill5 VARCHAR(255)
-                // );
-                // use this to fecth the skills string and save it to use later
+                
+                // use this to fecth the macro's string and save it to use later
                 try (PreparedStatement ps = con.prepareStatement("SELECT * FROM macro WHERE characterid = ?")){
                     ps.setInt(1, charid);
 
                     try (ResultSet rs = ps.executeQuery()){
                         while (rs.next()){
-                            // String[] macros = new String[5];
                             for (int i = 0; i < 5; i++){
                                 String macro = rs.getString("skill" + (i + 1));
                                 if (macro != null){

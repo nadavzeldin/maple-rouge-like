@@ -2,11 +2,11 @@ package client.command.commands.gm0;
 
 import client.Client;
 import client.command.Command;
-import server.maps.MapleMap;
+
 
 public class SetMacroCommand extends Command {
     {
-        setDescription("Set up to 5 macros to use with facial expression.");
+        setDescription("Set 5 macros to use with special potions found in the shop. Set and active when consuming the potion.");
     }
 
     @Override
@@ -16,7 +16,7 @@ public class SetMacroCommand extends Command {
         System.out.println("The params are: " + params);
         // first check if the command is valid
         if (params.length < 2) {
-            c.getPlayer().yellowMessage("Syntax: !setmacro <slot> <-><command/s>");
+            c.getPlayer().yellowMessage("Syntax: !setmacro <slot> <-><command/s>\n e.g. @setmacro 1 -loot -sell equip 5");
             return;
         }
 

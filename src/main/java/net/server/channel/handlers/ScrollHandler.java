@@ -91,51 +91,23 @@ public final class ScrollHandler extends AbstractPacketHandler {
                 useInventory.lockInventory();
                 try {
                     if (legendarySpirit) {
-                        // For Legendary Spirit, keep scrolling based on whiteScroll condition
-                        while (currentEquip != null && 
-                               (whiteScroll ? successfulScrolls < initialSlots : scrollsUsed < initialSlots) && 
-                               scroll.getQuantity() > scrollsUsed && 
-                               (!whiteScroll || wscroll.getQuantity() > scrollsUsed)
-                               && !ItemConstants.isCleanSlate(scrollsUsed)) {
-                            byte oldLevel = currentEquip.getLevel();
-                            byte oldSlots = currentEquip.getUpgradeSlots();
-
-                            Equip scrolled = (Equip) ii.scrollEquipWithId(currentEquip, scroll.getItemId(), whiteScroll, 0, chr.isGM(), chr.accountExtraDetails.getAscension().contains(AscensionConstants.Names.LUCKY));
-                            ScrollResult scrollSuccess = Equip.ScrollResult.FAIL;
-
-                            if (scrolled == null) {
-                                scrollSuccess = Equip.ScrollResult.CURSE;
-                            } else if (scrolled.getLevel() > oldLevel || 
-                                     (ItemConstants.isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() == oldSlots + 1) || 
-                                     ItemConstants.isFlagModifier(scroll.getItemId(), scrolled.getFlag())) {
-                                scrollSuccess = Equip.ScrollResult.SUCCESS;
-                                successfulScrolls++;
-                            }
-
-                            scrollsUsed++;
-
-                            if (scrollSuccess == Equip.ScrollResult.CURSE && !ItemId.isWeddingRing(currentEquip.getItemId())) {
-                                handleCurseResult(c, currentEquip, equipSlot, mods);
-                                currentEquip = null;
-                            } else {
-                                currentEquip = scrolled;
-                                mods.add(new ModifyInventory(3, currentEquip));
-                                mods.add(new ModifyInventory(0, currentEquip));
-                            }
-
-                            // Broadcast scroll effect for each attempt
-                            chr.getMap().broadcastMessage(PacketCreator.getScrollEffect(chr.getId(), scrollSuccess, legendarySpirit, whiteScroll));
-
-                            // Add 100ms delay between scrolls
-                            if (currentEquip != null && (whiteScroll ? successfulScrolls < initialSlots : scrollsUsed < initialSlots)) {
-                                try {
-                                    Thread.sleep(100); // 100ms delay
-                                } catch (InterruptedException e) {
-                                    Thread.currentThread().interrupt();
-                                    break;
-                                }
-                            }
-                        }
+                        LegendarySpiritResult result = processLegendarySpiritLoop(
+                            chr,
+                            c,
+                            ii,
+                            currentEquip,
+                            scroll,
+                            wscroll,
+                            whiteScroll,
+                            initialSlots,
+                            equipSlot,
+                            mods,
+                            successfulScrolls,
+                            scrollsUsed
+                        );
+                        currentEquip = result.currentEquip;
+                        successfulScrolls = result.successfulScrolls;
+                        scrollsUsed = result.scrollsUsed;
                     } else {
                         // Regular scrolling: only 1 scroll
                         byte oldLevel = currentEquip.getLevel();
@@ -189,6 +161,80 @@ public final class ScrollHandler extends AbstractPacketHandler {
             }
         }
     }
+
+    private LegendarySpiritResult processLegendarySpiritLoop(Character chr,
+                                                        Client c,
+                                                        ItemInformationProvider ii,
+                                                        Equip currentEquip,
+                                                        Item scroll,
+                                                        Item wscroll,
+                                                        boolean whiteScroll,
+                                                        byte initialSlots,
+                                                        short equipSlot,
+                                                        List<ModifyInventory> mods,
+                                                        int successfulScrolls,
+                                                        int scrollsUsed) {
+    while (currentEquip != null 
+            && (whiteScroll ? successfulScrolls < initialSlots : scrollsUsed < initialSlots)
+            && scroll.getQuantity() > scrollsUsed
+            && (!whiteScroll || wscroll.getQuantity() > scrollsUsed)
+            && !ItemConstants.isCleanSlate(scrollsUsed)) {
+
+        byte oldLevel = currentEquip.getLevel();
+        byte oldSlots = currentEquip.getUpgradeSlots();
+        Equip scrolled = (Equip) ii.scrollEquipWithId(
+            currentEquip, scroll.getItemId(), whiteScroll, 0, chr.isGM(),
+            chr.accountExtraDetails.getAscension().contains(AscensionConstants.Names.LUCKY)
+        );
+        ScrollResult scrollSuccess = Equip.ScrollResult.FAIL;
+
+        if (scrolled == null) {
+            scrollSuccess = Equip.ScrollResult.CURSE;
+        } else if (scrolled.getLevel() > oldLevel
+                || (ItemConstants.isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() == oldSlots + 1)
+                || ItemConstants.isFlagModifier(scroll.getItemId(), scrolled.getFlag())) {
+            scrollSuccess = Equip.ScrollResult.SUCCESS;
+            successfulScrolls++;
+        }
+
+        scrollsUsed++;
+
+        if (scrollSuccess == Equip.ScrollResult.CURSE && !ItemId.isWeddingRing(currentEquip.getItemId())) {
+            handleCurseResult(c, currentEquip, equipSlot, mods);
+            currentEquip = null;
+        } else {
+            currentEquip = scrolled;
+            mods.add(new ModifyInventory(3, currentEquip));
+            mods.add(new ModifyInventory(0, currentEquip));
+        }
+
+        chr.getMap().broadcastMessage(PacketCreator.getScrollEffect(chr.getId(), scrollSuccess, true, whiteScroll));
+
+        if (currentEquip != null
+                && (whiteScroll ? successfulScrolls < initialSlots : scrollsUsed < initialSlots)) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+
+    return new LegendarySpiritResult(currentEquip, successfulScrolls, scrollsUsed);
+}
+
+private static class LegendarySpiritResult {
+    public final Equip currentEquip;
+    public final int successfulScrolls;
+    public final int scrollsUsed;
+
+    LegendarySpiritResult(Equip equip, int successCount, int usedCount) {
+        this.currentEquip = equip;
+        this.successfulScrolls = successCount;
+        this.scrollsUsed = usedCount;
+    }
+}
 
     private static void handleCurseResult(Client c, Equip toScroll, short equipSlot, List<ModifyInventory> mods) {
         Character chr = c.getPlayer();
