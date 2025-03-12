@@ -24,6 +24,7 @@ package net.server.channel.handlers;
 import client.Character;
 import client.Client;
 import client.Disease;
+import client.command.CommandsExecutor;
 import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.manipulator.InventoryManipulator;
@@ -31,18 +32,25 @@ import constants.id.ItemId;
 import constants.inventory.ItemConstants;
 import net.AbstractPacketHandler;
 import net.packet.InPacket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import server.ItemInformationProvider;
 import server.StatEffect;
 import tools.PacketCreator;
 
 import static constants.inventory.ItemConstants.USE_POTION_COOLDOWN;
 
+import java.util.Map;
+
 /**
  * @author Matze
  */
 public final class UseItemHandler extends AbstractPacketHandler {
+    // 2022529 - Meaning of Azaleas
+    // 2022530 - Meaning of Forsythias
+    // 2022531 - Meaning of Clovers
+    // 2022536 - Underground Temple's Seal
+    // 2022537 - Gladius' Strength
+    private static final Map<Integer, Integer> MACRO_ITEMS_DICT = Map.of(2022529, 1, 2022530, 2, 2022531, 3, 2022536, 4, 2022537, 5);
+    
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();
@@ -57,10 +65,17 @@ public final class UseItemHandler extends AbstractPacketHandler {
         int itemId = p.readInt();
         Item toUse = chr.getInventory(InventoryType.USE).getItem(slot);
         long curTime = System.currentTimeMillis();
+        boolean macro = false;
+        // if itemId in MACRO_ITEMS_DICT
+        if (MACRO_ITEMS_DICT.containsKey(itemId)) {
+            macro = true;
+        }
         if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
-            // use item is on cooldown
-            chr.yellowMessage("Potion is on cooldown!");
-            return;
+            if (!macro){
+                // use item is on cooldown
+                chr.yellowMessage("Potion is on cooldown!");
+                return;
+            }
         }
         chr.setUsedPotionTime(curTime); // set the time we used a potion (or any use item)
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemId) {
@@ -87,9 +102,20 @@ public final class UseItemHandler extends AbstractPacketHandler {
                     remove(c, slot);
                 }
                 return;
+            
+            } else if(macro){
+                String[] macros = chr.getUserMacros();
+                int idx = MACRO_ITEMS_DICT.get(itemId) - 1;
+                if (macros != null && macros.length > idx) {
+                    String command = macros[idx];
+                    CommandsExecutor.getInstance().handle(c, command);
+                    }
             }
+            
 
-            remove(c, slot);
+            if(!macro){
+                remove(c, slot);
+            }
 
             if (toUse.getItemId() == ItemId.HAPPY_BIRTHDAY) {
                 chr.AddStrDexIntLuk(1);
