@@ -25,6 +25,7 @@ package client.command;
 
 import client.Client;
 import client.command.commands.gm0.AscensionCommand;
+import client.command.commands.gm0.BuyExpCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
 import client.command.commands.gm0.DoomCommand;
@@ -388,6 +389,8 @@ public class CommandsExecutor {
         addCommand("mylawn", MapOwnerClaimCommand.class);
         addCommand("bosshp", BossHpCommand.class);
         addCommand("mobhp", MobHpCommand.class);
+        addCommand("buyexp", BuyExpCommand.class);
+
 
         commandsNameDesc.add(levelCommandsCursor);
     }
@@ -400,7 +403,6 @@ public class CommandsExecutor {
         addCommand("whodrops", 1, WhoDropsCommand.class);
         addCommand("buffme", 1, BuffMeCommand.class);
         addCommand("goto", 1, GotoCommand.class);
-
         commandsNameDesc.add(levelCommandsCursor);
     }
 
