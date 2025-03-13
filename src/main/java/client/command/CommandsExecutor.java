@@ -61,6 +61,7 @@ import client.command.commands.gm0.UptimeCommand;
 import client.command.commands.gm0.WarpRandomMap;
 import client.command.commands.gm1.BossHpCommand;
 import client.command.commands.gm1.BuffMeCommand;
+import client.command.commands.gm1.BuyExpCommand;
 import client.command.commands.gm1.GotoCommand;
 import client.command.commands.gm1.MobHpCommand;
 import client.command.commands.gm1.WhatDropsFromCommand;
@@ -414,6 +415,7 @@ public class CommandsExecutor {
         addCommand("whodrops", 1, WhoDropsCommand.class);
         addCommand("buffme", 1, BuffMeCommand.class);
         addCommand("goto", 1, GotoCommand.class);
+        addCommand("buyexp", 1, BuyExpCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
     }
