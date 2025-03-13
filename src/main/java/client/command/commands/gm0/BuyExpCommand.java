@@ -1,4 +1,4 @@
-package client.command.commands.gm1;
+package client.command.commands.gm0;
 
 import client.Client;
 import client.command.Command;
@@ -13,7 +13,6 @@ public class BuyExpCommand extends Command {
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
-        // getCashShop().gainCash(1, nxGain);
         int cash =  player.getCashShop().getCash(1);
         if (cash < 4000) {
             player.dropMessage(5, "You do not have enough NX to buy EXP.");
