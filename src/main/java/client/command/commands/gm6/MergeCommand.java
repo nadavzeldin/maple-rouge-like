@@ -25,6 +25,7 @@
 */
 package client.command.commands.gm6;
 
+import client.AscensionConstants;
 import client.Client;
 import client.Character;
 import client.Job;
@@ -48,7 +49,10 @@ import java.util.Random;
 
 import static constants.id.ItemId.MERGE_COIN;
 
+
 public class MergeCommand extends Command {
+    public static final int BLACKSMITHJOBTIER = 10;
+
     private static final Logger log = LoggerFactory.getLogger(MergeCommand.class);
 
     {
@@ -135,6 +139,7 @@ public class MergeCommand extends Command {
         // Get random effect or null
         String selectedEffect = null;
         int roll = random.nextInt(100); // Generates a number between 0 and 99
+        boolean isBlacksmith = player.accountExtraDetails.getAscension().contains(AscensionConstants.Names.BLACKSMITH);
         if (roll == 0) { // 1% chance for "Unkillable"
             selectedEffect = "Unkillable";
         } else if (roll < 50) { // 50% chance to pick a normal effect
@@ -163,11 +168,13 @@ public class MergeCommand extends Command {
         }
 
         // Apply new effect
+        boolean isBlacksmithBuffed = isBlacksmith && roll < 11 && !selectedEffect.equals("Unkillable");
+        EffectBonus newBonus = EFFECT_BONUSES.get(selectedEffect);
+        selectedEffect = isBlacksmithBuffed ? selectedEffect +"++" : selectedEffect;
         primaryItem.setOwner(selectedEffect);
 
-        // Add new effect bonus
-        EffectBonus newBonus = EFFECT_BONUSES.get(selectedEffect);
         if (newBonus != null) {
+            jobTier = isBlacksmithBuffed ? BLACKSMITHJOBTIER : jobTier;
             boolean isWeaponItem = isWeapon(primaryItem.getItemId());
             String statType = isWeaponItem ? newBonus.weaponStat : newBonus.armorStat;
             int boost = getJobTierBoost(jobTier, statType);
@@ -273,6 +280,7 @@ public class MergeCommand extends Command {
                     case 2: return 8;   // 2nd Job
                     case 3: return 12;  // 3rd Job
                     case 4: return 15;  // 4th Job
+                    case BLACKSMITHJOBTIER: return 100;
                     default: return 0;
                 }
 
@@ -284,6 +292,7 @@ public class MergeCommand extends Command {
                     case 2: return 15;
                     case 3: return 20;
                     case 4: return 25;
+                    case BLACKSMITHJOBTIER: return 250;
                     default: return 0;
                 }
 
@@ -294,6 +303,7 @@ public class MergeCommand extends Command {
                     case 2: return 18;
                     case 3: return 25;
                     case 4: return 30;
+                    case BLACKSMITHJOBTIER: return 250;
                     default: return 0;
                 }
 
@@ -305,6 +315,7 @@ public class MergeCommand extends Command {
                     case 2: return 60;
                     case 3: return 80;
                     case 4: return 100;
+                    case BLACKSMITHJOBTIER: return 400;
                     default: return 0;
                 }
 
@@ -315,6 +326,7 @@ public class MergeCommand extends Command {
                     case 2: return 45;
                     case 3: return 60;
                     case 4: return 75;
+                    case BLACKSMITHJOBTIER: return 400;
                     default: return 0;
                 }
 
@@ -325,6 +337,7 @@ public class MergeCommand extends Command {
                     case 2: return 800;
                     case 3: return 1200;
                     case 4: return 1500;
+                    case BLACKSMITHJOBTIER: return 4000;
                     default: return 0;
                 }
 
@@ -335,6 +348,7 @@ public class MergeCommand extends Command {
                     case 2: return 650;
                     case 3: return 1000;
                     case 4: return 1200;
+                    case BLACKSMITHJOBTIER: return 4000;
                     default: return 0;
                 }
 

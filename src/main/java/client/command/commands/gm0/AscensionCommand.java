@@ -50,14 +50,14 @@ public class AscensionCommand extends Command {
         int type;
         Character player = c.getPlayer();
         if (params.length < 1) {
-            player.yellowMessage("Syntax: @ascend <0=ShowMyAscensions, 1=Hoarder, 2=Resilient, 3=Lucky>");
+            player.yellowMessage("Syntax: @ascend <0=ShowMyAscensions, 1=Hoarder, 2=Resilient, 3=Lucky, 4=Blacksmith, 5=EarlyBird>");
             return;
         }
 
         try {
             type = Integer.parseInt(params[0]);
         } catch (NumberFormatException e) {
-            player.yellowMessage("Invalid number format. Use 0 to show ascensions, 1 for Hoarder, 2 for Resilient, or 3 for Lucky.");
+            player.yellowMessage("Invalid number format. Use 0 to show ascensions, 1 for Hoarder, 2 for Resilient, 3 for Lucky, 4 for Blacksmith or 5 for EarlyBird");
             return;
         }
 
@@ -78,7 +78,7 @@ public class AscensionCommand extends Command {
             return;
         }
 
-        if (type < 0 || type > 3) {
+        if (type < 0 || type > 6) {
             player.yellowMessage("Invalid ascension type. Use 1 for Hoarder, 2 for Resilient, or 3 for Lucky.");
             return;
         }
@@ -93,8 +93,14 @@ public class AscensionCommand extends Command {
             ascensionType = AscensionConstants.Names.HOARDER;
         } else if (type == 2) {
             ascensionType = AscensionConstants.Names.RESILIENT;
-        } else {
+        } else if (type == 3) {
             ascensionType = AscensionConstants.Names.LUCKY;
+        } else if (type == 4)
+        {
+            ascensionType = AscensionConstants.Names.BLACKSMITH;
+        } else
+        {
+            ascensionType = AscensionConstants.Names.EARLYBIRD;
         }
 
         if (!ascensions.contains(ascensionType)) {
