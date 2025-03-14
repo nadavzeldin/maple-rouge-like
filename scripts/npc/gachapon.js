@@ -34,8 +34,8 @@ var MESO_COST_PER_ROLL = 10000000; // 10 million mesos per roll
 var prizeGroups = [
     "Taming",
     "Weapons & Shields",
-    "Rings, Capes, Gloves & Accessories",
-    "Cap & Shoes",
+    "Accessories & Gloves",
+    "Capes & Shoes",
     "Uses",
     "Setups"
 ];
