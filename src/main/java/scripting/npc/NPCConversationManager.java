@@ -252,7 +252,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         // Spears
         WEAPON_SHIELD_ITEMS.add(1432040); // Maple Soul Spear
         WEAPON_SHIELD_ITEMS.add(1432045); // Sunspear
-
+        
         // Pole arms
         WEAPON_SHIELD_ITEMS.add(1442051); // Maple Karstan
         WEAPON_SHIELD_ITEMS.add(1442060); // Heavenly Messenger
@@ -325,47 +325,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1122007); // Spiegelmann's Necklace - (no description)
         ACCESSORIES_ITEMS.add(1122010); // Horus' Eye - (no description)
         ACCESSORIES_ITEMS.add(1122014); // Silver Deputy Star - A badge of honor given by Lita Lawless for vanquishing monsters in defense of NLC. You're part of the law now!
-
+       
         ACCESSORIES_ITEMS.add(1022069); // Orange Shutter Shades - (no description)
         ACCESSORIES_ITEMS.add(1012134); // Tear Drop Face Tattoo - Express your soft side with this teary-eyed Tattoo!
-        ACCESSORIES_ITEMS.add(1122059); // mark of nar
-
+        ACCESSORIES_ITEMS.add(1122059); // Mark of Naricain
+       
         ACCESSORIES_ITEMS.add(1032060); // Altair Earrings - (no description)
         ACCESSORIES_ITEMS.add(1022073); // Broken Glasses - (no description)
         ACCESSORIES_ITEMS.add(1032061); // (no description)
-
-        // Stat-giving Capes
-        ACCESSORIES_ITEMS.add(1102000); // Green Napoleon
-        ACCESSORIES_ITEMS.add(1102001); // Blue Napoleon
-        ACCESSORIES_ITEMS.add(1102002); // Red Napoleon
-        ACCESSORIES_ITEMS.add(1102003); // White Napoleon
-        ACCESSORIES_ITEMS.add(1102004); // Black Napoleon
-        ACCESSORIES_ITEMS.add(1102005); // Baby Angel Wings
-        ACCESSORIES_ITEMS.add(1102006); // Devil Wings
-        ACCESSORIES_ITEMS.add(1102007); // Yellow Star Cape
-        ACCESSORIES_ITEMS.add(1102008); // Blue Star Cape
-        ACCESSORIES_ITEMS.add(1102009); // Red Star Cape
-        ACCESSORIES_ITEMS.add(1102010); // Black Star Cape
-        ACCESSORIES_ITEMS.add(1102011); // Blue Justice Cape
-        ACCESSORIES_ITEMS.add(1102012); // Red Justice Cape
-        ACCESSORIES_ITEMS.add(1102013); // White Justice Cape
-        ACCESSORIES_ITEMS.add(1102014); // Black Justice Cape
-        ACCESSORIES_ITEMS.add(1102015); // Blue Magic Cape
-        ACCESSORIES_ITEMS.add(1102016); // Red Magic Cape
-        ACCESSORIES_ITEMS.add(1102017); // White Magic Cape
-        ACCESSORIES_ITEMS.add(1102018); // Black Magic Cape
-        ACCESSORIES_ITEMS.add(1102039); // Transparent Cape
-        ACCESSORIES_ITEMS.add(1102109); // Cape of warmness
-        ACCESSORIES_ITEMS.add(1102143); // Waterworks Cape
-        ACCESSORIES_ITEMS.add(1102144); // Sage Cape
-        ACCESSORIES_ITEMS.add(1102145); // Sirius Cloak
-        ACCESSORIES_ITEMS.add(1102146); // Zeta Cape
-        ACCESSORIES_ITEMS.add(1102154); // Zakum Arms
-        ACCESSORIES_ITEMS.add(1102172); // Timeless Moonlight
-        ACCESSORIES_ITEMS.add(1102194); // Shroud of Zakum
-        ACCESSORIES_ITEMS.add(1102205); // Crimsonheart Cloak
-        ACCESSORIES_ITEMS.add(1102206); // Blackfist Cloak
-        ACCESSORIES_ITEMS.add(1102207); // Goldensoul Cape
 
         // Stat-giving Gloves
         ACCESSORIES_ITEMS.add(1082000); // Steel Fingerless Gloves
@@ -470,6 +437,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2210039); // Penguin Transformation 5
         USE_ITEMS.add(2210043); // Leech Costume
 
+        // Add all boots items to EQUIPMENT_ITEMS
         EQUIPMENT_ITEMS.add(1072000); // Brown Jangoon Shoes
         EQUIPMENT_ITEMS.add(1072001); // Red Rubber Boots
         EQUIPMENT_ITEMS.add(1072002); // Steel Trigger
@@ -573,8 +541,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         EQUIPMENT_ITEMS.add(1072100); // Black Baseball Cleats
 
         // Add all cape items to equipment items
-        EQUIPMENT_ITEMS.add(1102206); // Blackfist Cloak
-        EQUIPMENT_ITEMS.add(1102207); // Goldensoul Cape
         EQUIPMENT_ITEMS.add(1102000); // Green Napoleon
         EQUIPMENT_ITEMS.add(1102001); // Blue Napoleon
         EQUIPMENT_ITEMS.add(1102002); // Red Napoleon
@@ -614,6 +580,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         EQUIPMENT_ITEMS.add(1102036); // Red Landcell Pack
         EQUIPMENT_ITEMS.add(1102037); // Black Landcell Pack
         EQUIPMENT_ITEMS.add(1102038); // Blue Landcell Pack
+        EQUIPMENT_ITEMS.add(1102039); // Transparent Cape
         EQUIPMENT_ITEMS.add(1102040); // Yellow Adventurer Cape
         EQUIPMENT_ITEMS.add(1102041); // Pink Adventurer Cape
         EQUIPMENT_ITEMS.add(1102042); // Purple Adventurer Cape
@@ -632,6 +599,17 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         EQUIPMENT_ITEMS.add(1102055); // Icarus Cape (2)
         EQUIPMENT_ITEMS.add(1102056); // Icarus Cape (3)
         EQUIPMENT_ITEMS.add(1102057); // Ludibrium Cape
+        EQUIPMENT_ITEMS.add(1102109); // Cape of warmness
+        EQUIPMENT_ITEMS.add(1102143); // Waterworks Cape
+        EQUIPMENT_ITEMS.add(1102144); // Sage Cape
+        EQUIPMENT_ITEMS.add(1102145); // Sirius Cloak
+        EQUIPMENT_ITEMS.add(1102146); // Zeta Cape
+        EQUIPMENT_ITEMS.add(1102154); // Zakum Arms
+        EQUIPMENT_ITEMS.add(1102172); // Timeless Moonlight
+        EQUIPMENT_ITEMS.add(1102194); // Shroud of Zakum
+        EQUIPMENT_ITEMS.add(1102205); // Crimsonheart Cloak
+        EQUIPMENT_ITEMS.add(1102206); // Blackfist Cloak
+        EQUIPMENT_ITEMS.add(1102207); // Goldensoul Cape
 
         poolsInitialized = true;
         System.out.println("Gachapon item pools initialized successfully!");
