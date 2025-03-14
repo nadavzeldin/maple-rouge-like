@@ -30,7 +30,7 @@ function action(mode, type, selection) {
                 "#r@ascend  <option>#k\r\n\r\n" +
                 "#eAvailable Options:#n\r\n" +
                 "0 - View your active ascensions\r\n" +
-                "1 - Hoarder Ascension: Gain 5x EXP and drop rates for all characters\r\n" +
+                "1 - Hoarder Ascension: Increases the drop rate for mesos and items by 5x\r\n" +
                 "2 - Resilient Ascension: Characters become immune to debuffs\r\n" +
                 "3 - Lucky Ascension: All scrolls are atleast 90% Success\r\n\r\n" +
                 "#ePlease Note:#n #rAscending will send your current character to jail, forever!#k");
