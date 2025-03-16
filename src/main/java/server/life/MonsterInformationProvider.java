@@ -79,11 +79,10 @@ public class MonsterInformationProvider {
 
 
     protected MonsterInformationProvider() {
-        initializeCustomDrops();
         retrieveGlobal();
     }
 
-    private void initializeCustomDrops() {
+    private List<MonsterDropEntry> getLootLizardDrops() {
         // Create list of all possible valuable drops
         List<MonsterDropEntry> allPossibleDrops = new ArrayList<>();
 
@@ -117,8 +116,7 @@ public class MonsterInformationProvider {
         for (int i = 0; i < dropCount; i++) {
             customDrops.add(new MonsterDropEntry(MERGE_COIN, 100000, 1, 1, (short)0));
         }
-        drops.put(LOOT_LIZARD_ID, customDrops);
-
+        return customDrops;
     }
 
     public final List<MonsterGlobalDropEntry> getRelevantGlobalDrops(int mapId) {
@@ -194,6 +192,9 @@ public class MonsterInformationProvider {
     }
 
     public final List<MonsterDropEntry> retrieveDrop(final int monsterId) {
+        if (monsterId == LOOT_LIZARD_ID){
+            return getLootLizardDrops();
+        }
         if (drops.containsKey(monsterId)) {
             return drops.get(monsterId);
         }
