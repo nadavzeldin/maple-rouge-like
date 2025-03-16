@@ -46,7 +46,8 @@ public enum ItemFactory {
     MERCHANT(6, false),
     CASH_OVERALL(7, true),
     MARRIAGE_GIFTS(8, false),
-    DUEY(9, false);
+    DUEY(9, false),
+    RESOURCE_STORAGE(10, true);
     private final int value;
     private final boolean account;
 
