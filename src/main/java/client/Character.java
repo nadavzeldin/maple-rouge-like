@@ -8392,6 +8392,7 @@ public class Character extends AbstractCharacterObject {
                                         if (achievement.getName().equals("First time reach 120") &&
                                                 achievement.getStatus().equals("done")) {
                                             int bonus_stats = 40 + accountDetails.getAscension().size() * 5;
+                                            bonus_stats += accountDetails.getAscension().contains(AscensionConstants.Names.EARLYBIRD) ? 50 : 0;
                                             startingLevel = 1;
                                             startingJob = Job.BEGINNER;
                                             str = bonus_stats;
