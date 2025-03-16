@@ -74,7 +74,7 @@ public class SellCommand extends Command {
 
     private void sellFromInventory(Client c, Shop shop, Character player, InventoryType inventoryType, short startSlot) {
         Inventory inventory = player.getInventory(inventoryType);
-        for (short i = startSlot; i < inventory.getSlotLimit(); i++) {
+        for (short i = startSlot; i <= inventory.getSlotLimit(); i++) {
             Item tempItem = inventory.getItem((byte) i);
             if (tempItem != null) {
                 player.yellowMessage("Selling item: " + tempItem.getItemId() + " from slot " + i);
@@ -94,7 +94,7 @@ public class SellCommand extends Command {
         Inventory inventory = player.getInventory(inventoryType);
         ItemInformationProvider itemInfoProvider = ItemInformationProvider.getInstance();
 
-        for (short i = 0; i < inventory.getSlotLimit(); i++) {
+        for (short i = 0; i <= inventory.getSlotLimit(); i++) {
             Item tempItem = inventory.getItem((byte) i);
             if (tempItem != null) {
                 String tempItemName = itemInfoProvider.getName(tempItem.getItemId()).toLowerCase();
