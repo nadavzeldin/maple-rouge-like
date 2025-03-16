@@ -95,6 +95,10 @@ public class ItemId {
         return itemId == MERGE_COIN;
     }
 
+    public static boolean isStoreableResource(int itemId) {
+        return isOre(itemId) || isScroll(itemId) || isMergeCoin(itemId);
+    }
+
     public static boolean isExpIncrease(int itemId) {
         return itemId >= 2022450 && itemId <= 2022452;
     }
