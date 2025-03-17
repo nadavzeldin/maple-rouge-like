@@ -2101,7 +2101,7 @@ public class Character extends AbstractCharacterObject {
                 boolean hasSpaceInventory = true;
                 ItemInformationProvider ii = ItemInformationProvider.getInstance();
 
-                if (ItemId.isStoreableResource(mapitem.getItemId())) {
+                if (accountExtraDetails.shouldAutoStoreOnLoot() && ItemId.isStoreableResource(mapitem.getItemId())) {
                     int itemId = mapitem.getItemId();
                     ResourceStorage rs = null;
                     if (ItemId.isOre(itemId)) rs = getResourceStorage()[0];
@@ -6512,6 +6512,19 @@ public class Character extends AbstractCharacterObject {
         return;
     }
 
+    private synchronized void writeExtraDetails() {
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET extra_details = ? WHERE id = ?")) {
+                String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
+                ps.setString(1, updatedJson);
+                ps.setInt(2, this.accountid);
+                ps.executeUpdate();
+        } catch (Exception e) {
+            log.error("Error updating account extra details for accountid: " + accountid, e);
+        }
+    }
+
+
     public synchronized void checkAchievements(int level)
     {
         if (accountExtraDetails == null || accountExtraDetails.getAchievements() == null) {
@@ -6546,19 +6559,22 @@ public class Character extends AbstractCharacterObject {
                     achievement.setStatus("done");
                     // Send message to player about achievement
                     yellowMessage("Achievement Completed: " + name + " - Reward: " + achievement.getBonus());
-                    try (Connection con = DatabaseConnection.getConnection();
-                         PreparedStatement ps = con.prepareStatement("UPDATE accounts SET extra_details = ? WHERE id = ?")) {
-
-                        String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
-                        ps.setString(1, updatedJson);
-                        ps.setInt(2, this.accountid);
-                        ps.executeUpdate();
-
+                    try {
+                        writeExtraDetails();
                     } catch (Exception e) {
                         log.error("Error updating achievements for accountid: " + accountid, e);
                     }
                 }
             }
+        }
+    }
+
+    public synchronized void toggleAutoStoreOnLoot() {
+        accountExtraDetails.setAutoStoreOnLoot(!accountExtraDetails.shouldAutoStoreOnLoot());
+        try {
+            writeExtraDetails();
+        } catch (Exception e) {
+            log.error("Error toggling auto store for accountid: " + accountid, e);
         }
     }
 
