@@ -170,6 +170,8 @@ import client.command.commands.gm4.ForceVacCommand;
 import client.command.commands.gm4.HorntailCommand;
 import client.command.commands.gm4.ItemVacCommand;
 import client.command.commands.gm4.MesoRateCommand;
+import client.command.commands.gm4.MobRateCommand;
+import client.command.commands.gm4.MobpointRateCommand;
 import client.command.commands.gm4.PapCommand;
 import client.command.commands.gm4.PianusCommand;
 import client.command.commands.gm4.PinkbeanCommand;
@@ -276,16 +278,18 @@ public class CommandsExecutor {
         final String splitRegex = "[ ]";
         String[] splitedMessage = message.substring(1).split(splitRegex, 2);
         if (splitedMessage.length < 2) {
-            splitedMessage = new String[]{splitedMessage[0], ""};
+            splitedMessage = new String[] { splitedMessage[0], "" };
         }
 
-        client.getPlayer().setLastCommandMessage(splitedMessage[1]);    // thanks Tochi & Nulliphite for noticing string messages being marshalled lowercase
+        client.getPlayer().setLastCommandMessage(splitedMessage[1]); // thanks Tochi & Nulliphite for noticing string
+                                                                     // messages being marshalled lowercase
         final String commandName = splitedMessage[0].toLowerCase();
         final String[] lowercaseParams = splitedMessage[1].toLowerCase().split(splitRegex);
 
         final Command command = registeredCommands.get(commandName);
         if (command == null) {
-            client.getPlayer().yellowMessage("Command '" + commandName + "' is not available. See @commands for a list of available commands.");
+            client.getPlayer().yellowMessage(
+                    "Command '" + commandName + "' is not available. See @commands for a list of available commands.");
             return;
         }
         if (client.getPlayer().gmLevel() < command.getRank()) {
@@ -296,7 +300,7 @@ public class CommandsExecutor {
         if (lowercaseParams.length > 0 && !lowercaseParams[0].isEmpty()) {
             params = Arrays.copyOfRange(lowercaseParams, 0, lowercaseParams.length);
         } else {
-            params = new String[]{};
+            params = new String[] {};
         }
 
         command.execute(client, params);
@@ -319,9 +323,9 @@ public class CommandsExecutor {
     }
 
     private void addCommand(String syntax, Class<? extends Command> commandClass) {
-        //for (String syntax : syntaxs){
+        // for (String syntax : syntaxs){
         addCommand(syntax, 0, commandClass);
-        //}
+        // }
     }
 
     private void addCommand(String[] surtaxes, int rank, Class<? extends Command> commandClass) {
@@ -340,7 +344,9 @@ public class CommandsExecutor {
         addCommandInfo(commandName, commandClass);
 
         try {
-            Command commandInstance = commandClass.getDeclaredConstructor().newInstance();     // thanks Halcyon for noticing commands getting reinstanced every call
+            Command commandInstance = commandClass.getDeclaredConstructor().newInstance(); // thanks Halcyon for
+                                                                                           // noticing commands getting
+                                                                                           // reinstanced every call
             commandInstance.setRank(rank);
 
             registeredCommands.put(commandName, commandInstance);
@@ -352,8 +358,8 @@ public class CommandsExecutor {
     private void registerLv0Commands() {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
 
-        addCommand(new String[]{"help", "commands"}, HelpCommand.class);
-        addCommand(new String[]{"warpto", "reach", "follow"},  0, ReachCommand.class);
+        addCommand(new String[] { "help", "commands" }, HelpCommand.class);
+        addCommand(new String[] { "warpto", "reach", "follow" }, 0, ReachCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("randomMap", WarpRandomMap.class);
         addCommand("shop", ShopCommand.class);
@@ -391,10 +397,8 @@ public class CommandsExecutor {
         addCommand("mobhp", MobHpCommand.class);
         addCommand("buyexp", BuyExpCommand.class);
 
-
         commandsNameDesc.add(levelCommandsCursor);
     }
-
 
     private void registerLv1Commands() {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
@@ -405,7 +409,6 @@ public class CommandsExecutor {
         addCommand("goto", 1, GotoCommand.class);
         commandsNameDesc.add(levelCommandsCursor);
     }
-
 
     private void registerLv2Commands() {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
@@ -425,7 +428,7 @@ public class CommandsExecutor {
         addCommand("clearslot", 2, ClearSlotCommand.class);
         addCommand("clearsavelocs", 2, ClearSavedLocationsCommand.class);
         addCommand("warp", 2, WarpCommand.class);
-        addCommand(new String[]{"warphere", "summon"}, 2, SummonCommand.class);
+        addCommand(new String[] { "warphere", "summon" }, 2, SummonCommand.class);
         addCommand("gmshop", 2, GmShopCommand.class);
         addCommand("heal", 2, HealCommand.class);
         addCommand("item", 2, ItemCommand.class);
@@ -529,6 +532,8 @@ public class CommandsExecutor {
         addCommand("questrate", 4, QuestRateCommand.class);
         addCommand("travelrate", 4, TravelRateCommand.class);
         addCommand("fishrate", 4, FishingRateCommand.class);
+        addCommand("mobrate", 4, MobRateCommand.class);
+        addCommand("mobpoint", 4, MobpointRateCommand.class);
         addCommand("itemvac", 4, ItemVacCommand.class);
         addCommand("forcevac", 4, ForceVacCommand.class);
         addCommand("zakum", 4, ZakumCommand.class);
@@ -580,7 +585,7 @@ public class CommandsExecutor {
         addCommand("removechannel", 6, ServerRemoveChannelCommand.class);
         addCommand("removeworld", 6, ServerRemoveWorldCommand.class);
         addCommand("devtest", 6, DevtestCommand.class);
-        addCommand("merge",6 , MergeCommand.class);
+        addCommand("merge", 6, MergeCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
     }
