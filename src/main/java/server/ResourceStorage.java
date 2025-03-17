@@ -250,15 +250,6 @@ public class ResourceStorage {
             lock.unlock();
         }*/
     }
-
-    public void close() {
-        lock.lock();
-        try {
-            typeItems.clear();
-        } finally {
-            lock.unlock();
-        }
-    }
 }
 
 
