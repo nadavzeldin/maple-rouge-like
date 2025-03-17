@@ -23,6 +23,8 @@ import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import constants.game.GameConstants;
+import constants.id.ItemId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import provider.Data;
@@ -121,31 +123,61 @@ public class ResourceStorage {
         }
     }
 
-    public boolean takeOut(Item item) {
+    public Item getItemById(int itemId) {
         lock.lock();
         try {
-            boolean ret = items.remove(item);
-
-            InventoryType type = item.getInventoryType();
-            typeItems.put(type, new ArrayList<>(filterItems(type)));
-
-            return ret;
+            for (Item i : getItems()) {
+                if (i.getItemId() == itemId) {
+                    return i;
+                }
+            }
+            return null;
         } finally {
             lock.unlock();
         }
     }
 
-    public boolean store(Item item) {
+    // item is assumed to be internal (part of this.items)
+    public boolean takeOut(Item item, short qty) {
         lock.lock();
         try {
-            if (isFull()) { // thanks Optimist for noticing unrestricted amount of insertions here
+            if (item.getQuantity() < qty || qty <= 0) {
                 return false;
             }
 
-            items.add(item);
+            short newQty = (short) (item.getQuantity() - qty);
+            if (newQty > 0) {
+                item.setQuantity((short)(item.getQuantity() - qty));
+            }
+            else {
+                items.remove(item);
+                InventoryType type = item.getInventoryType();
+                typeItems.put(type, new ArrayList<>(filterItems(type)));
+            }
 
-            InventoryType type = item.getInventoryType();
-            typeItems.put(type, new ArrayList<>(filterItems(type)));
+            return true;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // item is assumed to be external (inventory, loot, ...)
+    public boolean store(Item item, short qty) {
+        lock.lock();
+        try {
+            if (isFull() || item.getQuantity() < qty || qty < 0) { // thanks Optimist for noticing unrestricted amount of insertions here
+                return false;
+            }
+
+            Item existing = getItemById(item.getItemId());
+            if (existing == null) {
+                items.add(new Item(item.getItemId(), (short) 0, qty));
+                InventoryType type = item.getInventoryType();
+                typeItems.put(type, new ArrayList<>(filterItems(type)));
+            }
+            else {
+                existing.setQuantity((short) (existing.getQuantity() + qty));
+            }
 
             return true;
         } finally {
@@ -245,12 +277,14 @@ public class ResourceStorage {
     }
 
     public boolean isFull() {
+        return false; // ???
+        /*
         lock.lock();
         try {
-            return items.size() >= slots;
+            return items.size() >= ((int) slots & 0xFF); // makes the byte unsigned for 255 slots :)
         } finally {
             lock.unlock();
-        }
+        }*/
     }
 
     public void close() {
