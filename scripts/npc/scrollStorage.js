@@ -139,10 +139,6 @@ function action(mode, type, selection) {
                 cm.sendOk(textList.join(""));
                 cm.dispose();
             }
-            else {
-                cm.sendOk("Uhoh!!!");
-                cm.dispose();
-            }
         }
         else if (actionType == 1) { // deposit
             const InventoryType = Java.type('client.inventory.InventoryType');
