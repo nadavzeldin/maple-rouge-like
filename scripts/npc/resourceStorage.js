@@ -8,7 +8,15 @@
 
  var status = 0;
  var sel;
- 
+ var storageType;
+ var actionType;
+
+ var headers = [
+    "#r#eOre Storage#k#n",
+    "#b#eScroll Storage#k#n",
+    "#d#eMerge Coin Storage#k#n"
+ ]
+
  function start() {
      cm.sendSimple("I'm the new storage manager!\r\n\r\n"
                     + "#b#L0#Ore Storage\r\n"
@@ -31,59 +39,89 @@
          }
  
          if (status == 1) {
-             sel = selection;
- 
+             storageType = selection;
+
+             var listText = [];
+
+             listText.push(headers[storageType]);
              if (selection == 0) {
-                 cm.sendOk("Ore storage!");
+                listText.push("This system can be used to store any of the following types of items:");
+                listText.push("\tOres (including refined and strengthened plates/jewels)");
+                listText.push("\tMonster Crystals");
+                listText.push("\tMagic Powders");
+                listText.push("\tCrafting Stimulators and Production Manuals");
+                listText.push("\t#b#v4020009# #t4020009##k and #b#v4021010# #t4021010#");
              }
              else if (selection == 1) {
-                 cm.sendOk("Scroll storage!");
+                listText.push("This system can be used to store any equipment enhancing scroll you find on your journey.");
              }
              else if (selection == 2) {
-                 cm.sendOk("Merge Coin storage!");
-             }
-             cm.dispose();
- 
-             /*
-             if (selection == 0) {
-                 if (cm.getPlayer().getGuildId() > 0) {
-                     cm.sendOk("You may not create a new Guild while you are in one.");
-                     cm.dispose();
-                 } else {
-                     cm.sendYesNo("Creating a Guild costs #b 1500000 mesos#k, are you sure you want to continue?");
-                 }
-             } else if (selection == 1) {
-                 if (cm.getPlayer().getGuildId() < 1 || cm.getPlayer().getGuildRank() != 1) {
-                     cm.sendOk("You can only disband a Guild if you are the leader of that Guild.");
-                     cm.dispose();
-                 } else {
-                     cm.sendYesNo("Are you sure you want to disband your Guild? You will not be able to recover it afterward and all your GP will be gone.");
-                 }
-             } else if (selection == 2) {
-                 if (cm.getPlayer().getGuildId() < 1 || cm.getPlayer().getGuildRank() != 1) {
-                     cm.sendOk("You can only increase your Guild's capacity if you are the leader.");
-                     cm.dispose();
-                 } else {
-                     var Guild = Java.type("net.server.guild.Guild");  // thanks Conrad for noticing an issue due to call on a static method here
-                     cm.sendYesNo("Increasing your Guild capacity by #b5#k costs #b " + Guild.getIncreaseGuildCost(cm.getPlayer().getGuild().getCapacity()) + " mesos#k, are you sure you want to continue?");
-                 }
-             }*/
+                listText.push("This system can be used to store any #b#v2022280##t2022280##k you find on your journey.");
+            }
+            listText.push("");
+            
+            listText.push("#kPlease select what you would like to do:");
+            listText.push("#b#L0#Withdraw from storage#l");
+            listText.push("#L1#Deposit into storage#l");
+        
+            cm.sendSimple(listText.join("\r\n"));
          }
-         /*
-         } else if (status == 2) {
-             if (sel == 0 && cm.getPlayer().getGuildId() <= 0) {
-                 cm.getPlayer().genericGuildMessage(1);
-                 cm.dispose();
-             } else if (cm.getPlayer().getGuildId() > 0 && cm.getPlayer().getGuildRank() == 1) {
-                 if (sel == 1) {
-                     cm.getPlayer().disbandGuild();
-                     cm.dispose();
-                 } else if (sel == 2) {
-                     cm.getPlayer().increaseGuildCapacity();
-                     cm.dispose();
-                 }
-             }
-         }*/
+         else if (status == 2) {
+            actionType = selection;
+
+            var listText = [];
+            listText.push(headers[storageType])
+            if (actionType == 0) {
+                var resourceStorage = cm.getPlayer().getResourceStorage()[storageType];
+                var items = resourceStorage.getItems();
+                var c = items.size();
+
+                listText.push("Below are the items you currently have in storage.  Select one to withdraw.");
+                listText.push("You are currently using #e" + c + "#k slot" + (c == 1 ? "" : "s") + " out of " + resourceStorage.getSlots());
+                listText.push("");
+                for (var i = 0; i < items.size(); i++) {
+                    listText.push("#b#L" + i + "##v" + items[i].getItemId() + "# #t" + items[i].getItemId() + "##l");
+                }   
+                
+                cm.sendSimple(listText.join("\r\n"));
+                cm.dispose();
+            }
+            else if (actionType == 1) {
+                const InventoryType = Java.type('client.inventory.InventoryType');
+                var inv;
+                if (storageType == 0) {
+                    inv = cm.getPlayer().getInventory(InventoryType.ETC);
+                }
+                else {
+                    inv = cm.getPlayer().getInventory(InventoryType.USE);
+                }
+
+                if (storageType < 2) {
+                    var canDeposit;
+                    if (storageType == 0) canDeposit = inv.getOres();
+                    else if (storageType == 1) canDeposit = inv.getScrolls();
+                    listText.push("inv size: " + inv.list().size() + " - deposit size: " + canDeposit.size());
+                    listText.push("Select the item you wish to deposit");
+                    for (var i = 0; i < canDeposit.size(); i++) {
+                        listText.push("#b#L" + i + "##v" + canDeposit[i].getItemId() + "# #t" + canDeposit[i].getItemId() + "##l");
+                    }
+
+                    cm.sendSimple(listText.join("\r\n"));
+                    cm.dispose();
+                }
+                else {
+                    var coins = cm.getPlayer().getInventory(InventoryType.USE).getMergeCoins();
+                    listText.push("You currently have #e" + coins + "#k merge coins.");
+                    listText.push("Enter the number you wish to deposit below.");
+
+                    cm.sendSimple(listText.join("\r\n"));
+                    cm.dispose();
+                }
+            }
+         }
+         else {
+            cm.dispose();
+         }
      }
  }
  
