@@ -8815,6 +8815,20 @@ public class Character extends AbstractCharacterObject {
                 // Items
                 ItemFactory.INVENTORY.saveItems(itemsWithType, id, con);
 
+                // Resource Storage
+                for (int i = 0; i < resourceStorages.length; i++) {
+                    ItemFactory f = ItemFactory.getFactoryByValue(ItemFactory.STORED_ORES.getValue() + i);
+                    
+                    ResourceStorage rs = resourceStorages[i];
+                    itemsWithType = new ArrayList<>();
+                    for (Item item : rs.getItems()) {
+                        log.info("adding item " + ItemInformationProvider.getInstance().getName(item.getItemId()));
+                        itemsWithType.add(new Pair<>(item, item.getInventoryType()));
+                    }
+                    log.info("Saving storage for " + f.name());
+                    f.saveItems(itemsWithType, accountid, con);
+                }
+
                 // Skills
                 try (PreparedStatement psSkill = con.prepareStatement("REPLACE INTO skills (characterid, skillid, skilllevel, masterlevel, expiration) VALUES (?, ?, ?, ?, ?)")) {
                     psSkill.setInt(1, id);
