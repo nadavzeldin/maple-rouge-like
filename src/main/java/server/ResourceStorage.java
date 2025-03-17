@@ -240,42 +240,6 @@ public class ResourceStorage {
         }
     }
 
-    public int getStoreFee() {  // thanks to GabrielSin
-        int npcId = currentNpcid;
-        Integer fee = trunkPutCache.get(npcId);
-        if (fee == null) {
-            fee = 100;
-
-            DataProvider npc = DataProviderFactory.getDataProvider(WZFiles.NPC);
-            Data npcData = npc.getData(npcId + ".img");
-            if (npcData != null) {
-                fee = DataTool.getIntConvert("info/trunkPut", npcData, 100);
-            }
-
-            trunkPutCache.put(npcId, fee);
-        }
-
-        return fee;
-    }
-
-    public int getTakeOutFee() {
-        int npcId = currentNpcid;
-        Integer fee = trunkGetCache.get(npcId);
-        if (fee == null) {
-            fee = 0;
-
-            DataProvider npc = DataProviderFactory.getDataProvider(WZFiles.NPC);
-            Data npcData = npc.getData(npcId + ".img");
-            if (npcData != null) {
-                fee = DataTool.getIntConvert("info/trunkGet", npcData, 0);
-            }
-
-            trunkGetCache.put(npcId, fee);
-        }
-
-        return fee;
-    }
-
     public boolean isFull() {
         return false; // ???
         /*
