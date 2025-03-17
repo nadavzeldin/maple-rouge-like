@@ -131,9 +131,7 @@ function action(mode, type, selection) {
             }
 
             var newInvItem = cm.gainItem(selectedItem, qty, false, true);
-            if (newInvItem == null) {
-                textList.push("It looks like you don't have room for this in your inventory...");
-                cm.sendOk(textList.join(""));
+            if (newInvItem == null) { // inventory is full, client will display message, just quit
                 cm.dispose();
                 return;
             }

@@ -94,9 +94,7 @@ function action(mode, type, selection) {
             }
 
             var newInvItem = cm.gainItem(itemId, qty, false, true);
-            if (newInvItem == null) {
-                textList.push("It looks like you don't have room for this in your inventory...");
-                cm.sendOk(textList.join(""));
+            if (newInvItem == null) { // no room in inventory, client will display a prompt
                 cm.dispose();
                 return;
             }
@@ -104,10 +102,6 @@ function action(mode, type, selection) {
             if (resourceStorage.takeOut(item, qty)) {
                 textList.push("Withdrew " + qty + " #b" + itemStr(itemId) + "#k!");
                 cm.sendOk(textList.join(""));
-                cm.dispose();
-            }
-            else {
-                cm.sendOk("Uhoh!!!");
                 cm.dispose();
             }
         }

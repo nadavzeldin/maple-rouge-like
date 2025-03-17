@@ -72,7 +72,7 @@ function action(mode, type, selection) {
             const InventoryType = Java.type('client.inventory.InventoryType');
             var inv = cm.getPlayer().getInventory(InventoryType.USE).getScrolls();
             if (inv.size() == 0) {
-                textList.push("It looks like you don't have any crafting materials on you right now...\r\n\r\n");
+                textList.push("It looks like you don't have any scrolls materials on you right now...\r\n\r\n");
                 cm.sendOk(textList.join(""));
                 cm.dispose();
                 return;
@@ -129,9 +129,7 @@ function action(mode, type, selection) {
             }
 
             var newInvItem = cm.gainItem(selectedItem, qty, false, true);
-            if (newInvItem == null) {
-                textList.push("It looks like you don't have room for this in your inventory...");
-                cm.sendOk(textList.join(""));
+            if (newInvItem == null) { // inventory is full, client will display message, just quit
                 cm.dispose();
                 return;
             }
