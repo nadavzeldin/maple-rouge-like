@@ -2100,6 +2100,23 @@ public class Character extends AbstractCharacterObject {
                 Item mItem = mapitem.getItem();
                 boolean hasSpaceInventory = true;
                 ItemInformationProvider ii = ItemInformationProvider.getInstance();
+
+                if (ItemId.isStoreableResource(mapitem.getItemId())) {
+                    int itemId = mapitem.getItemId();
+                    ResourceStorage rs = null;
+                    if (ItemId.isOre(itemId)) rs = getResourceStorage()[0];
+                    else if (ItemId.isScroll(itemId)) rs = getResourceStorage()[1];
+                    else if (ItemId.isMergeCoin(itemId)) rs = getResourceStorage()[2];
+                                    
+                    if (rs != null && rs.store(mItem, mItem.getQuantity())) {
+                        sendPacket(PacketCreator.earnTitleMessage("Sent (" + mItem.getQuantity() + ") "
+                                                                    + ItemInformationProvider.getInstance().getName(itemId)
+                                                                    + " to resource storage!"));
+                        this.getMap().pickItemDrop(pickupPacket, mapitem);
+                        return;
+                    }
+                }
+
                 if (ItemId.isNxCard(mapitem.getItemId()) || mapitem.getMeso() > 0 || ii.isConsumeOnPickup(mapitem.getItemId()) || (hasSpaceInventory = InventoryManipulator.checkSpace(client, mapitem.getItemId(), mItem.getQuantity(), mItem.getOwner()))) {
                     int mapId = this.getMapId();
 
