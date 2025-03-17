@@ -37,4 +37,5 @@ public class NpcId {
 
     public static final int PLAYER_NPC_BASE = 9900000;
 
+    public static final int PLAYER_RESOURCE_STORAGE = 9201101; // T-1337
 }

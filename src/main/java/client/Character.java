@@ -111,6 +111,7 @@ import server.Marriage;
 import server.Shop;
 import server.StatEffect;
 import server.Storage;
+import server.ResourceStorage;
 import server.ThreadManager;
 import server.TimerManager;
 import server.Trade;
@@ -279,6 +280,7 @@ public class Character extends AbstractCharacterObject {
     private Shop shop = null;
     private SkinColor skinColor = SkinColor.NORMAL;
     private Storage storage = null;
+    private ResourceStorage[] resourceStorages = new ResourceStorage[3];
     private Trade trade = null;
     private MonsterBook monsterbook;
     private CashShop cashshop;
@@ -2098,6 +2100,23 @@ public class Character extends AbstractCharacterObject {
                 Item mItem = mapitem.getItem();
                 boolean hasSpaceInventory = true;
                 ItemInformationProvider ii = ItemInformationProvider.getInstance();
+
+                if (accountExtraDetails.shouldAutoStoreOnLoot() && ItemId.isStoreableResource(mapitem.getItemId())) {
+                    int itemId = mapitem.getItemId();
+                    ResourceStorage rs = null;
+                    if (ItemId.isOre(itemId)) rs = getResourceStorage()[0];
+                    else if (ItemId.isScroll(itemId)) rs = getResourceStorage()[1];
+                    else if (ItemId.isMergeCoin(itemId)) rs = getResourceStorage()[2];
+                                    
+                    if (rs != null && rs.store(mItem, mItem.getQuantity())) {
+                        sendPacket(PacketCreator.earnTitleMessage("Sent (" + mItem.getQuantity() + ") "
+                                                                    + ItemInformationProvider.getInstance().getName(itemId)
+                                                                    + " to resource storage!"));
+                        this.getMap().pickItemDrop(pickupPacket, mapitem);
+                        return;
+                    }
+                }
+
                 if (ItemId.isNxCard(mapitem.getItemId()) || mapitem.getMeso() > 0 || ii.isConsumeOnPickup(mapitem.getItemId()) || (hasSpaceInventory = InventoryManipulator.checkSpace(client, mapitem.getItemId(), mItem.getQuantity(), mItem.getOwner()))) {
                     int mapId = this.getMapId();
 
@@ -6027,6 +6046,10 @@ public class Character extends AbstractCharacterObject {
         return storage;
     }
 
+    public ResourceStorage[] getResourceStorage() {
+        return resourceStorages;
+    }
+
     public Collection<Summon> getSummonsValues() {
         return summons.values();
     }
@@ -6489,6 +6512,19 @@ public class Character extends AbstractCharacterObject {
         return;
     }
 
+    private synchronized void writeExtraDetails() {
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET extra_details = ? WHERE id = ?")) {
+                String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
+                ps.setString(1, updatedJson);
+                ps.setInt(2, this.accountid);
+                ps.executeUpdate();
+        } catch (Exception e) {
+            log.error("Error updating account extra details for accountid: " + accountid, e);
+        }
+    }
+
+
     public synchronized void checkAchievements(int level)
     {
         if (accountExtraDetails == null || accountExtraDetails.getAchievements() == null) {
@@ -6523,19 +6559,22 @@ public class Character extends AbstractCharacterObject {
                     achievement.setStatus("done");
                     // Send message to player about achievement
                     yellowMessage("Achievement Completed: " + name + " - Reward: " + achievement.getBonus());
-                    try (Connection con = DatabaseConnection.getConnection();
-                         PreparedStatement ps = con.prepareStatement("UPDATE accounts SET extra_details = ? WHERE id = ?")) {
-
-                        String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
-                        ps.setString(1, updatedJson);
-                        ps.setInt(2, this.accountid);
-                        ps.executeUpdate();
-
+                    try {
+                        writeExtraDetails();
                     } catch (Exception e) {
                         log.error("Error updating achievements for accountid: " + accountid, e);
                     }
                 }
             }
+        }
+    }
+
+    public synchronized void toggleAutoStoreOnLoot() {
+        accountExtraDetails.setAutoStoreOnLoot(!accountExtraDetails.shouldAutoStoreOnLoot());
+        try {
+            writeExtraDetails();
+        } catch (Exception e) {
+            log.error("Error toggling auto store for accountid: " + accountid, e);
         }
     }
 
@@ -7590,6 +7629,7 @@ public class Character extends AbstractCharacterObject {
                 
                 ret.buddylist.loadFromDb(charid);
                 ret.storage = wserv.getAccountStorage(ret.accountid);
+                ret.resourceStorages = wserv.getResourceStorages(ret.accountid);
 
                 /* Double-check storage incase player is first time on server
                  * The storage won't exist so nothing to load
@@ -7597,6 +7637,10 @@ public class Character extends AbstractCharacterObject {
                 if(ret.storage == null) {
                     wserv.loadAccountStorage(ret.accountid);
                     ret.storage = wserv.getAccountStorage(ret.accountid);
+                }
+                if (ret.resourceStorages == null) {
+                    wserv.loadResourceStorage(ret.accountid);
+                    ret.resourceStorages = wserv.getResourceStorages(ret.accountid);
                 }
                 
                 int startHp = ret.hp, startMp = ret.mp;
@@ -8803,6 +8847,18 @@ public class Character extends AbstractCharacterObject {
 
                 // Items
                 ItemFactory.INVENTORY.saveItems(itemsWithType, id, con);
+
+                // Resource Storage
+                for (int i = 0; i < resourceStorages.length; i++) {
+                    ItemFactory f = ItemFactory.getFactoryByValue(ItemFactory.STORED_ORES.getValue() + i);
+                    
+                    ResourceStorage rs = resourceStorages[i];
+                    itemsWithType = new ArrayList<>();
+                    for (Item item : rs.getItems()) {
+                        itemsWithType.add(new Pair<>(item, item.getInventoryType()));
+                    }
+                    f.saveItems(itemsWithType, accountid, con);
+                }
 
                 // Skills
                 try (PreparedStatement psSkill = con.prepareStatement("REPLACE INTO skills (characterid, skillid, skilllevel, masterlevel, expiration) VALUES (?, ?, ?, ?, ?)")) {
