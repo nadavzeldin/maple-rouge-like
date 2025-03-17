@@ -8822,10 +8822,8 @@ public class Character extends AbstractCharacterObject {
                     ResourceStorage rs = resourceStorages[i];
                     itemsWithType = new ArrayList<>();
                     for (Item item : rs.getItems()) {
-                        log.info("adding item " + ItemInformationProvider.getInstance().getName(item.getItemId()));
                         itemsWithType.add(new Pair<>(item, item.getInventoryType()));
                     }
-                    log.info("Saving storage for " + f.name());
                     f.saveItems(itemsWithType, accountid, con);
                 }
 
