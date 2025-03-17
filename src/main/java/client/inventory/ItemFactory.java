@@ -47,7 +47,9 @@ public enum ItemFactory {
     CASH_OVERALL(7, true),
     MARRIAGE_GIFTS(8, false),
     DUEY(9, false),
-    RESOURCE_STORAGE(10, true);
+    STORED_ORES(10, true),
+    STORED_SCROLLS(11, true),
+    STORED_COINS(12, true);
     private final int value;
     private final boolean account;
 
@@ -67,6 +69,15 @@ public enum ItemFactory {
 
     public int getValue() {
         return value;
+    }
+
+    public static ItemFactory getFactoryByValue(int value) {
+        for (ItemFactory factory : ItemFactory.values()) {
+            if (factory.value == value) {
+                return factory;
+            }
+        }
+        return null;
     }
 
     public List<Pair<Item, InventoryType>> loadItems(int id, boolean login) throws SQLException {

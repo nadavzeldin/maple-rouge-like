@@ -24,6 +24,7 @@ package client.inventory;
 import client.Character;
 import client.Client;
 import client.inventory.manipulator.InventoryManipulator;
+import constants.id.ItemId;
 import constants.inventory.ItemConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ import tools.Pair;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -61,6 +63,34 @@ public class Inventory implements Iterable<Item> {
         this.inventory = new LinkedHashMap<>();
         this.type = type;
         this.slotLimit = slotLimit;
+    }
+
+    private List<Item> getSortedByItemName(List<Item> items) {
+        ItemInformationProvider ii = ItemInformationProvider.getInstance();
+        
+        List<Item> ret = new ArrayList<>();
+        for (Item item : items) {
+            ret.add(item);
+        }
+        
+        if (ret.size() > 1) {
+            ret.sort((i1, i2) -> (ii.getName(i1.getItemId()).compareTo(ii.getName(i2.getItemId()))));
+        }
+
+        return ret;
+    }
+
+    public List<Item> getScrolls() {
+        return getSortedByItemName(inventory.values().stream().filter(i -> ItemId.isScroll(i.getItemId())).toList());
+    }
+
+    public List<Item> getOres() {
+        return getSortedByItemName(inventory.values().stream().filter(i -> ItemId.isOre(i.getItemId())).toList());
+    }
+
+    public short getMergeCoins() {
+        List<Item> coins = inventory.values().stream().filter(i -> ItemId.isMergeCoin(i.getItemId())).toList();
+        return (coins.size() == 0) ? 0 : coins.getFirst().getQuantity();
     }
 
     public boolean isExtendableInventory() { // not sure about cash, basing this on the previous one.

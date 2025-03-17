@@ -111,6 +111,7 @@ import server.Marriage;
 import server.Shop;
 import server.StatEffect;
 import server.Storage;
+import server.ResourceStorage;
 import server.ThreadManager;
 import server.TimerManager;
 import server.Trade;
@@ -279,6 +280,7 @@ public class Character extends AbstractCharacterObject {
     private Shop shop = null;
     private SkinColor skinColor = SkinColor.NORMAL;
     private Storage storage = null;
+    private ResourceStorage[] resourceStorages = new ResourceStorage[3];
     private Trade trade = null;
     private MonsterBook monsterbook;
     private CashShop cashshop;
@@ -6027,6 +6029,10 @@ public class Character extends AbstractCharacterObject {
         return storage;
     }
 
+    public ResourceStorage[] getResourceStorage() {
+        return resourceStorages;
+    }
+
     public Collection<Summon> getSummonsValues() {
         return summons.values();
     }
@@ -7590,6 +7596,7 @@ public class Character extends AbstractCharacterObject {
                 
                 ret.buddylist.loadFromDb(charid);
                 ret.storage = wserv.getAccountStorage(ret.accountid);
+                ret.resourceStorages = wserv.getResourceStorages(ret.accountid);
 
                 /* Double-check storage incase player is first time on server
                  * The storage won't exist so nothing to load
@@ -7597,6 +7604,10 @@ public class Character extends AbstractCharacterObject {
                 if(ret.storage == null) {
                     wserv.loadAccountStorage(ret.accountid);
                     ret.storage = wserv.getAccountStorage(ret.accountid);
+                }
+                if (ret.resourceStorages == null) {
+                    wserv.loadResourceStorage(ret.accountid);
+                    ret.resourceStorages = wserv.getResourceStorages(ret.accountid);
                 }
                 
                 int startHp = ret.hp, startMp = ret.mp;
