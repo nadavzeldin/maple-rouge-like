@@ -5,6 +5,7 @@ import java.util.List;
 public class AccountExtraDetails {
     private List<Achievement> achievements;
     private List<String> ascension;
+    private boolean autoStoreOnLoot = true;
 
     // Getters and setters
     public List<Achievement> getAchievements() {
@@ -21,6 +22,15 @@ public class AccountExtraDetails {
 
     public void setAscension(List<String> ascension) {
         this.ascension = ascension;
+    }
+
+    
+    public boolean shouldAutoStoreOnLoot() {
+        return autoStoreOnLoot;
+    }
+
+    public void setAutoStoreOnLoot(boolean autoStoreOnLoot) {
+        this.autoStoreOnLoot = autoStoreOnLoot;
     }
 }
 

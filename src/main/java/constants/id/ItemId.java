@@ -21,6 +21,84 @@ public class ItemId {
     public static final int ARPQ_SHIELD = 2022269;
     public static final int ROARING_TIGER_MESSENGER = 5390006;
 
+    private static boolean intInRange(int testNumber, int low, int high) {
+        return intInRange(testNumber, low, high, true);
+    }
+
+    private static boolean intInRange(int testNumber, int low, int high, boolean inclusive) {
+        return ((testNumber > low && testNumber < high)
+                    || (inclusive && (testNumber == low || testNumber == high)));
+    }
+
+    public static boolean isOre(int itemId) {
+        // strengthened jewel ores: 425XX00-425XX02 (XX from 00 to 14)
+        // we also consider piece of time / rock of time as ores since they are primarily maker items
+        return (intInRange(itemId, 4007000, 4007007) // magic powder
+                || intInRange(itemId, 4010000, 4010008) // mineral ores
+                || intInRange(itemId, 4011000, 4011008) // mineral plates
+                || intInRange(itemId, 4020000, 4020008) // jewel ores
+                || intInRange(itemId, 4021000, 4021010) // refined jewels
+                || intInRange(itemId, 4260000, 4260008) // monster crystals
+                || intInRange(itemId, 4130000, 4130022) // stimulators
+                || intInRange(itemId, 4131000, 4131015) // production manuals
+                || intInRange(itemId, 4250000, 4251502) && intInRange((itemId / 100) % 100, 0, 14) && intInRange(itemId % 100, 0, 2) // strengthened jewels/crystals (see above)
+                || itemId == 4020009 // piece of time
+                || itemId == 4021010 // rock of time
+        );
+    }
+
+    public static boolean isScroll(int itemId) {
+        // scroll IDs are pretty spread out, so this is hefty
+        // refer to handbook for IDs
+        return (intInRange(itemId, 2040000, 2040031)
+                || intInRange(itemId, 2040100, 2040109)
+                || intInRange(itemId, 2040200, 2040209)
+                || intInRange(itemId, 2040300, 2040328)
+                || intInRange(itemId, 2040400, 2040427)
+                || intInRange(itemId, 2040500, 2040534)
+                || intInRange(itemId, 2040600, 2040627)
+                || intInRange(itemId, 2040700, 2040723)
+                || itemId == 2040727
+                || intInRange(itemId, 2040800, 2040825)
+                || intInRange(itemId, 2040900, 2040912)
+                || intInRange(itemId, 2040914, 2040933)
+                || intInRange(itemId, 2041000, 2041062)
+                || itemId == 2041200
+                || itemId == 2041212
+                || intInRange(itemId, 2043000, 2043013)
+                || intInRange(itemId, 2043015, 2043019)
+                || intInRange(itemId, 2043100, 2043108)
+                || intInRange(itemId, 2043110, 2043114)
+                || intInRange(itemId, 2043200, 2043208)
+                || intInRange(itemId, 2043210, 2043214)
+                || intInRange(itemId, 2043700, 2043708)
+                || intInRange(itemId, 2043800, 2043808)
+                || intInRange(itemId, 2044000, 2044008)
+                || intInRange(itemId, 2044100, 2044108)
+                || intInRange(itemId, 2044110, 2044114)
+                || intInRange(itemId, 2044200, 2044208)
+                || intInRange(itemId, 2044210, 2044214)
+                || intInRange(itemId, 2044300, 2044308)
+                || intInRange(itemId, 2044310, 2044314)
+                || intInRange(itemId, 2044410, 2044414)
+                || intInRange(itemId, 2044500, 2044508)
+                || intInRange(itemId, 2044600, 2044608)
+                || intInRange(itemId, 2044700, 2044708)
+                || intInRange(itemId, 2044800, 2044810)
+                || intInRange(itemId, 2048000, 2048013)
+                || intInRange(itemId, 2049000, 2049003)
+                || itemId == 2049100
+        );
+    }
+
+    public static boolean isMergeCoin(int itemId) {
+        return itemId == MERGE_COIN;
+    }
+
+    public static boolean isStoreableResource(int itemId) {
+        return isOre(itemId) || isScroll(itemId) || isMergeCoin(itemId);
+    }
+
     public static boolean isExpIncrease(int itemId) {
         return itemId >= 2022450 && itemId <= 2022452;
     }
