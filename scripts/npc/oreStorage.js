@@ -4,8 +4,9 @@
  * @author CPURules
  */
 
-var header = "#r#eCrafting Materials Storage#k#n\r\n\r\n";
+const ResourceStorageType = Java.type('server.ResourceStorage');
 
+var header = "#r#eCrafting Materials Storage#k#n\r\n\r\n";
 var status;
 
 var actionType; // 0 -> Withdraw, 1 -> Deposit
@@ -51,7 +52,7 @@ function action(mode, type, selection) {
         }
 
         if (actionType == 0) { // withdraw
-            var resourceStorage = cm.getPlayer().getResourceStorage()[0];
+            var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.ORE_OFFSET];
             var items = resourceStorage.getItems();
 
             if (items.size() == 0) {
@@ -100,7 +101,7 @@ function action(mode, type, selection) {
         }
 
         if (actionType == 0) { // withdraw
-            var resourceStorage = cm.getPlayer().getResourceStorage()[0];
+            var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.ORE_OFFSET];
             var item = resourceStorage.getItemById(selectedItem);
             
             textList.push("How many #b" + itemStr(selectedItem) + "#k would you like to withdraw?\r\n");
@@ -119,7 +120,7 @@ function action(mode, type, selection) {
         }
     } else if (status == 3) { // process transaction
         var qty = selection;
-        var resourceStorage = cm.getPlayer().getResourceStorage()[0];
+        var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.ORE_OFFSET];
         var item = resourceStorage.getItemById(selectedItem);
 
         if (actionType == 0) { // withdraw

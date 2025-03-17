@@ -27,7 +27,7 @@ function action(mode, type, selection) {
         textList.push("#r#eResource Storage Menu#k#n\r\n\r\n");
         textList.push("Welcome to the account-wide resource storage system!  This storage acts as a safe place to store various materials you may find throughout your journey.  ");
         textList.push("This includes ores, scrolls, and merge coins.\r\n\r\n");
-        listText.push("Any eligible resources you loot will automatically be transferred to this storage system from your inventory.  Use #r@togglestore#k to change this setting.\r\n\r\n");
+        textList.push("Any eligible resources you loot will automatically be transferred to this storage system from your inventory.  Use #r@togglestore#k to change this setting.\r\n\r\n");
         textList.push("Which system would you like to access?\r\n");
         textList.push("#b");
         textList.push("#L0#Crafting material storage#l\r\n");

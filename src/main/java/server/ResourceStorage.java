@@ -53,6 +53,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Matze
  */
 public class ResourceStorage {
+    public static final int ORE_OFFSET = 0;
+    public static final int SCROLL_OFFSET = 1;
+    public static final int MERGE_COIN_OFFSET = 2;
+    
     private static final Logger log = LoggerFactory.getLogger(ResourceStorage.class);
     private static final Map<Integer, Integer> trunkGetCache = new HashMap<>();
     private static final Map<Integer, Integer> trunkPutCache = new HashMap<>();

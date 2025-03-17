@@ -3,7 +3,7 @@
  * Scroll storage system
  * @author CPURules
  */
-
+const ResourceStorageType = Java.type('server.ResourceStorage');
 var header = "#r#eScroll Storage#k#n\r\n\r\n";
 
 var status;
@@ -50,13 +50,14 @@ function action(mode, type, selection) {
         }
 
         if (actionType == 0) { // withdraw
-            var resourceStorage = cm.getPlayer().getResourceStorage()[1];
+            var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.SCROLL_OFFSET];
             var items = resourceStorage.getItems();
 
             if (items.size() == 0) {
                 textList.push("It looks like you don't have any scrolls stored right now...\r\n\r\n");
                 cm.sendOk(textList.join(""));
                 cm.dispose();
+                return;
             }
 
             textList.push("Below are the scrolls you currently have stored.\r\n\r\n");
@@ -98,7 +99,7 @@ function action(mode, type, selection) {
         }
 
         if (actionType == 0) { // withdraw
-            var resourceStorage = cm.getPlayer().getResourceStorage()[1];
+            var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.SCROLL_OFFSET];
             var item = resourceStorage.getItemById(selectedItem);
             
             textList.push("How many #b" + itemStr(selectedItem) + "#k would you like to withdraw?\r\n");
@@ -117,7 +118,7 @@ function action(mode, type, selection) {
         }
     } else if (status == 3) { // process transaction
         var qty = selection;
-        var resourceStorage = cm.getPlayer().getResourceStorage()[1];
+        var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.SCROLL_OFFSET];
         var item = resourceStorage.getItemById(selectedItem);
 
         if (actionType == 0) { // withdraw

@@ -3,7 +3,7 @@
  * Merge coin storage system
  * @author CPURules
  */
-
+const ResourceStorageType = Java.type('server.ResourceStorage');
 var header = "#r#eMerge Coin Storage#k#n\r\n\r\n";
 
 var status;
@@ -48,7 +48,7 @@ function action(mode, type, selection) {
         }
 
         if (actionType == 0) { // withdraw
-            var resourceStorage = cm.getPlayer().getResourceStorage()[2];
+            var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.MERGE_COIN_OFFSET];
             var items = resourceStorage.getItems();
 
             if (items.size() == 0) {
@@ -82,7 +82,7 @@ function action(mode, type, selection) {
         }
     } else if (status == 2) { // process transaction
         var qty = selection;
-        var resourceStorage = cm.getPlayer().getResourceStorage()[2];
+        var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.MERGE_COIN_OFFSET];
         var item = resourceStorage.getItemById(itemId);
 
         if (actionType == 0) { // withdraw
