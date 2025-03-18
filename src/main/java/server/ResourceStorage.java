@@ -56,7 +56,7 @@ public class ResourceStorage {
     public static final int ORE_OFFSET = 0;
     public static final int SCROLL_OFFSET = 1;
     public static final int MERGE_COIN_OFFSET = 2;
-    
+
     private static final Logger log = LoggerFactory.getLogger(ResourceStorage.class);
     private static final Map<Integer, Integer> trunkGetCache = new HashMap<>();
     private static final Map<Integer, Integer> trunkPutCache = new HashMap<>();
@@ -192,6 +192,7 @@ public class ResourceStorage {
     public List<Item> getItems() {
         lock.lock();
         try {
+            sortItems();
             return Collections.unmodifiableList(items);
         } finally {
             lock.unlock();
@@ -210,49 +211,17 @@ public class ResourceStorage {
         return ret;
     }
 
-    public byte getSlot(InventoryType type, byte slot) {
+    public void sortItems() {
         lock.lock();
         try {
-            byte ret = 0;
-            List<Item> storageItems = getItems();
-            for (Item item : storageItems) {
-                if (item == typeItems.get(type).get(slot)) {
-                    return ret;
-                }
-                ret++;
-            }
-            return -1;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    public void arrangeItems(Client c) {
-        lock.lock();
-        try {
-            StorageInventory msi = new StorageInventory(c, items);
-            msi.mergeItems();
-            items = msi.sortItems();
-
-            for (InventoryType type : InventoryType.values()) {
-                typeItems.put(type, new ArrayList<>(items));
-            }
-
-            c.sendPacket(PacketCreator.arrangeStorage(slots, items));
+            items.sort((o1, o2) -> ItemInformationProvider.getInstance().getName(o1.getItemId()).compareTo(ItemInformationProvider.getInstance().getName(o2.getItemId())));
         } finally {
             lock.unlock();
         }
     }
 
     public boolean isFull() {
-        return false; // ???
-        /*
-        lock.lock();
-        try {
-            return items.size() >= ((int) slots & 0xFF); // makes the byte unsigned for 255 slots :)
-        } finally {
-            lock.unlock();
-        }*/
+        return false; 
     }
 }
 

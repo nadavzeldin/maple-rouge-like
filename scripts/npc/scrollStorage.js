@@ -24,7 +24,7 @@ function action(mode, type, selection) {
     if (mode == -1 || (mode == 0 && status == 0)) {
         cm.dispose();
         return;
-    } else if (mode == 0) {
+    } else if (mode == 0 && type != 1) {
         status--;
     } else {
         status++;
@@ -92,9 +92,7 @@ function action(mode, type, selection) {
             cm.dispose();
         }
     } else if (status == 2) { // prompt for quantity
-        if (mode == -1) { // if we end chat from the final screen, we exit the npc
-            cm.dispose();
-        } else if (mode == 1) {
+        if (mode == 1) {
             selectedItem = selection;
         }
 
@@ -136,9 +134,9 @@ function action(mode, type, selection) {
             }
 
             if (resourceStorage.takeOut(item, selection)) {
-                textList.push("Withdrew " + qty + " #b" + itemStr(selectedItem) + "#k!");
-                cm.sendOk(textList.join(""));
-                cm.dispose();
+                textList.push("Withdrew " + qty + " #b" + itemStr(selectedItem) + "#k!\r\n\r\n");
+                textList.push("Would you like to withdraw more scrolls?\r\n");
+                cm.sendYesNo(textList.join(""));
             }
         }
         else if (actionType == 1) { // deposit
@@ -154,14 +152,24 @@ function action(mode, type, selection) {
 
             if (resourceStorage.store(item, selection)) {
                 cm.gainItem(selectedItem, -1 * qty, false, true);
-                textList.push("Deposited " + qty + " #b" + itemStr(selectedItem) + "#k!");
-                cm.sendOk(textList.join(""));
-                cm.dispose();
+                textList.push("Deposited " + qty + " #b" + itemStr(selectedItem) + "#k!\r\n\r\n");
+                textList.push("Would you like to deposit more crafting materials?\r\n");
+                cm.sendYesNo(textList.join(""));
             }
             else {
                 cm.sendOk("It looks like your storage might be full!");
                 cm.dispose();
             }
+        }
+    }
+    else if (status == 4) { // more transactions?
+        if (mode == 0) { // no - dispose and return
+            cm.dispose();
+            return;
+        }
+        else { // yes - update status and call action again
+            status = 2;
+            action(0, 0, null);
         }
     }
     else {
