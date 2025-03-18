@@ -92,9 +92,7 @@ function action(mode, type, selection) {
             cm.dispose();
         }
     } else if (status == 2) { // prompt for quantity
-        if (mode == -1) { // if we end chat from the final screen, we exit the npc
-            cm.dispose();
-        } else if (mode == 1) {
+        if (mode == 1) {
             selectedItem = selection;
         }
 
