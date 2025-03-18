@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 import static constants.game.GameConstants.LOOT_LIZARD_UI_BANNER;
 import static constants.id.MapId.DOOM_MAPS;
+import static constants.id.MapId.FM_ENTRANCE;
 
 public class DoomCommand extends Command {
     {
@@ -53,7 +54,12 @@ public class DoomCommand extends Command {
         Character player = c.getPlayer();
         // if player is in doom map already, i.e. where there are monsters, disable tp
         if (DOOM_MAPS.contains(c.getPlayer().getMapId())){
-            player.yellowMessage("YOU CAN NOT TP OUT OF THE DOOM");
+            MapleMap target = c.getChannelServer().getMapFactory().getMap(FM_ENTRANCE);
+            MapleMap currentMap = player.getMap();
+            currentMap.killAllMonsters();
+            currentMap.clearDrops();
+            player.saveLocationOnWarp();
+            player.changeMap(target, target.getRandomPlayerSpawnpoint());
             return;
         }
         try {

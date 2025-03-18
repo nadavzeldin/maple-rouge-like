@@ -61,7 +61,8 @@ public class Achievement {
         return String.format("""
             {
                 "achievements": %s,
-                "ascension": []
+                "ascension": [],
+                "autoStoreOnLoot": true
             }
             """, new ObjectMapper().valueToTree(getInitialAchievements()).toString());
     }

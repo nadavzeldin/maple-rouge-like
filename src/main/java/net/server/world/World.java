@@ -62,6 +62,7 @@ import net.server.task.WeddingReservationTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.event.EventInstanceManager;
+import server.ResourceStorage;
 import server.Storage;
 import server.TimerManager;
 import server.maps.AbstractMapObject;
@@ -146,6 +147,7 @@ public class World {
 
     private final Map<Integer, SortedMap<Integer, Character>> accountChars = new HashMap<>();
     private final Map<Integer, Storage> accountStorages = new HashMap<>();
+    private final Map<Integer, ResourceStorage[]> resourceStorages = new HashMap<>();
     private final Lock accountCharsLock = new ReentrantLock(true);
 
     private final Set<Integer> queuedGuilds = new HashSet<>();
@@ -508,11 +510,30 @@ public class World {
         }
     }
 
+    public void loadResourceStorage(Integer accountId) {
+        if (getResourceStorages(accountId) == null) {
+            registerResourceStorage(accountId);
+        }
+    }
+
     private void registerAccountStorage(Integer accountId) {
         Storage storage = Storage.loadOrCreateFromDB(accountId, this.id);
         accountCharsLock.lock();
         try {
             accountStorages.put(accountId, storage);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+
+    private void registerResourceStorage(Integer accountId) {
+        ResourceStorage[] storages = new ResourceStorage[3];
+        for (int i = 0; i < 3; i++) {
+            storages[i] = ResourceStorage.loadFromDB(accountId, i + 10);
+        }
+        accountCharsLock.lock();
+        try {
+            resourceStorages.put(accountId, storages);
         } finally {
             accountCharsLock.unlock();
         }
@@ -527,8 +548,21 @@ public class World {
         }
     }
 
+    public void unregisterResourceStorage(Integer accountId) {
+        accountCharsLock.lock();
+        try {
+            resourceStorages.remove(accountId);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+
     public Storage getAccountStorage(Integer accountId) {
         return accountStorages.get(accountId);
+    }
+
+    public ResourceStorage[] getResourceStorages(Integer accountId) {
+        return resourceStorages.get(accountId);
     }
 
     private static List<Entry<Integer, SortedMap<Integer, Character>>> getSortedAccountCharacterView(Map<Integer, SortedMap<Integer, Character>> map) {

@@ -88,6 +88,14 @@ public class MergeCommand extends Command {
             if (equips.size() <= 1) {
                 continue;
             }
+            if (equips.stream()
+                    .map(Equip::getItemLevel)
+                    .max(Short::compare)
+                    .orElse((byte)1) >= 30)
+            {
+                player.yellowMessage("can't merge max level equip" + equips.getFirst().toString());
+                continue;
+            }
             foundItemToMerge = true;
             // Calculate the percentage boost to be added
             Equip primaryItem = mergeEquipStats(equips);
@@ -389,6 +397,7 @@ public class MergeCommand extends Command {
                 .orElse((byte)1);
 
         maxItemLevel = maxItemLevel > 0 ? maxItemLevel : 1; // not to dived by zero
+
         double dampingScale = 5;
         double scalingFactor = (double) 1 / (dampingScale * (maxItemLevel * maxItemLevel));
 

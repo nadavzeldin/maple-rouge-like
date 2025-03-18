@@ -46,6 +46,7 @@ import client.command.commands.gm0.RatesCommand;
 import client.command.commands.gm0.ReadPointsCommand;
 import client.command.commands.gm0.ReportBugCommand;
 import client.command.commands.gm0.ResetStatsCommand;
+import client.command.commands.gm0.ResourceStorageCommand;
 import client.command.commands.gm0.RollCommand;
 import client.command.commands.gm0.SellCommand;
 import client.command.commands.gm0.ShopCommand;
@@ -56,6 +57,7 @@ import client.command.commands.gm0.StatIntCommand;
 import client.command.commands.gm0.StatLukCommand;
 import client.command.commands.gm0.StatStrCommand;
 import client.command.commands.gm0.TimeCommand;
+import client.command.commands.gm0.ToggleAutoStoreCommand;
 import client.command.commands.gm0.ToggleExpCommand;
 import client.command.commands.gm0.UptimeCommand;
 import client.command.commands.gm0.WarpRandomMap;
@@ -401,6 +403,8 @@ public class CommandsExecutor {
         addCommand("bosshp", BossHpCommand.class);
         addCommand("mobhp", MobHpCommand.class);
         addCommand("buyexp", BuyExpCommand.class);
+        addCommand("resources", ResourceStorageCommand.class);
+        addCommand("togglestore", ToggleAutoStoreCommand.class);
 
 
         commandsNameDesc.add(levelCommandsCursor);
