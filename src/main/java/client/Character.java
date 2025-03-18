@@ -11419,15 +11419,12 @@ public class Character extends AbstractCharacterObject {
     }
 
     public void updateMacro(int slot, String command) {
-		// update the slot with the command
         macros[slot-1] = command;
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("UPDATE macro SET skill" + slot + " = ? WHERE characterid = ?")) {
             ps.setString(1, command);
             ps.setInt(2, getId());
             ps.executeUpdate();
-            // update the marcos too
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

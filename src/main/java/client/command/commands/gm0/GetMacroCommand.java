@@ -10,13 +10,16 @@ public class GetMacroCommand extends Command {
 
     @Override
     public void execute(Client client, String[] params) {
-        // print the all the macros, if there is a number print only this slot
-        // use the command !getmacro [<slot>] e.g. @getmacro 1
         if (params.length == 0) {
             String[] macros = client.getPlayer().getUserMacros();
             if (macros != null) {
                 for (int i = 0; i < macros.length; i++) {
-                    client.getPlayer().yellowMessage("Macro " + i+1 + ": " + macros[i] != null ? macros[i] : "Empty");
+                    if (macros[i] == null) {
+                        client.getPlayer().yellowMessage("Macro " + String.valueOf(i+1) + ": Empty");
+                        continue;
+                    }
+                    String macro = "Macro " + String.valueOf(i+1) + ": " + macros[i];
+                    client.getPlayer().yellowMessage(macro);
                 }
             } else {
                 client.getPlayer().yellowMessage("No macros found.");
@@ -25,7 +28,7 @@ public class GetMacroCommand extends Command {
             int slot = Integer.parseInt(params[0]);
             String[] macros = client.getPlayer().getUserMacros();
             if (macros != null && macros.length > slot) {
-                client.getPlayer().yellowMessage("Macro " + slot + ": " + macros[slot]);
+                client.getPlayer().yellowMessage("Macro " + slot + ": " + macros[slot-1]);
             } else {
                 client.getPlayer().yellowMessage("No macro found for slot " + slot);
             }
