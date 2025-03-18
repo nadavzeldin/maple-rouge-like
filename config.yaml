@@ -15,6 +15,8 @@ worlds:
     quest_rate: 5                           #Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
     fishing_rate: 10                        #Multiplier for success likelihood on meso thrown during fishing.
     travel_rate: 10                         #Means of transportation rides/departs using 1/N of the default time.
+    mob_rate: 50.0                            #Mob count multiplier
+    max_mob_per_spawnpoint: 50                #Must be equal or higher than mob_rate
 
     #Properties for Bera 1
   - flag: 0

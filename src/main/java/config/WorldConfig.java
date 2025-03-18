@@ -13,4 +13,6 @@ public class WorldConfig {
     public int quest_rate = 1;
     public int travel_rate = 1;
     public int fishing_rate = 1;
+    public float mob_rate = 50;
+    public int max_mob_per_spawnpoint = 50;
 }
