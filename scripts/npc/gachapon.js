@@ -48,6 +48,7 @@ function start() {
 }
 
 function action(mode, type, selection) {
+    cm.getPlayer().message("1-status " + status + " mode " + mode + " type " + type + " selection " + selection);
     if (mode < 0) {
         cm.dispose();
     } else {
@@ -55,8 +56,12 @@ function action(mode, type, selection) {
             status++;
         } else {
             status--;
+            if (type == 3) { // canceled from sendGetNumber in multi-roll
+                cm.dispose();
+                return;
+            }
         }
-
+        cm.getPlayer().message("2-status " + status + " mode " + mode + " type " + type + " selection " + selection);
         if (status == 0 && mode == 1) {
             if (cm.haveItem(ticketId)) {
                 cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How would you like to proceed?\r\n\r\n#L0#Use regular Gachapon ticket#l\r\n#L1#Use Premium Group Selection (1M mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
