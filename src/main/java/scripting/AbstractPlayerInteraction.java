@@ -155,6 +155,15 @@ public class AbstractPlayerInteraction {
     }
 
     public void warpParty(int id, int portalId, int fromMinId, int fromMaxId) {
+        // handle case where user has left their party
+        if (getParty() == null) {
+            Character c = this.getPlayer();
+            if (c.getMapId() >= fromMinId && c.getMapId() <= fromMaxId) {
+                c.changeMap(id, portalId);
+                return;
+            }
+        }
+
         for (Character mc : this.getPlayer().getPartyMembersOnline()) {
             if (mc.isLoggedinWorld()) {
                 if (mc.getMapId() >= fromMinId && mc.getMapId() <= fromMaxId) {
