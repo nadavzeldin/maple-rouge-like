@@ -37,11 +37,13 @@ public class ItemId {
                 || intInRange(itemId, 4010000, 4010008) // mineral ores
                 || intInRange(itemId, 4011000, 4011008) // mineral plates
                 || intInRange(itemId, 4020000, 4020008) // jewel ores
-                || intInRange(itemId, 4021000, 4021010) // refined jewels
+                || intInRange(itemId, 4021000, 4021009) // refined jewels
+                || intInRange(itemId, 4004000, 4005004) // crystal ores
+                || intInRange(itemId, 4005000, 4005004) // refined crystals
                 || intInRange(itemId, 4260000, 4260008) // monster crystals
                 || intInRange(itemId, 4130000, 4130022) // stimulators
                 || intInRange(itemId, 4131000, 4131015) // production manuals
-                || intInRange(itemId, 4250000, 4251502) && intInRange((itemId / 100) % 100, 0, 14) && intInRange(itemId % 100, 0, 2) // strengthened jewels/crystals (see above)
+                || intInRange(itemId, 4250000, 4251402) && intInRange((itemId / 100) % 100, 0, 14) && intInRange(itemId % 100, 0, 2) // strengthened jewels/crystals (see above)
                 || itemId == 4020009 // piece of time
                 || itemId == 4021010 // rock of time
         );
