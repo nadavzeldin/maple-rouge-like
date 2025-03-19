@@ -99,6 +99,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Predicate;
 
+import static constants.game.GameConstants.SPAWN_RATE;
+import static constants.id.MapId.BOSS_MAPS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -252,6 +254,17 @@ public class MapleMap {
 
     private static double getRangedDistance() {
         return YamlConfig.config.server.USE_MAXRANGE ? Double.POSITIVE_INFINITY : 722500;
+    }
+
+    public void duplicateSpawnPoints(int factor) {
+        List<SpawnPoint> originalSpawns = new ArrayList<>(getMonsterSpawn());
+        for (int i = 0; i < factor - 1; i++) {
+            for (SpawnPoint sp : originalSpawns) {
+                SpawnPoint newSp = new SpawnPoint(sp.getMonster(), sp.getPosition(),
+                        !sp.getMonster().isMobile(), sp.getMobTime(), mobInterval, sp.getTeam());
+                monsterSpawn.add(newSp);
+            }
+        }
     }
 
     public List<MapObject> getMapObjectsInRect(Rectangle box, List<MapObjectType> types) {
@@ -3557,6 +3570,14 @@ public class MapleMap {
         }
 
         int numShouldSpawn = getNumShouldSpawn(numPlayers);
+        if (mapid == 230040420)
+        {
+            HashMap<Integer, Integer> backTypes2 = new HashMap<>();
+        }
+        /*
+        if (!BOSS_MAPS.contains(mapid)){
+            numShouldSpawn *= SPAWN_RATE;
+        }*/
         if (numShouldSpawn > 0) {
             List<SpawnPoint> randomSpawn = new ArrayList<>(getMonsterSpawn());
             Collections.shuffle(randomSpawn);

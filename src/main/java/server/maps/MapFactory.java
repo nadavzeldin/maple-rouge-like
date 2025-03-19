@@ -22,6 +22,8 @@
 package server.maps;
 
 import constants.id.MapId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import provider.Data;
 import provider.DataProvider;
 import provider.DataProviderFactory;
@@ -45,11 +47,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import static constants.game.GameConstants.SPAWN_RATE;
+import static constants.id.MapId.BOSS_MAPS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MapFactory {
     private static final Data nameData;
     private static final DataProvider mapSource;
+    private static final Logger log = LoggerFactory.getLogger(MapFactory.class);
 
     static {
         nameData = DataProviderFactory.getDataProvider(WZFiles.STRING).getData("Map.img");
@@ -328,6 +333,14 @@ public class MapFactory {
             e.printStackTrace();
             // swallow cause I'm cool
         }
+        if (mapid == 230040420)
+        {
+            HashMap<Integer, Integer> backTypes2 = new HashMap<>();
+        }
+/*
+        if (!BOSS_MAPS.contains(mapid)){
+            map.duplicateSpawnPoints(SPAWN_RATE);
+        }*/
 
         map.setBackgroundTypes(backTypes);
         map.generateMapDropRangeCache();
