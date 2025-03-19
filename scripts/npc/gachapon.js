@@ -65,7 +65,7 @@ function action(mode, type, selection) {
             if (cm.haveItem(ticketId)) {
                 cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How would you like to proceed?\r\n\r\n#L0#Use regular Gachapon ticket#l\r\n#L1#Use Premium Group Selection (1M mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
             } else {
-                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How may I help you?\r\n\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
+                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How may I help you?\r\n\r\n#L1#Use Premium Group Selection (1M mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
             }
         } else if (status == 1) {
             if (selection == 0 && cm.haveItem(ticketId)) {
@@ -105,7 +105,7 @@ function action(mode, type, selection) {
                 // User entered amount of rolls
                 amount = selection;
                 var totalCost = amount * MESO_COST_PER_ROLL;
-                cm.sendYesNo("You're about to roll " + amount + " times for items in the #b" + prizeGroups[selectedOption] + "#k category.\r\n\r\nTotal cost: #r" + totalCost + " mesos#k\r\n\r\nWould you like to proceed?");
+                cm.sendYesNo("You're about to roll " + amount + " times for items in the #b" + prizeGroups[selectedOption] + "#k category.\r\n\r\nTotal cost: #r" + totalCost.toLocaleString() + " mesos#k\r\n\r\nWould you like to proceed?");
             } else {
                 cm.dispose();
             }
@@ -114,7 +114,7 @@ function action(mode, type, selection) {
             var totalCost = amount * MESO_COST_PER_ROLL;
 
             if (cm.getMeso() < totalCost) {
-                cm.sendOk("You don't have enough mesos. You need #r" + totalCost + " mesos#k to roll " + amount + " times.");
+                cm.sendOk("You don't have enough mesos. You need #r" + totalCost.toLocaleString() + " mesos#k to roll " + amount + " times.");
                 cm.dispose();
                 return;
             }
