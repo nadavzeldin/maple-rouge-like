@@ -117,7 +117,12 @@ function action(mode, type, selection) {
             } else {
                 if (cm.canHold(config.prizeId)) {
                     cm.gainItem(config.prizeId, config.prizeAmount);
-                    cm.warpParty(doomLobby, 0);
+                    if (cm.getParty() == null) {
+                        getPlayer().changeMap(doomLobby);
+                    }
+                    else {
+                        cm.warpParty(doomLobby, 0);
+                    }
                 } else {
                     cm.sendOk("Make sure you have a free spot in your ETC inventory.");
                 }
@@ -128,8 +133,13 @@ function action(mode, type, selection) {
 }
 
 function makeChoices(itemIdToGive, numberOfItemToGive) {
-    var result = "good job completing the doom stage, would you like to exit, or delve deeper into the DOOM\r\n\r\n";
-    result += "#L" + 0 + "##l I am a manly man or a womanly woman with some chess hair take me deeper!\r\n";
+    var result = "Good job completing the doom stage. Would you like to exit, or delve deeper into the DOOM?\r\n\r\n";
+    if (cm.getParty() != null) {
+        result += "#L" + 0 + "##l I am a manly man or a womanly woman with some chest hair, take me deeper!\r\n";
+    }
+    else {
+        result += "#rWait, you can't continue, you're not in a party!#k\r\n";
+    }
     result += "Exit, you will get: " + numberOfItemToGive + " #L" + 1 + "\n ##v" + itemIdToGive + "##t" + itemIdToGive + "##l\r\n";
     return result;
 }
