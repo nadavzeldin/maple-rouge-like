@@ -40,6 +40,12 @@ function action(mode, type, selection) {
                 "#r4.#k GOOD LUCK, I created something I think is impoessible to beat!");
 
         } else if (status == 1) {
+            if (cm.getParty() == null) {
+                cm.sendOk("Make sure you're in a party before attempting to survive the DOOM!");
+                cm.dispose();
+                return;
+            }
+            
             var mapId = 980000100; // Example Map ID, replace with actual Map ID
             var map = cm.getClient().getChannelServer().getMapFactory().getMap(mapId);
             const LifeFactory = Java.type('server.life.LifeFactory');
