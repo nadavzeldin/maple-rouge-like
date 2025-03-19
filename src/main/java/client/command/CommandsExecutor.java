@@ -259,15 +259,26 @@ public class CommandsExecutor {
     }
 
     public void handle(Client client, String message) {
-        if (client.tryacquireClient()) {
+        String[] commandsSplit = message.split("[@!]");
+        commandsSplit = Arrays.stream(commandsSplit).filter(s -> !s.isEmpty()).toArray(String[]::new);
+        for (String command : commandsSplit) {
+            // wait 100 ms between commands
             try {
-                handleInternal(client, message);
-            } finally {
-                client.releaseClient();
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                log.error("Error while waiting between commands", e);
             }
-        } else {
-            client.getPlayer().dropMessage(5, "Try again in a while... Latest commands are currently being processed.");
+            if (client.tryacquireClient()) {
+                try {
+                    handleInternal(client, "@" + command);
+                } finally {
+                    client.releaseClient();
+                }
+            } else {
+                client.getPlayer().dropMessage(5, "Try again in a while... Latest commands are currently being processed.");
+            }
         }
+
     }
 
     private void handleInternal(Client client, String message) {
