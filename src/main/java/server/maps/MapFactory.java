@@ -333,14 +333,10 @@ public class MapFactory {
             e.printStackTrace();
             // swallow cause I'm cool
         }
-        if (mapid == 230040420)
-        {
-            HashMap<Integer, Integer> backTypes2 = new HashMap<>();
-        }
-/*
+
         if (!BOSS_MAPS.contains(mapid)){
             map.duplicateSpawnPoints(SPAWN_RATE);
-        }*/
+        }
 
         map.setBackgroundTypes(backTypes);
         map.generateMapDropRangeCache();

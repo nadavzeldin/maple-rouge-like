@@ -3570,14 +3570,10 @@ public class MapleMap {
         }
 
         int numShouldSpawn = getNumShouldSpawn(numPlayers);
-        if (mapid == 230040420)
-        {
-            HashMap<Integer, Integer> backTypes2 = new HashMap<>();
-        }
-        /*
+
         if (!BOSS_MAPS.contains(mapid)){
             numShouldSpawn *= SPAWN_RATE;
-        }*/
+        }
         if (numShouldSpawn > 0) {
             List<SpawnPoint> randomSpawn = new ArrayList<>(getMonsterSpawn());
             Collections.shuffle(randomSpawn);
