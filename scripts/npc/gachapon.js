@@ -96,7 +96,7 @@ function action(mode, type, selection) {
             if (this.selection == 1) {
                 // User selected a prize group
                 selectedOption = selection;
-                cm.sendGetNumber("How many times would you like to roll? (1-10)\r\nEach roll costs 1,000,000 mesos.", 1, 1, 10);
+                cm.sendGetNumber("How many times would you like to roll? (1-10)\r\nEach roll costs " + MESO_COST_PER_ROLL.toLocaleString() + " mesos.", 1, 1, 10);
             } else {
                 cm.sendNextPrev("You'll find a variety of items from the " + curMapName + " Gachapon, but you'll most likely find items and scrolls related to " + curMapName + ".");
             }
