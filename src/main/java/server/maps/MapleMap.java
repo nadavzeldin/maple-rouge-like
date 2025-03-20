@@ -57,6 +57,7 @@ import server.events.gm.Fitness;
 import server.events.gm.Ola;
 import server.events.gm.OxQuiz;
 import server.events.gm.Snowball;
+import server.life.HourlySpawnBoostManager;
 import server.life.LifeFactory;
 import server.life.LifeFactory.selfDestruction;
 import server.life.Monster;
@@ -191,6 +192,14 @@ public class MapleMap {
 
     // due to the nature of loadMapFromWz (synchronized), sole function that calls 'generateMapDropRangeCache', this lock remains optional.
     private static final Lock bndLock = new ReentrantLock(true);
+    /**
+     * Gets the count of spawn points in this map
+     */
+    public int getSpawnPointCount() {
+        synchronized(monsterSpawn) {
+            return monsterSpawn.size();
+        }
+    }
 
     public MapleMap(int mapid, int world, int channel, int returnMapId, float monsterRate) {
         this.mapid = mapid;
@@ -3534,15 +3543,6 @@ public class MapleMap {
     }
 
     private int getNumShouldSpawn(int numPlayers) {
-        /*
-        System.out.println("----------------------------------");
-        for (SpawnPoint spawnPoint : getMonsterSpawn()) {
-            System.out.println("sp " + spawnPoint.getPosition().getX() + ", " + spawnPoint.getPosition().getY() + ": " + spawnPoint.getDenySpawn());
-        }
-        System.out.println("try " + monsterSpawn.size() + " - " + spawnedMonstersOnMap.get());
-        System.out.println("----------------------------------");
-        */
-
         if (YamlConfig.config.server.USE_ENABLE_FULL_RESPAWN) {
             return (monsterSpawn.size() - spawnedMonstersOnMap.get());
         }
@@ -4403,6 +4403,72 @@ public class MapleMap {
         } finally {
             chrWLock.unlock();
         }
+    }
+
+    /**
+     * Backup the current spawn points for later restoration
+     */
+    private List<SpawnPoint> originalSpawnPoints;
+
+    public void backupSpawnPoints() {
+        synchronized (monsterSpawn) {
+            originalSpawnPoints = new ArrayList<>(monsterSpawn);
+        }
+    }
+
+    /**
+     * Restore the original spawn points
+     */
+    public void restoreSpawnPoints() {
+        if (originalSpawnPoints != null) {
+            synchronized (monsterSpawn) {
+                monsterSpawn.clear();
+                monsterSpawn.addAll(originalSpawnPoints);
+            }
+            originalSpawnPoints = null;
+        }
+    }
+
+    /**
+     * Multiply the current spawn rate by the given factor
+     */
+    public void multiplySpawnRate(int factor) {
+        if (factor <= 1) {
+            return;
+        }
+
+        List<SpawnPoint> currentSpawns = new ArrayList<>(getMonsterSpawn());
+
+        synchronized (monsterSpawn) {
+            // We'll duplicate each spawn point (factor-1) times
+            for (int i = 0; i < factor - 1; i++) {
+                for (SpawnPoint sp : currentSpawns) {
+                    SpawnPoint newSp = new SpawnPoint(sp.getMonster(), sp.getPosition(),
+                            !sp.getMonster().isMobile(), sp.getMobTime(),
+                            mobInterval, sp.getTeam());
+                    monsterSpawn.add(newSp);
+                }
+            }
+        }
+    }
+
+
+
+    // Add a method to get the current spawn rate
+    public int getSpawnRate() {
+        int mapId = this.getId();
+
+        // Check if this map has a boosted spawn rate
+        if (HourlySpawnBoostManager.getInstance().isMapBoosted(mapId)) {
+            return HourlySpawnBoostManager.getInstance().getSpawnRateForMap(mapId);
+        }
+
+        // Otherwise return the default spawn rate
+        if (!BOSS_MAPS.contains(mapId)) {
+            return GameConstants.SPAWN_RATE;
+        }
+
+        return 1;
     }
 
     public int getMaxMobs() {
