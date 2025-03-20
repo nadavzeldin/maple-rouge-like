@@ -75,6 +75,7 @@ public class ItemId {
                 || intInRange(itemId, 2041000, 2041062)
                 || intInRange(itemId, 2041066, 2041069)
                 || intInRange(itemId, 2041100, 2041119)
+                || itemId == 2041200 // Dragon Stone (Horntail Necklace)
                 || intInRange(itemId, 2041300, 2041319)
                 || intInRange(itemId, 2043000, 2043013)
                 || intInRange(itemId, 2043015, 2043019)
