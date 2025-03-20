@@ -25,6 +25,7 @@ package client.command;
 
 import client.Client;
 import client.command.commands.gm0.AscensionCommand;
+import client.command.commands.gm0.BoostedMap;
 import client.command.commands.gm0.BuyExpCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
@@ -62,6 +63,7 @@ import client.command.commands.gm0.ToggleAutoStoreCommand;
 import client.command.commands.gm0.ToggleExpCommand;
 import client.command.commands.gm0.UptimeCommand;
 import client.command.commands.gm0.WarpRandomMap;
+import client.command.commands.gm0.WorldChatCommand;
 import client.command.commands.gm1.BossHpCommand;
 import client.command.commands.gm1.BuffMeCommand;
 import client.command.commands.gm1.GotoCommand;
@@ -260,15 +262,26 @@ public class CommandsExecutor {
     }
 
     public void handle(Client client, String message) {
-        if (client.tryacquireClient()) {
+        String[] commandsSplit = message.split("[@!]");
+        commandsSplit = Arrays.stream(commandsSplit).filter(s -> !s.isEmpty()).toArray(String[]::new);
+        for (String command : commandsSplit) {
+            // wait 100 ms between commands
             try {
-                handleInternal(client, message);
-            } finally {
-                client.releaseClient();
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                log.error("Error while waiting between commands", e);
             }
-        } else {
-            client.getPlayer().dropMessage(5, "Try again in a while... Latest commands are currently being processed.");
+            if (client.tryacquireClient()) {
+                try {
+                    handleInternal(client, "@" + command);
+                } finally {
+                    client.releaseClient();
+                }
+            } else {
+                client.getPlayer().dropMessage(5, "Try again in a while... Latest commands are currently being processed.");
+            }
         }
+
     }
 
     private void handleInternal(Client client, String message) {
@@ -359,10 +372,12 @@ public class CommandsExecutor {
         addCommand(new String[]{"warpto", "reach", "follow"},  0, ReachCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("randomMap", WarpRandomMap.class);
+        addCommand("boosted", BoostedMap.class);
         addCommand("shop", ShopCommand.class);
         addCommand("lastwords", LastWordsCommand.class);
         addCommand("achievs", MyAchievementsCommand.class);
         addCommand("ascend", AscensionCommand.class);
+        addCommand("world", WorldChatCommand.class);
         addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("roll", RollCommand.class);

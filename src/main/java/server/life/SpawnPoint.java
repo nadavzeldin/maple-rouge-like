@@ -67,7 +67,7 @@ public class SpawnPoint {
     }
 
     public boolean shouldSpawn() {
-        if (denySpawn || mobTime < 0 || spawnedMonsters.get() > 0) {
+        if (denySpawn || mobTime < 0) {
             return false;
         }
         return nextPossibleSpawn <= Server.getInstance().getCurrentTime();

@@ -287,4 +287,13 @@ public class MapId {
     public static final Set<Integer> DOOM_MAPS = new HashSet<>(Arrays.asList(
             980000100, 980000200, 980000300, 980000400, 980000500, 980000600
     ));
+
+    public static final Set<Integer> BOSS_MAPS = new HashSet<>(DOOM_MAPS);
+
+    static {
+        BOSS_MAPS.addAll(Arrays.asList(
+                CURSED_SANCTUARY, HOLLOWED_GROUND, DOOR_TO_ZAKUM, ORIGIN_OF_CLOCKTOWER, DRAGON_NEST_LEFT_BEHIND, CAVE_OF_PIANUS, 240060200 /*horntail cave*/,280030000 /*zakum altar*/,
+                270050100 /*pinkbean*/, CAVE_OF_PIANUS, SOMEONE_ELSES_HOUSE, GRIFFEY_FOREST,MANONS_FOREST,MANONS_FOREST
+        ));
+    }
 }

@@ -55,13 +55,17 @@ function action(mode, type, selection) {
             status++;
         } else {
             status--;
+            if (type == 3) { // canceled from sendGetNumber in multi-roll
+                cm.dispose();
+                return;
+            }
         }
 
         if (status == 0 && mode == 1) {
             if (cm.haveItem(ticketId)) {
                 cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How would you like to proceed?\r\n\r\n#L0#Use regular Gachapon ticket#l\r\n#L1#Use Premium Group Selection (1M mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
             } else {
-                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How may I help you?\r\n\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
+                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How may I help you?\r\n\r\n#L1#Use Premium Group Selection (1M mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
             }
         } else if (status == 1) {
             if (selection == 0 && cm.haveItem(ticketId)) {
@@ -92,7 +96,7 @@ function action(mode, type, selection) {
             if (this.selection == 1) {
                 // User selected a prize group
                 selectedOption = selection;
-                cm.sendGetNumber("How many times would you like to roll? (1-10)\r\nEach roll costs 1,000,000 mesos.", 1, 1, 10);
+                cm.sendGetNumber("How many times would you like to roll? (1-10)\r\nEach roll costs " + MESO_COST_PER_ROLL.toLocaleString() + " mesos.", 1, 1, 10);
             } else {
                 cm.sendNextPrev("You'll find a variety of items from the " + curMapName + " Gachapon, but you'll most likely find items and scrolls related to " + curMapName + ".");
             }
@@ -101,7 +105,7 @@ function action(mode, type, selection) {
                 // User entered amount of rolls
                 amount = selection;
                 var totalCost = amount * MESO_COST_PER_ROLL;
-                cm.sendYesNo("You're about to roll " + amount + " times for items in the #b" + prizeGroups[selectedOption] + "#k category.\r\n\r\nTotal cost: #r" + totalCost + " mesos#k\r\n\r\nWould you like to proceed?");
+                cm.sendYesNo("You're about to roll " + amount + " times for items in the #b" + prizeGroups[selectedOption] + "#k category.\r\n\r\nTotal cost: #r" + totalCost.toLocaleString() + " mesos#k\r\n\r\nWould you like to proceed?");
             } else {
                 cm.dispose();
             }
@@ -110,7 +114,7 @@ function action(mode, type, selection) {
             var totalCost = amount * MESO_COST_PER_ROLL;
 
             if (cm.getMeso() < totalCost) {
-                cm.sendOk("You don't have enough mesos. You need #r" + totalCost + " mesos#k to roll " + amount + " times.");
+                cm.sendOk("You don't have enough mesos. You need #r" + totalCost.toLocaleString() + " mesos#k to roll " + amount + " times.");
                 cm.dispose();
                 return;
             }
