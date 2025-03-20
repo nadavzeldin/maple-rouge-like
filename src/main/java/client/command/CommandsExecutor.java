@@ -25,6 +25,7 @@ package client.command;
 
 import client.Client;
 import client.command.commands.gm0.AscensionCommand;
+import client.command.commands.gm0.BoostedMap;
 import client.command.commands.gm0.BuyExpCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
@@ -369,6 +370,7 @@ public class CommandsExecutor {
         addCommand(new String[]{"warpto", "reach", "follow"},  0, ReachCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("randomMap", WarpRandomMap.class);
+        addCommand("boosted", BoostedMap.class);
         addCommand("shop", ShopCommand.class);
         addCommand("lastwords", LastWordsCommand.class);
         addCommand("achievs", MyAchievementsCommand.class);
