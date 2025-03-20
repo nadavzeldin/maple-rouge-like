@@ -20,6 +20,7 @@ import java.util.*;
  * @author Ronan
  */
 public class GameConstants {
+    public static int SPAWN_RATE = 2;
     public static int LOOT_LIZARD_ID = 9400506;
     public static int LOOT_LIZARD_PERCENT = 20;
     public static final long LOOT_LIZARD_SPAWN_COOLDOWN = 180000; // 3 minutes in milliseconds
