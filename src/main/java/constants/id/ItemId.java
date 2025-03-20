@@ -114,7 +114,7 @@ public class ItemId {
                 || intInRange(itemId, 2044712, 2044713)
                 || intInRange(itemId, 2044800, 2044815)
                 || itemId == 2044817
-                || intInRange(itemId, 2044900, 2044904)
+                || intInRange(itemId, 2044900, 2044905)
                 || intInRange(itemId, 2044906, 2044908)
                 || itemId == 2044910
                 || intInRange(itemId, 2048000, 2048013)
