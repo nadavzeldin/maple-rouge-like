@@ -117,7 +117,7 @@ function action(mode, type, selection) {
             if (cm.canHold(config.prizeId)) {
                 cm.gainItem(config.prizeId, config.prizeAmount);
                 if (cm.getParty() == null) {
-                    getPlayer().changeMap(doomLobby);
+                    cm.getPlayer().changeMap(doomLobby);
                 }
                 else {
                     cm.warpParty(doomLobby, 0);
