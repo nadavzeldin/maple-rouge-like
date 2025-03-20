@@ -35,6 +35,10 @@ function start() {
     action(1, 0, 0);
 }
 
+function getName(id) {
+    return SkillInfo.getInstance().getName(id);
+}
+
 function action(mode, type, selection) {
     if (mode == -1 || (mode == 0 && status == 0)) {
         cm.dispose();
@@ -79,6 +83,9 @@ function action(mode, type, selection) {
         // thousands place is 0
         displaySkills = displaySkills.filter((skill) => (Math.floor(skill.getId() / 1000) % 10 > 0));
 
+        // Sort by name
+        displaySkills.sort((s1, s2) => getName(s1.getId()).localeCompare(getName(s2.getId())));
+
         if (displaySkills.length == 0) {
             textList.push("It looks like you don't have any skills in this category...");
             cm.sendOk(textList.join("\r\n"));
@@ -87,8 +94,16 @@ function action(mode, type, selection) {
         }
         
         textList.push("Which skill would you like to bind?\r\n\r\n");
+        // Filter out duplicate names
+        // We can just store the names we've seen
+        var seenSkills = [];
         for (var i = 0; i < displaySkills.length; i++) {
             var skill = displaySkills[i];
+            var skillName = getName(skill.getId());
+            if (seenSkills.includes(skillName)) {
+                continue;
+            }
+            seenSkills.push(skillName);
             textList.push("#L" + skill.getId() + "##s" + skill.getId() + "# #q" + skill.getId() + "##l\r\n");
         }
 
@@ -106,7 +121,7 @@ function action(mode, type, selection) {
         var res = keyMapStr.get(key);
         player.changeKeybinding(keyMapStr.get(key), new KeyBinding(1, skillId));
         player.getClient().sendPacket(PacketCreator.getKeymap(player.getKeymap()));
-        player.yellowMessage(SkillInfo.getInstance().getName(skillId) + " has been assigned to to the '" + key + "' key!");
+        player.yellowMessage(getName(skillId) + " has been assigned to to the '" + key + "' key!");
         textList.push("All set!  Please change channels or relog for this to take effect.");
         cm.sendOk(textList.join(""));
     }
