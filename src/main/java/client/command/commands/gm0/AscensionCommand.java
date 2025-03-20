@@ -31,7 +31,9 @@ import client.Client;
 import client.command.Command;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.id.MapId;
+import net.server.Server;
 import tools.DatabaseConnection;
+import tools.PacketCreator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -120,5 +122,11 @@ public class AscensionCommand extends Command {
         }
         player.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
         player.changeMap(MapId.JAIL);
+
+        Server.getInstance().broadcastMessage(0,
+                PacketCreator.serverNotice(6,
+                        "Player" + player.getName() +
+                                " was ascended [" + ascensionType  +"] well done!")
+        );
     }
 }

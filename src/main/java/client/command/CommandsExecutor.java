@@ -62,6 +62,7 @@ import client.command.commands.gm0.ToggleAutoStoreCommand;
 import client.command.commands.gm0.ToggleExpCommand;
 import client.command.commands.gm0.UptimeCommand;
 import client.command.commands.gm0.WarpRandomMap;
+import client.command.commands.gm0.WorldChatCommand;
 import client.command.commands.gm1.BossHpCommand;
 import client.command.commands.gm1.BuffMeCommand;
 import client.command.commands.gm1.GotoCommand;
@@ -375,6 +376,7 @@ public class CommandsExecutor {
         addCommand("lastwords", LastWordsCommand.class);
         addCommand("achievs", MyAchievementsCommand.class);
         addCommand("ascend", AscensionCommand.class);
+        addCommand("world", WorldChatCommand.class);
         addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("roll", RollCommand.class);
