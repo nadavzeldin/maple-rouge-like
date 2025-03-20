@@ -89,7 +89,7 @@ function action(mode, type, selection) {
         textList.push("Which skill would you like to bind?\r\n\r\n");
         for (var i = 0; i < displaySkills.length; i++) {
             var skill = displaySkills[i];
-            textList.push("#L" + skill.getId() + "##s" + skill.getId() + "# #q" + skill.getId() + "# " + skill.getId() + "#l\r\n");
+            textList.push("#L" + skill.getId() + "##s" + skill.getId() + "# #q" + skill.getId() + "##l\r\n");
         }
 
         cm.sendSimple(textList.join(""));
@@ -100,11 +100,12 @@ function action(mode, type, selection) {
         cm.sendGetText("What key do you want to bind #s" + skillId + "# #q" + skillId + "# to?\r\n");
     }
     else if (status == 3) {
+        const PacketCreator = Java.type('tools.PacketCreator');
         var key = cm.getText().toLowerCase();
         var player = cm.getPlayer();
         var res = keyMapStr.get(key);
-        player.yellowMessage("found " + res);
         player.changeKeybinding(keyMapStr.get(key), new KeyBinding(1, skillId));
+        player.getClient().sendPacket(PacketCreator.getKeymap(player.getKeymap()));
         player.yellowMessage(SkillInfo.getInstance().getName(skillId) + " has been assigned to to the '" + key + "' key!");
         textList.push("All set!  Please change channels or relog for this to take effect.");
         cm.sendOk(textList.join(""));
