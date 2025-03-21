@@ -7,10 +7,14 @@ import net.server.channel.Channel;
 import server.TimerManager;
 import net.server.world.World;
 import server.maps.MapFactory;
+import server.maps.MapObject;
+import server.maps.MapObjectType;
 import server.maps.MapleMap;
 import tools.PacketCreator;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
@@ -24,7 +28,7 @@ import static client.command.commands.gm0.WarpRandomMap.validMaps;
 public class HourlySpawnBoostManager {
     private static final int DEFAULT_SPAWN_RATE = 2;  // Default spawn rate multiplier (x2)
     private static final int BOOSTED_SPAWN_RATE = 10; // Boosted spawn rate multiplier (x10)
-    private static final long BOOST_DURATION = TimeUnit.MINUTES.toMillis(1); // 1 hour
+    private static final long BOOST_DURATION = TimeUnit.HOURS.toMillis(1); // 1 hour
 
     private static HourlySpawnBoostManager instance;
     private ScheduledFuture<?> boostTask;
@@ -103,23 +107,41 @@ public class HourlySpawnBoostManager {
 
         currentBoostedMapId = -1;
     }
+    /**
+     * Finds a random map from the eligible list that contains monsters
+     */
+    private MapleMap findEligibleMapWithMonsters(Channel channel, List<Integer> eligibleMapIds, Random random) {
+        MapleMap map;
+        do {
+            int mapIndex = random.nextInt(eligibleMapIds.size() - 1);
+            int mapId = eligibleMapIds.get(mapIndex);
+            map = channel.getMapFactory().getMap(mapId);
 
+            // Check if the map has monsters by using getMapObjectsInRange which gets all monsters within range
+            // Using Double.POSITIVE_INFINITY ensures we check the entire map
+            List<MapObject> monsters = map.getMapObjectsInRange(
+                    new Point(0, 0),
+                    Double.POSITIVE_INFINITY,
+                    Arrays.asList(MapObjectType.MONSTER)
+            );
+
+            if (!monsters.isEmpty() && !map.isTown()) {
+                break; // Found a map with monsters
+            }
+
+        } while (true); // Keep trying until we find a map with monsters
+        return map;
+    }
     /**
      * Boost a randomly selected map
      */
     private void boostRandomMap() {
         // Choose a random map from eligible maps
-        int mapIndex = random.nextInt(eligibleMapIds.size());
-        currentBoostedMapId = eligibleMapIds.get(mapIndex);
+        Channel firstChannel = Server.getInstance().getWorlds().getFirst().getChannels().getFirst();
+        MapleMap eligibleMap = findEligibleMapWithMonsters(firstChannel, eligibleMapIds, random);
+        currentBoostedMapId = eligibleMap.getId();
+        boostMapSpawnRate(eligibleMap);
 
-        for (World world : Server.getInstance().getWorlds()) {
-            for (Channel channel : world.getChannels()) {
-                MapleMap map = channel.getMapFactory().getMap(currentBoostedMapId);
-                if (map != null) {
-                    boostMapSpawnRate(map);
-                }
-            }
-        }
 
         // Announce the new boosted map
         Server.getInstance().broadcastMessage(0,
