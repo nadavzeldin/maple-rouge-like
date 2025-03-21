@@ -38,6 +38,7 @@ function action(mode, type, selection) {
         textList.push("\t#i2049100# Chaos scrolls\r\n");
         textList.push("\t#i2340000# White scrolls\r\n");
         textList.push("\t#i2049000# Clean slate scrolls\r\n");
+        textList.push("\t#i2022153# All-stat cakes\r\n")
         textList.push("What would you like to do?\r\n");
         textList.push("#b");
         textList.push("#L0#Withdraw scrolls#l\r\n");
