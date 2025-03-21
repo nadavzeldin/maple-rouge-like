@@ -634,7 +634,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         this.scriptName = scriptName;
         this.itemScript = itemScript;
 
-        if (npc == 9100100) //gacha
+        if ((npc >= 9100100 && npc <= 9100111) || npc == 9100117) // gachapons
         {
             initializeItemPools();
         }
