@@ -133,7 +133,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         SET_UP.add(3010040); // The Stirge Seat
         SET_UP.add(3010041); // Skull Throne
         SET_UP.add(3010043); // Halloween Broomstick Chair
-        SET_UP.add(3010044); // Winter Red Chair
+        //SET_UP.add(3010044); // Winter Red Chair --> Item missing from wz files, will crash
         SET_UP.add(3010045); // Ice Chair
         SET_UP.add(3010046); // Dragon Chair(Inferno)
         SET_UP.add(3010047); // Dragon Chair(Abyss)
@@ -425,7 +425,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2210021); // Gaga Transformation Potion
         USE_ITEMS.add(2210022); // Peto Transformation Potion
         USE_ITEMS.add(2210023); // Cliff's Special Potion
-        USE_ITEMS.add(2210024); // Maplemas Party Potion
+        //USE_ITEMS.add(2210024); // Maplemas Party Potion --> This item appears to be missing from wz files and will crash your game if you try to use the blank item space
         USE_ITEMS.add(2210030); // Geppetto Transformation
         USE_ITEMS.add(2210032); // Cody's Picture
         USE_ITEMS.add(2210033); // Cake Picture
@@ -634,7 +634,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         this.scriptName = scriptName;
         this.itemScript = itemScript;
 
-        if (npc == 9100100) //gacha
+        if ((npc >= 9100100 && npc <= 9100111) || npc == 9100117) // gachapons
         {
             initializeItemPools();
         }

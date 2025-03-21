@@ -123,7 +123,7 @@ function action(mode, type, selection) {
                 cm.dispose();
             }
             else {
-                cm.sendOk("It looks like your storage might be full!");
+                cm.sendOk("It looks like your storage might be full! You can only hold up to #b32,767#k merge coins.");
                 cm.dispose();
             }
         }
