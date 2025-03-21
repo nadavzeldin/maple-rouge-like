@@ -122,7 +122,7 @@ function action(mode, type, selection) {
         player.changeKeybinding(keyMapStr.get(key), new KeyBinding(1, skillId));
         player.getClient().sendPacket(PacketCreator.getKeymap(player.getKeymap()));
         player.yellowMessage(getName(skillId) + " has been assigned to to the '" + key + "' key!");
-        textList.push("All set!  Please change channels or relog for this to take effect.");
+        textList.push("All set, " + getName(skillId) + " has been assigned!");
         cm.sendOk(textList.join(""));
     }
     else {

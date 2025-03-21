@@ -10,7 +10,7 @@ import constants.id.NpcId;
 
 public class SkillBindCommand extends Command {
     {
-        setDescription("zzzzzz");
+        setDescription("Bind a previously learned skill to your keyboard");
     }
 
     @Override
