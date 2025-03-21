@@ -52,6 +52,7 @@ import client.command.commands.gm0.RollCommand;
 import client.command.commands.gm0.SellCommand;
 import client.command.commands.gm0.ShopCommand;
 import client.command.commands.gm0.ShowRatesCommand;
+import client.command.commands.gm0.SkillBindCommand;
 import client.command.commands.gm0.StaffCommand;
 import client.command.commands.gm0.StatDexCommand;
 import client.command.commands.gm0.StatIntCommand;
@@ -409,6 +410,7 @@ public class CommandsExecutor {
         addCommand("buyexp", BuyExpCommand.class);
         addCommand("resources", ResourceStorageCommand.class);
         addCommand("togglestore", ToggleAutoStoreCommand.class);
+        addCommand("skillbind", SkillBindCommand.class);
 
 
         commandsNameDesc.add(levelCommandsCursor);
