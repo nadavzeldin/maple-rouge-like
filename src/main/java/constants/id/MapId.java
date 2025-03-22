@@ -282,6 +282,7 @@ public class MapId {
     public static final int CRIMSONWOOD_KEEP = 610020006;
     public static final int MU_LUNG_DOJO_HALL = 925020001;
     public static final int EXCLUSIVE_TRAINING_CENTER = 970030000;
+    public static final int SHOWA_GANG = 801040004;
 
     // DOOM MAPS
     public static final Set<Integer> DOOM_MAPS = new HashSet<>(Arrays.asList(
