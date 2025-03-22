@@ -1273,6 +1273,23 @@ public class StatEffect {
         }
     }
 
+    private void processBuffStats(List<Pair<BuffStat, Integer>> localstatups, Character character) {
+        for (int i = 0; i < localstatups.size(); i++) {
+            Pair<BuffStat, Integer> statPair = localstatups.get(i);
+
+            // Check if the BuffStat is ECHO_OF_HERO
+            if (statPair.getLeft() == BuffStat.ECHO_OF_HERO) {
+                Pair<BuffStat, Integer> updatedPair = new Pair<>(
+                        statPair.getLeft(),
+                        statPair.getRight() + (character.accountExtraDetails.getAscension().size() * 2)
+                );
+
+                // Replace the original pair with the updated one
+                localstatups.set(i, updatedPair);
+            }
+        }
+    }
+
     private void applyBuffEffect(Character applyfrom, Character applyto, boolean primary) {
         if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor() && !isHyperBody() && !isCombo()) {     // last mystic door already dispelled if it has been used before.
             applyto.cancelEffect(this, true, -1);
@@ -1327,6 +1344,7 @@ public class StatEffect {
             Packet buff = null;
             Packet mbuff = null;
             if (this.isActive(applyto)) {
+                processBuffStats(localstatups, applyto);
                 buff = PacketCreator.giveBuff((skill ? sourceid : -sourceid), localDuration, localstatups);
             }
             if (isDash()) {
