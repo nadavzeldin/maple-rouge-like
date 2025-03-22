@@ -45,9 +45,10 @@ public class HourlySpawnBoostManager {
             eligibleMapIds.add(mapId);
         }
 
-        // Filter out any map IDs that might be in BOSS_MAPS
+        // Filter out any map IDs that might be in BOSS_MAPS and Dojos
         eligibleMapIds.removeAll(MapId.BOSS_MAPS);
-        eligibleMapIds.removeIf(mapId -> (mapId >= 925020000 && mapId <= 925039999));    } // dojo range maps
+        eligibleMapIds.removeIf(mapId -> (mapId >= 925020000 && mapId <= 925039999));
+    }
 
     public static HourlySpawnBoostManager getInstance() {
         if (instance == null) {
