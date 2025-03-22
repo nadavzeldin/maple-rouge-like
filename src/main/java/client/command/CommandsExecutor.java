@@ -40,6 +40,7 @@ import client.command.commands.gm0.JoinEventCommand;
 import client.command.commands.gm0.LastWordsCommand;
 import client.command.commands.gm0.LeaveEventCommand;
 import client.command.commands.gm0.MapOwnerClaimCommand;
+import client.command.commands.gm0.MergeNPCCommand;
 import client.command.commands.gm0.MyAchievementsCommand;
 import client.command.commands.gm0.OnlineCommand;
 import client.command.commands.gm0.RanksCommand;
@@ -382,6 +383,7 @@ public class CommandsExecutor {
         addCommand("lastwords", LastWordsCommand.class);
         addCommand("achievs", MyAchievementsCommand.class);
         addCommand("ascend", AscensionCommand.class);
+        addCommand("npcmerge", MergeNPCCommand.class);
         addCommand("world", WorldChatCommand.class);
         addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
