@@ -389,9 +389,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         EQUIPMENT_ITEMS.add(1072344); // Facestompers
 
         // Add all cape items to equipment items
-       
-        EQUIPMENT_ITEMS.add(1102041); // Pink Adventurer Cape
-        EQUIPMENT_ITEMS.add(1102042); // Purple Adventurer Cape
+        EQUIPMENT_ITEMS.add(1102084); // Pink Gaia Cape
+        EQUIPMENT_ITEMS.add(1102086); // Purple Gaia Cape
 
         // Stat-giving Gloves
         
