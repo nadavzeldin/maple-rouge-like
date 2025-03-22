@@ -15,6 +15,7 @@ import tools.PacketCreator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
@@ -46,7 +47,7 @@ public class HourlySpawnBoostManager {
 
         // Filter out any map IDs that might be in BOSS_MAPS
         eligibleMapIds.removeAll(MapId.BOSS_MAPS);
-    }
+        eligibleMapIds.removeIf(mapId -> (mapId >= 925020000 && mapId <= 925039999));    } // dojo range maps
 
     public static HourlySpawnBoostManager getInstance() {
         if (instance == null) {
