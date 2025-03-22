@@ -34,6 +34,7 @@ import client.command.commands.gm0.DropLimitCommand;
 import client.command.commands.gm0.EnableAuthCommand;
 import client.command.commands.gm0.EquipLvCommand;
 import client.command.commands.gm0.GachaCommand;
+import client.command.commands.gm0.GamesFeatureNPCCommand;
 import client.command.commands.gm0.GmCommand;
 import client.command.commands.gm0.HelpCommand;
 import client.command.commands.gm0.JoinEventCommand;
@@ -384,6 +385,7 @@ public class CommandsExecutor {
         addCommand("achievs", MyAchievementsCommand.class);
         addCommand("ascend", AscensionCommand.class);
         addCommand("npcmerge", MergeNPCCommand.class);
+        addCommand("features", GamesFeatureNPCCommand.class);
         addCommand("world", WorldChatCommand.class);
         addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
