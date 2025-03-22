@@ -6278,6 +6278,10 @@ public class Character extends AbstractCharacterObject {
         return gmLevel > 1;
     }
 
+    public long getLastDeathTime(){
+        return lastDeathtime;
+    }
+
     public boolean isHidden() {
         return hidden;
     }
