@@ -296,4 +296,6 @@ public class MapId {
                 270050100 /*pinkbean*/, CAVE_OF_PIANUS, SOMEONE_ELSES_HOUSE, GRIFFEY_FOREST,MANONS_FOREST,MANONS_FOREST
         ));
     }
+    public static final Set<Integer> BUFFED_SPAWN_MAPS = new HashSet<>(Arrays.asList(270030400, 800020130, 220060400, 220070400));
+
 }
