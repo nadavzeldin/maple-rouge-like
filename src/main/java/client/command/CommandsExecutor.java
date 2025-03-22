@@ -289,7 +289,7 @@ public class CommandsExecutor {
             client.getPlayer().yellowMessage("You do not have permission to use commands while in jail.");
             return;
         }
-        if (client.getPlayer().getLastDeathTime() != 0)
+        if (client.getPlayer().getLastDeathTime() != 0 && !client.getPlayer().isGM())
         {
             client.getPlayer().yellowMessage("You do not have permission to use commands while dead.");
             return;
