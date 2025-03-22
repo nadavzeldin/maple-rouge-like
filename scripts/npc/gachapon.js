@@ -28,14 +28,14 @@ var curMapName = "";
 var selection;
 var amount = 0;
 var selectedOption = -1;
-var MESO_COST_PER_ROLL = 10000000; // 10 million mesos per roll
+var MESO_COST_PER_ROLL = 5000000; // 5 million mesos per roll
 
 // Prize groups
 var prizeGroups = [
     "Taming",
     "Weapons & Shields",
-    "Accessories & Gloves",
-    "Capes & Shoes",
+    "Accessories",
+    "Capes, Shoes, & Gloves",
     "Uses",
     "Setups"
 ];
@@ -63,9 +63,9 @@ function action(mode, type, selection) {
 
         if (status == 0 && mode == 1) {
             if (cm.haveItem(ticketId)) {
-                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How would you like to proceed?\r\n\r\n#L0#Use regular Gachapon ticket#l\r\n#L1#Use Premium Group Selection (10M mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
+                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How would you like to proceed?\r\n\r\n#L0#Use regular Gachapon ticket#l\r\n#L1#Use Premium Gachapon (5m mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
             } else {
-                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How may I help you?\r\n\r\n#L1#Use Premium Group Selection (10M mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
+                cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How may I help you?\r\n\r\n#L1#Use Premium Gachapon (5m mesos per roll)#l\r\n#L2#What is Gachapon?#l\r\n#L3#Where can you buy Gachapon tickets?#l");
             }
         } else if (status == 1) {
             if (selection == 0 && cm.haveItem(ticketId)) {

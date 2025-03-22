@@ -93,18 +93,22 @@ public class GameConstants {
         put("quay", MapId.BOAT_QUAY_TOWN);
         put("kampung", MapId.KAMPUNG_VILLAGE);
         put("amoria", MapId.AMORIA);
-        put("temple", MapId.TEMPLE_OF_TIME);
+        put("tot", MapId.TEMPLE_OF_TIME);
         put("square", MapId.KERNING_SQUARE);
         put("neo", MapId.NEO_CITY);
         put("mushking", MapId.MUSHROOM_KINGDOM);
         put("fm", MapId.FM_ENTRANCE);
         put("balrog", MapId.CURSED_SANCTUARY);
         put("zakum", MapId.DOOR_TO_ZAKUM);
-        put("papu", MapId.ORIGIN_OF_CLOCKTOWER);
-        put("skelegon", MapId.DRAGON_NEST_LEFT_BEHIND);
+        put("skele", MapId.DRAGON_NEST_LEFT_BEHIND);
         put("pianus", MapId.CAVE_OF_PIANUS);
         put("horntail", MapId.ENTRANCE_TO_HORNTAILS_CAVE);
         put("pinkbean", MapId.FORGOTTEN_TWILIGHT);
+        put("himes", MapId.ZIPANGU_BUDDHA);
+        put("scarga", MapId.SPOOKY_WORLD);
+        put("pap", MapId.DEEP_CLOCKTOWER);
+        put("yakuza", MapId.SHOWA_GANG);
+        put("chimney", MapId.MAIN_CHIMNEY);
     }};
 
     // "goto" command for only-GMs
