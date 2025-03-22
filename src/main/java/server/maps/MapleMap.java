@@ -1937,7 +1937,7 @@ public class MapleMap {
     }
 
     public void spawnMonster(final Monster monster) {
-        if (channel == 10)
+        if (channel == 3)
         {
             monster.addHp(monster.getHp()*5);
         }
