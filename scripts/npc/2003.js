@@ -34,7 +34,8 @@ function action(mode, type, selection) {
                 "2 - Resilient Ascension: Characters become immune to debuffs\r\n" +
                 "3 - Lucky Ascension: All scrolls are atleast 90% Success\r\n" +
                 "4 - Blacksmith Ascension: on merge 10% for extra buffed merged\r\n" +
-                "5 - EarlyBird Ascension: new character start with another extra bonus of 50 for each AP\r\n\r\n" +
+                "5 - EarlyBird Ascension: new character start with another extra bonus of 50 for each AP\r\n +
+                "6 - Infinite Ascension: can stack! each Infinite give +2AP to level\r\n\r\n" +
                 "#ePlease Note:#n #rAscending will send your current character to jail, forever!#k");
             cm.dispose();
         }
