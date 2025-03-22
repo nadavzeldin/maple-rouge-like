@@ -194,6 +194,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -6578,6 +6579,28 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    public static int getInfiniteAscensionValue(List<String> ascensions) {
+        if (ascensions == null || ascensions.isEmpty()) {
+            return 0;
+        }
+
+        Pattern pattern = Pattern.compile(AscensionConstants.Names.INFINITE + "\\((\\d+)\\)");
+
+        for (String ascension : ascensions) {
+            Matcher matcher = pattern.matcher(ascension);
+            if (matcher.matches()) {
+                try {
+                    return Integer.parseInt(matcher.group(1));
+                } catch (NumberFormatException e) {
+                    // In case of parsing error, return 0
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
+
     public synchronized void levelUp(boolean takeexp) {
         Skill improvingMaxHP = null;
         Skill improvingMaxMP = null;
@@ -6606,7 +6629,7 @@ public class Character extends AbstractCharacterObject {
             }
         } else {
             int remainingAp = 5;
-
+            remainingAp += getInfiniteAscensionValue(accountExtraDetails.getAscension()) * 2;
             if (isCygnus()) {
                 if (level > 10) {
                     if (level <= 17) {
