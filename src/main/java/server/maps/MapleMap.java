@@ -1939,7 +1939,15 @@ public class MapleMap {
     public void spawnMonster(final Monster monster) {
         if (channel == 3)
         {
-            monster.addHp(monster.getHp()*5);
+            long newHp = (long)monster.getHp() * 5;
+            if (newHp > 2_000_000_000) {
+                // Calculate how much HP to add to reach exactly 2 billion
+                int hpToAdd = 2_000_000_000 - monster.getHp();
+                monster.addHp(hpToAdd);
+            } else {
+                // Original calculation is fine, multiply by 5
+                monster.addHp(monster.getHp() * 4); // Add 4 times current HP since addHp adds to current value
+            }
         }
         spawnMonster(monster, 1, false);
     }
