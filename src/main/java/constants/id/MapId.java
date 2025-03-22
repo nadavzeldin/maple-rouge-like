@@ -286,6 +286,7 @@ public class MapId {
     public static final int ZIPANGU_BUDDHA = 800020130;
     public static final int SPOOKY_WORLD = 551030100;
     public static final int DEEP_CLOCKTOWER = 220080000;
+    public static final int MAIN_CHIMNEY = 682010200;
 
     // DOOM MAPS
     public static final Set<Integer> DOOM_MAPS = new HashSet<>(Arrays.asList(
