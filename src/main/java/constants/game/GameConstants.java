@@ -104,11 +104,11 @@ public class GameConstants {
         put("pianus", MapId.CAVE_OF_PIANUS);
         put("horntail", MapId.ENTRANCE_TO_HORNTAILS_CAVE);
         put("pinkbean", MapId.FORGOTTEN_TWILIGHT);
-        put("himes", ZIPANGU_BUDDHA);
-        put("scarga", SPOOKY_WORLD);
-        put("pap", DEEP_CLOCKTOWER);
-        put("yakuza", SHOWA_GANG);
-        put("chimney", MAIN_CHIMNEY);
+        put("himes", MapId.ZIPANGU_BUDDHA);
+        put("scarga", MapId.SPOOKY_WORLD);
+        put("pap", MapId.DEEP_CLOCKTOWER);
+        put("yakuza", MapId.SHOWA_GANG);
+        put("chimney", MapId.MAIN_CHIMNEY);
     }};
 
     // "goto" command for only-GMs
