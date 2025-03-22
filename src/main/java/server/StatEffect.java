@@ -1337,7 +1337,7 @@ public class StatEffect {
                     // Add the base value plus the bonus from ascension
                     int baseValue = statPair.getRight();
 
-                    int bonusValue = applyto.accountExtraDetails.getAscension().size() * 2;
+                    int bonusValue = applyto.accountExtraDetails.getAscension().size();
                     newLocalStatups.add(new Pair<>(BuffStat.ECHO_OF_HERO, baseValue + bonusValue));
                 } else {
                     newLocalStatups.add(statPair);
