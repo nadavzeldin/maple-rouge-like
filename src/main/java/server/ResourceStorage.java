@@ -207,6 +207,10 @@ public class ResourceStorage {
         }
     }
 
+    public List<Item> getItems(String filterText) {
+        return getItems().stream().filter((item) -> ItemInformationProvider.getInstance().getName(item.getItemId()).toLowerCase().contains(filterText.toLowerCase())).toList();
+    }
+
     private List<Item> filterItems(InventoryType type) {
         List<Item> storageItems = getItems();
         List<Item> ret = new LinkedList<>();
