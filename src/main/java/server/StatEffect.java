@@ -1295,6 +1295,12 @@ public class StatEffect {
             applyto.cancelEffect(this, true, -1);
         }
 
+        if (isSkillMorph())
+        {
+            applyto.dropMessage(5, "Transformation are blocked due to DC connection bugs");
+            return;
+        }
+
         List<Pair<BuffStat, Integer>> localstatups = statups;
         int localDuration = getBuffLocalDuration();
         int localsourceid = sourceid;
