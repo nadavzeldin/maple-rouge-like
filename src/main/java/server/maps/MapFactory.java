@@ -47,6 +47,7 @@ import java.util.List;
 
 import static constants.game.GameConstants.SPAWN_RATE;
 import static constants.id.MapId.BOSS_MAPS;
+import static constants.id.MapId.BUFFED_SPAWN_MAPS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MapFactory {
@@ -332,7 +333,12 @@ public class MapFactory {
         }
 
         if (!BOSS_MAPS.contains(mapid)){
-            map.duplicateSpawnPoints(SPAWN_RATE);
+            int spawn_rates = SPAWN_RATE;
+            if (BUFFED_SPAWN_MAPS.contains(mapid))
+            {
+                spawn_rates = Math.min(10, spawn_rates*2);
+            }
+            map.duplicateSpawnPoints(spawn_rates);
         }
 
         map.setBackgroundTypes(backTypes);
