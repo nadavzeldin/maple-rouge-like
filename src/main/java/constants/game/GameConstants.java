@@ -100,11 +100,13 @@ public class GameConstants {
         put("fm", MapId.FM_ENTRANCE);
         put("balrog", MapId.CURSED_SANCTUARY);
         put("zakum", MapId.DOOR_TO_ZAKUM);
-        put("papu", MapId.ORIGIN_OF_CLOCKTOWER);
         put("skelegon", MapId.DRAGON_NEST_LEFT_BEHIND);
         put("pianus", MapId.CAVE_OF_PIANUS);
         put("horntail", MapId.ENTRANCE_TO_HORNTAILS_CAVE);
         put("pinkbean", MapId.FORGOTTEN_TWILIGHT);
+        put("himes", ZIPANGU_BUDDHA);
+        put("scarga", SPOOKY_WORLD);
+        put("pap", DEEP_CLOCKTOWER);
     }};
 
     // "goto" command for only-GMs
