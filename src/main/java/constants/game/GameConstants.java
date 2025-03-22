@@ -107,6 +107,7 @@ public class GameConstants {
         put("himes", ZIPANGU_BUDDHA);
         put("scarga", SPOOKY_WORLD);
         put("pap", DEEP_CLOCKTOWER);
+        put("yakuza", SHOWA_GANG);
     }};
 
     // "goto" command for only-GMs
