@@ -1273,23 +1273,6 @@ public class StatEffect {
         }
     }
 
-    private void processBuffStats(List<Pair<BuffStat, Integer>> localstatups, Character character) {
-        for (int i = 0; i < localstatups.size(); i++) {
-            Pair<BuffStat, Integer> statPair = localstatups.get(i);
-
-            // Check if the BuffStat is ECHO_OF_HERO
-            if (statPair.getLeft() == BuffStat.ECHO_OF_HERO) {
-                Pair<BuffStat, Integer> updatedPair = new Pair<>(
-                        statPair.getLeft(),
-                        statPair.getRight() + (character.accountExtraDetails.getAscension().size() * 2)
-                );
-
-                // Replace the original pair with the updated one
-                localstatups.set(i, updatedPair);
-            }
-        }
-    }
-
     private void applyBuffEffect(Character applyfrom, Character applyto, boolean primary) {
         if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor() && !isHyperBody() && !isCombo()) {     // last mystic door already dispelled if it has been used before.
             applyto.cancelEffect(this, true, -1);
@@ -1342,15 +1325,38 @@ public class StatEffect {
                 }
             }
         }
+
+        // Handle ECHO_OF_HERO buff separately if needed
+        if (sourceid == Beginner.ECHO_OF_HERO || sourceid == Noblesse.ECHO_OF_HERO ||
+                sourceid == Legend.ECHO_OF_HERO || sourceid == Evan.ECHO_OF_HERO) {
+            // Create a new list to avoid modifying the original statups
+            List<Pair<BuffStat, Integer>> newLocalStatups = new ArrayList<>(localstatups.size());
+
+            for (Pair<BuffStat, Integer> statPair : localstatups) {
+                if (statPair.getLeft() == BuffStat.ECHO_OF_HERO) {
+                    // Add the base value plus the bonus from ascension
+                    int baseValue = statPair.getRight();
+
+                    int bonusValue = applyto.accountExtraDetails.getAscension().size();
+                    newLocalStatups.add(new Pair<>(BuffStat.ECHO_OF_HERO, baseValue + bonusValue));
+                } else {
+                    newLocalStatups.add(statPair);
+                }
+            }
+
+            // Replace localstatups with our new modified list
+            localstatups = newLocalStatups;
+        }
+
         if (primary) {
             localDuration = alchemistModifyVal(applyfrom, localDuration, false);
             applyto.getMap().broadcastMessage(applyto, PacketCreator.showBuffEffect(applyto.getId(), sourceid, 1, (byte) 3), false);
         }
+
         if (localstatups.size() > 0) {
             Packet buff = null;
             Packet mbuff = null;
             if (this.isActive(applyto)) {
-                processBuffStats(localstatups, applyto);
                 buff = PacketCreator.giveBuff((skill ? sourceid : -sourceid), localDuration, localstatups);
             }
             if (isDash()) {
@@ -1404,15 +1410,10 @@ public class StatEffect {
             }
 
             if (buff != null) {
-                //Thanks flav for such a simple release! :)
-                //Thanks Conrad, Atoot for noticing summons not using buff icon
-
                 applyto.sendPacket(buff);
             }
 
             long starttime = Server.getInstance().getCurrentTime();
-            //CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
-            //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, localDuration);
             applyto.registerEffect(this, starttime, starttime + localDuration, false);
             if (mbuff != null) {
                 applyto.getMap().broadcastMessage(applyto, mbuff, false);
