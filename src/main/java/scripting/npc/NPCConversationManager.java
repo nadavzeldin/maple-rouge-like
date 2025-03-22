@@ -334,63 +334,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1022073); // Broken Glasses - (no description)
         ACCESSORIES_ITEMS.add(1032061); // (no description)
 
-        // Stat-giving Gloves
-        ACCESSORIES_ITEMS.add(1082000); // Steel Fingerless Gloves
-        ACCESSORIES_ITEMS.add(1082001); // White Fingerless Gloves
-        ACCESSORIES_ITEMS.add(1082002); // Work Gloves
-        ACCESSORIES_ITEMS.add(1082003); // Juno
-        ACCESSORIES_ITEMS.add(1082004); // Venon
-        ACCESSORIES_ITEMS.add(1082005); // Steel Missel
-        ACCESSORIES_ITEMS.add(1082006); // Orihalcon Missel
-        ACCESSORIES_ITEMS.add(1082007); // Bronze Missel
-        ACCESSORIES_ITEMS.add(1082008); // Steel Briggon
-        ACCESSORIES_ITEMS.add(1082009); // Steel Brist
-        ACCESSORIES_ITEMS.add(1082010); // Mithril Brist
-        ACCESSORIES_ITEMS.add(1082011); // Gold Brist
-        ACCESSORIES_ITEMS.add(1082012); // Basic Archer Gloves
-        ACCESSORIES_ITEMS.add(1082020); // Blue Morrican
-        ACCESSORIES_ITEMS.add(1082021); // Green Morrican
-        ACCESSORIES_ITEMS.add(1082022); // Purple Morrican
-        ACCESSORIES_ITEMS.add(1082023); // Iron Knuckle
-        ACCESSORIES_ITEMS.add(1082024); // Adamantium Knuckle
-        ACCESSORIES_ITEMS.add(1082025); // Dark Knuckle
-        ACCESSORIES_ITEMS.add(1082052); // Blue Lutia
-        ACCESSORIES_ITEMS.add(1082053); // Black Lutia
-        ACCESSORIES_ITEMS.add(1082065); // Blue Moon Gloves
-        ACCESSORIES_ITEMS.add(1082066); // Brown Moon Gloves
-        ACCESSORIES_ITEMS.add(1082067); // Red Moon Gloves
-        ACCESSORIES_ITEMS.add(1082092); // Bronze Pow
-        ACCESSORIES_ITEMS.add(1082093); // Steal Pow
-        ACCESSORIES_ITEMS.add(1082094); // Gold Pow
-        ACCESSORIES_ITEMS.add(1082114); // Sapphire Emperor
-        ACCESSORIES_ITEMS.add(1082115); // Emerald Emperor
-        ACCESSORIES_ITEMS.add(1082116); // Blood Emperor
-        ACCESSORIES_ITEMS.add(1082117); // Dark Emperor
-        ACCESSORIES_ITEMS.add(1082167); // Black Garina Gloves
-        ACCESSORIES_ITEMS.add(1082168); // Blue Dragon Gauntlet
-        ACCESSORIES_ITEMS.add(1082173); // Lightning Gloves
-        ACCESSORIES_ITEMS.add(1082216); // Canopus Glove
-        ACCESSORIES_ITEMS.add(1082218); // Dragon Gauntlet
-        ACCESSORIES_ITEMS.add(1082222); // Mechanical Glove
-        ACCESSORIES_ITEMS.add(1082223); // Stormcaster Gloves
-        ACCESSORIES_ITEMS.add(1082234); // Timeless Bergamot
-        ACCESSORIES_ITEMS.add(1082235); // Timeless Hermosa
-        ACCESSORIES_ITEMS.add(1082236); // Timeless Presto
-        ACCESSORIES_ITEMS.add(1082237); // Timeless Lubav
-        ACCESSORIES_ITEMS.add(1082238); // Timeless Charlston
-
-        USE_ITEMS.add(2060001); // Bronze Arrow for Bow
-        USE_ITEMS.add(2060002); // Steel Arrow for Bow
-        USE_ITEMS.add(2060003); // Red Arrow for Bow
         USE_ITEMS.add(2060004); // Diamond Arrow for Bow
         USE_ITEMS.add(2060005); // Snowball
         USE_ITEMS.add(2060006); // Big Snowball
-        USE_ITEMS.add(2061000); // Arrow for Crossbow
-        USE_ITEMS.add(2061001); // Bronze Arrow for Crossbow
-        USE_ITEMS.add(2061002); // Steel Arrow for Crossbow
-        USE_ITEMS.add(2061003); // Blue Arrow for Crossbow
         USE_ITEMS.add(2061004); // Diamond Arrow for Crossbow
-        USE_ITEMS.add(2070000); // Subi Throwing-Stars
         USE_ITEMS.add(2070001); // Wolbi Throwing-Stars
         USE_ITEMS.add(2070002); // Mokbi Throwing-Stars
         USE_ITEMS.add(2070003); // Kumbi Throwing-Stars
@@ -438,178 +385,17 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2210043); // Leech Costume
 
         // Add all boots items to EQUIPMENT_ITEMS
-        EQUIPMENT_ITEMS.add(1072000); // Brown Jangoon Shoes
-        EQUIPMENT_ITEMS.add(1072001); // Red Rubber Boots
-        EQUIPMENT_ITEMS.add(1072002); // Steel Trigger
-        EQUIPMENT_ITEMS.add(1072003); // Emerald Battle Grieves
-        EQUIPMENT_ITEMS.add(1072004); // White Gomushin
-        EQUIPMENT_ITEMS.add(1072005); // Leather Sandals
-        EQUIPMENT_ITEMS.add(1072006); // Brown Basic Boots
-        EQUIPMENT_ITEMS.add(1072007); // Brown High Boots
-        EQUIPMENT_ITEMS.add(1072008); // Bronze Aroa Boots
-        EQUIPMENT_ITEMS.add(1072009); // Steel Grieves
-        EQUIPMENT_ITEMS.add(1072010); // Black Dress Shoes
-        EQUIPMENT_ITEMS.add(1072011); // Mithril War Boots
-        EQUIPMENT_ITEMS.add(1072012); // Red Whitebottom Boots
-        EQUIPMENT_ITEMS.add(1072013); // Red Air H's
-        EQUIPMENT_ITEMS.add(1072014); // Camping Boots
-        EQUIPMENT_ITEMS.add(1072015); // Brown Hard Leather Boots
-        EQUIPMENT_ITEMS.add(1072016); // Green Woodsman Boots
-        EQUIPMENT_ITEMS.add(1072017); // Blue Ankle-strap Sandals
-        EQUIPMENT_ITEMS.add(1072018); // Blue Sneakers
-        EQUIPMENT_ITEMS.add(1072019); // Blue Jewelry Boots
-        EQUIPMENT_ITEMS.add(1072020); // Purple Jewelry Boots
-        EQUIPMENT_ITEMS.add(1072021); // Red Jewelry Boots
-        EQUIPMENT_ITEMS.add(1072022); // Black Enamel Boots
-        EQUIPMENT_ITEMS.add(1072023); // Beige Nitty
-        EQUIPMENT_ITEMS.add(1072024); // Black Nitty
-        EQUIPMENT_ITEMS.add(1072025); // Deer Huntertop
-        EQUIPMENT_ITEMS.add(1072026); // Rabbit Huntertop
-        EQUIPMENT_ITEMS.add(1072027); // Brown Jack Boots
-        EQUIPMENT_ITEMS.add(1072028); // White Ninja Sandals
-        EQUIPMENT_ITEMS.add(1072029); // Yellow Ninja Sandals
-        EQUIPMENT_ITEMS.add(1072030); // Blue Ninja Sandals
-        EQUIPMENT_ITEMS.add(1072031); // Red Ninja Sandals
-        EQUIPMENT_ITEMS.add(1072032); // Bronze Chain Boots
-        EQUIPMENT_ITEMS.add(1072033); // Iron Chain Boots
-        EQUIPMENT_ITEMS.add(1072034); // Green Jack Boots
-        EQUIPMENT_ITEMS.add(1072035); // Silver Chain Boots
-        EQUIPMENT_ITEMS.add(1072036); // Gold Chain Boots
-        EQUIPMENT_ITEMS.add(1072037); // Yellow Rubber Boots
-        EQUIPMENT_ITEMS.add(1072038); // Blue Rubber Boots
-        EQUIPMENT_ITEMS.add(1072039); // Mithril Battle Grieves
-        EQUIPMENT_ITEMS.add(1072040); // Silver Battle Grieves
-        EQUIPMENT_ITEMS.add(1072041); // Blood Battle Grieves
-        EQUIPMENT_ITEMS.add(1072042); // Black Gomushin
-        EQUIPMENT_ITEMS.add(1072043); // Smelly Gomushin
-        EQUIPMENT_ITEMS.add(1072044); // Yellow Basic Boots
-        EQUIPMENT_ITEMS.add(1072045); // Blue Basic Boots
-        EQUIPMENT_ITEMS.add(1072046); // Orange High Boots
-        EQUIPMENT_ITEMS.add(1072047); // Blue High Boots
-        EQUIPMENT_ITEMS.add(1072048); // Brown Aroa Boots
-        EQUIPMENT_ITEMS.add(1072049); // Green Aroa Boots
-        EQUIPMENT_ITEMS.add(1072050); // Bronze Grieves
-        EQUIPMENT_ITEMS.add(1072051); // Silver War Boots
-        EQUIPMENT_ITEMS.add(1072052); // Dark War Boots
-        EQUIPMENT_ITEMS.add(1072053); // Gold War Boots
-        EQUIPMENT_ITEMS.add(1072054); // Orange Whitebottom Boots
-        EQUIPMENT_ITEMS.add(1072055); // Pink Whitebottom Boots
-        EQUIPMENT_ITEMS.add(1072056); // Blue Whitebottom Boots
-        EQUIPMENT_ITEMS.add(1072057); // Blue Air H's
-        EQUIPMENT_ITEMS.add(1072058); // Black Air H's
-        EQUIPMENT_ITEMS.add(1072059); // Green Hard Leather Boots
-        EQUIPMENT_ITEMS.add(1072060); // Brown Woodsman Boots
-        EQUIPMENT_ITEMS.add(1072061); // Blue Woodsman Boots
-        EQUIPMENT_ITEMS.add(1072062); // Red Ankle-strap Sandals
-        EQUIPMENT_ITEMS.add(1072063); // Brown Ankle-strap Sandals
-        EQUIPMENT_ITEMS.add(1072064); // Red Sneakers
-        EQUIPMENT_ITEMS.add(1072065); // Red Enamel Boots
-        EQUIPMENT_ITEMS.add(1072066); // Blue Enamel Boots
-        EQUIPMENT_ITEMS.add(1072067); // Bear Huntertop
-        EQUIPMENT_ITEMS.add(1072068); // Lion Huntertop
-        EQUIPMENT_ITEMS.add(1072069); // Red Jack Boots
-        EQUIPMENT_ITEMS.add(1072070); // Blue Gidder Shoes
-        EQUIPMENT_ITEMS.add(1072071); // Brown Gidder Shoes
-        EQUIPMENT_ITEMS.add(1072072); // Silver Windshoes
-        EQUIPMENT_ITEMS.add(1072073); // Yellow Windshoes
-        EQUIPMENT_ITEMS.add(1072074); // Black Windshoes
-        EQUIPMENT_ITEMS.add(1072075); // Red Magicshoes
-        EQUIPMENT_ITEMS.add(1072076); // Blue Magicshoes
-        EQUIPMENT_ITEMS.add(1072077); // White Magicshoes
-        EQUIPMENT_ITEMS.add(1072078); // Black Magicshoes
-        EQUIPMENT_ITEMS.add(1072079); // Red Hunter Boots
-        EQUIPMENT_ITEMS.add(1072080); // Blue Hunter Boots
-        EQUIPMENT_ITEMS.add(1072081); // Green Hunter Boots
-        EQUIPMENT_ITEMS.add(1072082); // Black Hunter Boots
-        EQUIPMENT_ITEMS.add(1072083); // Brown Hunter Boots
-        EQUIPMENT_ITEMS.add(1072084); // Blue Lappy Boots
-        EQUIPMENT_ITEMS.add(1072085); // Red Lappy Boots
-        EQUIPMENT_ITEMS.add(1072086); // Green Lappy Boots
-        EQUIPMENT_ITEMS.add(1072087); // Black Lappy Boots
-        EQUIPMENT_ITEMS.add(1072088); // Cowboy Boots
-        EQUIPMENT_ITEMS.add(1072089); // Purple Salt Shoes
-        EQUIPMENT_ITEMS.add(1072090); // Red Salt Shoes
-        EQUIPMENT_ITEMS.add(1072091); // Black Salt Shoes
-        EQUIPMENT_ITEMS.add(1072092); // Yellow Flippers
-        EQUIPMENT_ITEMS.add(1072093); // Blue Flippers
-        EQUIPMENT_ITEMS.add(1072094); // Yellow Rain Boots
-        EQUIPMENT_ITEMS.add(1072095); // Sky Blue Rain Boots
-        EQUIPMENT_ITEMS.add(1072096); // Red Rain Boots
-        EQUIPMENT_ITEMS.add(1072097); // Green Rain Boots
-        EQUIPMENT_ITEMS.add(1072098); // Blue Baseball Cleats
-        EQUIPMENT_ITEMS.add(1072099); // Red Baseball Cleats
-        EQUIPMENT_ITEMS.add(1072100); // Black Baseball Cleats
+        
+        EQUIPMENT_ITEMS.add(1072344); // Facestompers
 
         // Add all cape items to equipment items
-        EQUIPMENT_ITEMS.add(1102000); // Green Napoleon
-        EQUIPMENT_ITEMS.add(1102001); // Blue Napoleon
-        EQUIPMENT_ITEMS.add(1102002); // Red Napoleon
-        EQUIPMENT_ITEMS.add(1102003); // White Napoleon
-        EQUIPMENT_ITEMS.add(1102004); // Black Napoleon
-        EQUIPMENT_ITEMS.add(1102005); // Baby Angel Wings
-        EQUIPMENT_ITEMS.add(1102006); // Devil Wings
-        EQUIPMENT_ITEMS.add(1102007); // Yellow Star Cape
-        EQUIPMENT_ITEMS.add(1102008); // Blue Star Cape
-        EQUIPMENT_ITEMS.add(1102009); // Red Star Cape
-        EQUIPMENT_ITEMS.add(1102010); // Black Star Cape
-        EQUIPMENT_ITEMS.add(1102011); // Blue Justice Cape
-        EQUIPMENT_ITEMS.add(1102012); // Red Justice Cape
-        EQUIPMENT_ITEMS.add(1102013); // White Justice Cape
-        EQUIPMENT_ITEMS.add(1102014); // Black Justice Cape
-        EQUIPMENT_ITEMS.add(1102015); // Blue Magic Cape
-        EQUIPMENT_ITEMS.add(1102016); // Red Magic Cape
-        EQUIPMENT_ITEMS.add(1102017); // White Magic Cape
-        EQUIPMENT_ITEMS.add(1102018); // Black Magic Cape
-        EQUIPMENT_ITEMS.add(1102019); // Korean-Flagged Cape
-        EQUIPMENT_ITEMS.add(1102020); // Turtle Shell
-        EQUIPMENT_ITEMS.add(1102021); // Blue Gaia Cape
-        EQUIPMENT_ITEMS.add(1102022); // Red Gaia Cape
-        EQUIPMENT_ITEMS.add(1102023); // White Gaia Cape
-        EQUIPMENT_ITEMS.add(1102024); // Black Gaia Cape
-        EQUIPMENT_ITEMS.add(1102025); // Red Hood
-        EQUIPMENT_ITEMS.add(1102026); // Green Seraph Cape
-        EQUIPMENT_ITEMS.add(1102027); // Blue Seraph Cape
-        EQUIPMENT_ITEMS.add(1102028); // Red Seraph Cape
-        EQUIPMENT_ITEMS.add(1102029); // White Seraph Cape
-        EQUIPMENT_ITEMS.add(1102030); // Black Seraph Cape
-        EQUIPMENT_ITEMS.add(1102031); // Green Giles Cape
-        EQUIPMENT_ITEMS.add(1102032); // Purple Giles Cape
-        EQUIPMENT_ITEMS.add(1102033); // Red Giles Cape
-        EQUIPMENT_ITEMS.add(1102034); // Blue Giles Cape
-        EQUIPMENT_ITEMS.add(1102035); // Black Giles Cape
-        EQUIPMENT_ITEMS.add(1102036); // Red Landcell Pack
-        EQUIPMENT_ITEMS.add(1102037); // Black Landcell Pack
-        EQUIPMENT_ITEMS.add(1102038); // Blue Landcell Pack
-        EQUIPMENT_ITEMS.add(1102039); // Transparent Cape
-        EQUIPMENT_ITEMS.add(1102040); // Yellow Adventurer Cape
+       
         EQUIPMENT_ITEMS.add(1102041); // Pink Adventurer Cape
         EQUIPMENT_ITEMS.add(1102042); // Purple Adventurer Cape
-        EQUIPMENT_ITEMS.add(1102043); // Brown Adventurer Cape
-        EQUIPMENT_ITEMS.add(1102044); // Red G-Wing Jetpack
-        EQUIPMENT_ITEMS.add(1102045); // Blue G-Wing Jetpack
-        EQUIPMENT_ITEMS.add(1102046); // Blue Musketeer Cape
-        EQUIPMENT_ITEMS.add(1102047); // Turquoise Musketeer Cape
-        EQUIPMENT_ITEMS.add(1102048); // Red Musketeer Cape
-        EQUIPMENT_ITEMS.add(1102049); // Blue Nymph Wing
-        EQUIPMENT_ITEMS.add(1102050); // Green Nymph Wing
-        EQUIPMENT_ITEMS.add(1102051); // Yellow Nymph Wing
-        EQUIPMENT_ITEMS.add(1102052); // Pink Nymph Wing
-        EQUIPMENT_ITEMS.add(1102053); // Old Raggedy Cape
-        EQUIPMENT_ITEMS.add(1102054); // Icarus Cape (1)
-        EQUIPMENT_ITEMS.add(1102055); // Icarus Cape (2)
-        EQUIPMENT_ITEMS.add(1102056); // Icarus Cape (3)
-        EQUIPMENT_ITEMS.add(1102057); // Ludibrium Cape
-        EQUIPMENT_ITEMS.add(1102109); // Cape of warmness
-        EQUIPMENT_ITEMS.add(1102143); // Waterworks Cape
-        EQUIPMENT_ITEMS.add(1102144); // Sage Cape
-        EQUIPMENT_ITEMS.add(1102145); // Sirius Cloak
-        EQUIPMENT_ITEMS.add(1102146); // Zeta Cape
-        EQUIPMENT_ITEMS.add(1102154); // Zakum Arms
-        EQUIPMENT_ITEMS.add(1102172); // Timeless Moonlight
-        EQUIPMENT_ITEMS.add(1102194); // Shroud of Zakum
-        EQUIPMENT_ITEMS.add(1102205); // Crimsonheart Cloak
-        EQUIPMENT_ITEMS.add(1102206); // Blackfist Cloak
-        EQUIPMENT_ITEMS.add(1102207); // Goldensoul Cape
+
+        // Stat-giving Gloves
+        
+        EQUIPMENT_ITEMS.add(1082223); // Stormcaster Gloves
 
         poolsInitialized = true;
         System.out.println("Gachapon item pools initialized successfully!");
