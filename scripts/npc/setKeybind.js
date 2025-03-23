@@ -8,6 +8,14 @@ const GameConstants = Java.type('constants.game.GameConstants');
 const JobTypes = Java.type('client.Job');
 const KeyBinding = Java.type('client.keybind.KeyBinding');
 const SkillInfo = Java.type('server.SkillInformationProvider');
+
+// List of skills that are different between classes and should both be shown
+const DIFFERENT_SKILLS_SAME_NAME = [
+    "Dragon's Breath",
+    "Power Knock-Back",
+    "Strafe",
+];
+
 var status;
 var skillId;
 
@@ -37,6 +45,10 @@ function start() {
 
 function getName(id) {
     return SkillInfo.getInstance().getName(id);
+}
+
+function getJobName(id) {
+    return GameConstants.JOB_NAMES.get(Math.floor(id / 10000)) ?? "N/A";
 }
 
 function action(mode, type, selection) {
@@ -100,11 +112,11 @@ function action(mode, type, selection) {
         for (var i = 0; i < displaySkills.length; i++) {
             var skill = displaySkills[i];
             var skillName = getName(skill.getId());
-            if (seenSkills.includes(skillName)) {
+            if (seenSkills.includes(skillName) && !DIFFERENT_SKILLS_SAME_NAME.includes(skillName)) {
                 continue;
             }
             seenSkills.push(skillName);
-            textList.push("#L" + skill.getId() + "##s" + skill.getId() + "# #q" + skill.getId() + "##l\r\n");
+            textList.push("#L" + skill.getId() + "##s" + skill.getId() + "# #q" + skill.getId() + "# (" + getJobName(skill.getId()) + ")#l\r\n");
         }
 
         cm.sendSimple(textList.join(""));
