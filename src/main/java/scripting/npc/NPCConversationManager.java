@@ -371,8 +371,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2210018); // Sweet Rice Cake
         USE_ITEMS.add(2210021); // Gaga Transformation Potion
         USE_ITEMS.add(2210022); // Peto Transformation Potion
-        USE_ITEMS.add(2210023); // Cliff's Special Potion
-        //USE_ITEMS.add(2210024); // Maplemas Party Potion --> This item appears to be missing from wz files and will crash your game if you try to use the blank item space
         USE_ITEMS.add(2210030); // Geppetto Transformation
         USE_ITEMS.add(2210032); // Cody's Picture
         USE_ITEMS.add(2210033); // Cake Picture
