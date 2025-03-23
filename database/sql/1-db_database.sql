@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `votepoints` int(11) NOT NULL DEFAULT '0',
   `hwid` varchar(12) NOT NULL DEFAULT '',
   `language` int(1) NOT NULL DEFAULT '2',
+  `extra_details` JSON,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `ranking1` (`id`,`banned`),
