@@ -61,9 +61,17 @@ public class MergeCommand extends Command {
 
     @Override
     public void execute(Client c, String[] params) {
+        Character player = c.getPlayer();
+
+        // First, check if the player has the merge coin
+        short mergedCoinPosition = getMergeCoinSlot(player);
+        if (mergedCoinPosition == -1) {
+            player.yellowMessage("You need a merge coin to merge equipment!");
+            return;
+        }
+
         ArrayList<Equip> equipmentItems = new ArrayList<>();
         // Retrieve all equipment (EQP) items from the player's inventory
-        Character player = c.getPlayer();
         for (int i = 0; i < 101; i++) {
             Item tempItem = player.getInventory(InventoryType.EQUIP).getItem((byte) i);
             if (tempItem == null) {
@@ -71,6 +79,13 @@ public class MergeCommand extends Command {
             }
             equipmentItems.add((Equip) tempItem);
         }
+
+        // First check for level 25 items for special merge
+        boolean performedSpecialMerge = checkForLevel25SpecialMerge(c, player, equipmentItems, mergedCoinPosition);
+        if (performedSpecialMerge) {
+            return; // End command if special merge was performed
+        }
+
         // A map to group items by their ID
         Map<Integer, ArrayList<Equip>> itemsById = new HashMap<>();
 
@@ -78,44 +93,109 @@ public class MergeCommand extends Command {
         for (Equip equip : equipmentItems) {
             itemsById.computeIfAbsent(equip.getItemId(), k -> new ArrayList<>()).add(equip);
         }
+
         // Process each group of items with the same ID
         boolean foundItemToMerge = false;
+        int totalMergesDone = 0;
 
         for (Map.Entry<Integer, ArrayList<Equip>> entry : itemsById.entrySet()) {
             ArrayList<Equip> equips = entry.getValue();
 
             // Skip if there's only one item (no merging needed)
             if (equips.size() <= 1) {
-                continue;
+                continue; // Skip silently for items that can't be merged
             }
-            if (equips.stream()
-                    .map(Equip::getItemLevel)
-                    .max(Short::compare)
-                    .orElse((byte)1) >= 30)
-            {
-                player.yellowMessage("can't merge max level equip" + equips.getFirst().toString());
-                continue;
-            }
-            foundItemToMerge = true;
-            // Calculate the percentage boost to be added
-            Equip primaryItem = mergeEquipStats(equips);
 
-            short primaryPosition = primaryItem.getPosition();
-            for (Equip equip : equips) {
-                if (equip.getPosition() != primaryPosition) {
+            // Sort equips by level in descending order
+            Collections.sort(equips, (a, b) -> Short.compare(b.getItemLevel(), a.getItemLevel()));
+
+            // Continue merging as long as there are enough items and coins
+            while (equips.size() >= 2) {
+                // Check if we still have merge coins
+                mergedCoinPosition = getMergeCoinSlot(player);
+                if (mergedCoinPosition == -1) {
+                    player.yellowMessage("No more merge coins available for merging.");
+                    break;
+                }
+
+                // Check if highest level is already at maximum
+                if (equips.getFirst().getItemLevel() >= 30) {
+                    player.yellowMessage("Cannot merge " + equips.getFirst().toString() + ": Item level is already at maximum (30).");
+                    break;
+                }
+
+                // Separate level 1 items from higher level items
+                ArrayList<Equip> level1Items = new ArrayList<>();
+                ArrayList<Equip> higherLevelItems = new ArrayList<>();
+
+                // Primary item (highest level) goes into higher level items
+                higherLevelItems.add(equips.get(0));
+
+                // Check the rest of the items
+                for (int i = 1; i < equips.size(); i++) {
+                    if (equips.get(i).getItemLevel() == 1) {
+                        level1Items.add(equips.get(i));
+                    } else {
+                        higherLevelItems.add(equips.get(i));
+                    }
+                }
+
+                // If no level 1 items, we can't merge anything
+                if (level1Items.isEmpty()) {
+                    player.yellowMessage("No level 1 items available to merge with " + higherLevelItems.getFirst().toString());
+                    break;
+                }
+
+                // Process up to 4 level 1 items at a time (plus the primary item)
+                int maxItemsToMerge = Math.min(level1Items.size(), 4);
+                ArrayList<Equip> itemsToMerge = new ArrayList<>();
+
+                // Add the primary item
+                itemsToMerge.add(higherLevelItems.get(0));
+
+                // Add level 1 items
+                for (int i = 0; i < maxItemsToMerge; i++) {
+                    itemsToMerge.add(level1Items.get(i));
+                }
+
+                // Perform the merge operation
+                Equip primaryItem = mergeEquipStats(itemsToMerge, c.getPlayer());
+
+                if (primaryItem == null) {
+                    // Merge failed (likely due to level check)
+                    break;
+                }
+
+                foundItemToMerge = true;
+                totalMergesDone++;
+
+                // Remove all merged items except the primary from inventory
+                short primaryPosition = primaryItem.getPosition();
+                for (int i = 1; i < itemsToMerge.size(); i++) {
+                    Equip equip = itemsToMerge.get(i);
                     InventoryManipulator.removeFromSlot(c, InventoryType.EQUIP, (byte) equip.getPosition(), equip.getQuantity(), false, false);
                 }
+
+                // Use up one merge coin
+                InventoryManipulator.removeFromSlot(c, InventoryType.USE, (byte) mergedCoinPosition, (short)1, false, false);
+
+                // Apply special effects
+                addItemSpecialEffect(primaryItem, player);
+
+                // Update the client
+                c.sendPacket(PacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, primaryItem))));
+
+                // Update the equips list for the next potential merge
+                // Remove all the level 1 items we just used
+                equips.removeAll(itemsToMerge.subList(1, itemsToMerge.size()));
             }
-            addItemSpecialEffect(primaryItem, player);
-            c.sendPacket(PacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, primaryItem))));
         }
 
-        // No item has been merge, no reason to remove item
+        // Final message
         if (!foundItemToMerge) {
-            player.yellowMessage("You don't have any equips to merge, will not use up the Black Loud Machine!");
+            player.yellowMessage("No items were merged. No merge coins were consumed.");
         } else {
-            short mergedCoinPosition = getMergeCoinSlot(player);
-            InventoryManipulator.removeFromSlot(c, InventoryType.USE, (byte) mergedCoinPosition, (short)1, false, false);
+            player.yellowMessage("Merge operations complete! " + totalMergesDone + " merges performed.");
         }
     }
 
@@ -389,36 +469,181 @@ public class MergeCommand extends Command {
         );
     }
 
-    private Equip mergeEquipStats(ArrayList<Equip> equips) {
+    private Equip mergeEquipStats(ArrayList<Equip> equips, Character player) {
+        // Sort equips by level in descending order
+        Collections.sort(equips, (a, b) -> Short.compare(b.getItemLevel(), a.getItemLevel()));
+
+        // Get the primary item (highest level)
         Equip primaryItem = equips.getFirst();
-        byte maxItemLevel = equips.stream()
-                .map(Equip::getItemLevel)
-                .max(Short::compare)
-                .orElse((byte)1);
+        byte primaryLevel = primaryItem.getItemLevel();
 
-        maxItemLevel = maxItemLevel > 0 ? maxItemLevel : 1; // not to dived by zero
-
-        double dampingScale = 5;
-        double scalingFactor = (double) 1 / (dampingScale * (maxItemLevel * maxItemLevel));
-
-        statGetters.forEach((statName, getter) -> {
-            // Get the max stat for the equips array on the getter func
-            short currentMaxStat = equips.stream()
-                    .map(getter)
-                    .max(Short::compare)
-                    .orElse(getter.apply(primaryItem));
-
-            short additionalStat = (short) (currentMaxStat * scalingFactor * (Math.sqrt(equips.size())));
-            // check 16 bit overflow
-            short newStatValue = (short) (currentMaxStat + additionalStat > currentMaxStat ? currentMaxStat + additionalStat : currentMaxStat);
-
-            log.info("The new Item stat for {} is {}", statName, newStatValue);
-            statUpdaters.get(statName).accept(primaryItem, newStatValue);
-        });
-        if (maxItemLevel != 30) {
-            primaryItem.setItemLevel((byte) (maxItemLevel + 1)); // level up the Item
+        // Rule #4: Check if any items have levels higher than 1
+        boolean hasHigherLevelItems = false;
+        for (int i = 1; i < equips.size(); i++) {
+            if (equips.get(i).getItemLevel() > 1) {
+                hasHigherLevelItems = true;
+                break;
+            }
         }
+
+        if (hasHigherLevelItems) {
+            player.yellowMessage("Cannot merge: You can only merge level 1 items into your primary item.");
+            return null;
+        }
+
+        // Rule #3: Check if the level increase would exceed 30
+        // Each additional item adds 6 levels
+        int levelIncrease = 6 * (Math.min(equips.size(), 5) - 1);
+        int newLevel = primaryLevel + levelIncrease;
+
+        if (newLevel > 30) {
+            player.yellowMessage("Cannot merge: Combined level would exceed the maximum (30).");
+            return null;
+        }
+
+        // Rule #2: Limit to max 5 items per merge (primary + 4 others)
+        int mergeCount = Math.min(equips.size(), 5);
+        List<Equip> equipsToMerge = equips.subList(0, mergeCount);
+
+        // Apply the new merging algorithm
+        applyNewStatsMergeLogic(primaryItem, equipsToMerge);
+
+        // Set the new item level based on rule #3
+        primaryItem.setItemLevel((byte)newLevel);
+        log.info("Item level increased from {} to {} (+{} levels)",
+                primaryLevel, newLevel, levelIncrease);
+
         return primaryItem;
+    }
+
+    /**
+     * Special merge for level 25 items - doubles stats and sets to level 30
+     * @return true if special merge was performed, false otherwise
+     */
+    private boolean checkForLevel25SpecialMerge(Client c, Character player, ArrayList<Equip> equipmentItems, short mergedCoinPosition) {
+        // Find all level 25 items
+        List<Equip> level25Items = new ArrayList<>();
+
+        for (Equip equip : equipmentItems) {
+            if (equip.getItemLevel() == 25) {
+                level25Items.add(equip);
+            }
+        }
+
+        if (level25Items.isEmpty()) {
+            return false; // No level 25 items found
+        }
+
+        // Ask player which level 25 item to merge if multiple exist
+        Equip selectedItem;
+
+        if (level25Items.size() == 1) {
+            selectedItem = level25Items.getFirst();
+        } else {
+            // If multiple items, choose the first one for now
+            // In a real implementation, you'd prompt the user to choose
+            selectedItem = level25Items.getFirst();
+            player.yellowMessage("Multiple level 25 items found. Processing the first one: " + selectedItem.toString());
+        }
+
+        // Apply the special merge - double all stats and set to level 30
+        doubleItemStats(selectedItem);
+        selectedItem.setItemLevel((byte)30);
+
+        // Use up one merge coin
+        InventoryManipulator.removeFromSlot(c, InventoryType.USE, (byte) mergedCoinPosition, (short)1, false, false);
+
+        // Apply special effects (as with normal merges)
+        addItemSpecialEffect(selectedItem, player);
+
+        // Update the client
+        c.sendPacket(PacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, selectedItem))));
+
+        // Success message
+        player.yellowMessage("Special level 25 merge complete! Your item stats have been doubled and level set to 30.");
+        return true;
+    }
+
+    /**
+     * Doubles all stats on an equip item
+     */
+    private void doubleItemStats(Equip item) {
+        // Double all stats
+        item.setWatk((short)(item.getWatk() * 2));
+        item.setWdef((short)(item.getWdef() * 2));
+        item.setMatk((short)(item.getMatk() * 2));
+        item.setMdef((short)(item.getMdef() * 2));
+        item.setHp((short)(item.getHp() * 2));
+        item.setMp((short)(item.getMp() * 2));
+        item.setStr((short)(item.getStr() * 2));
+        item.setDex((short)(item.getDex() * 2));
+        item.setLuk((short)(item.getLuk() * 2));
+        item.setInt((short)(item.getInt() * 2));
+
+        // Log the stat changes
+        log.info("Special Level 25 merge - doubled all stats for item: {}", item.toString());
+    }
+
+    /**
+     * Calculates and applies the stats from merging equipment
+     * New algorithm: Sum all stats, subtract primary stats to get bonus,
+     * apply tax rate (0% default under 2000 atk, 40% if over 2000 atk)
+     */
+    private void applyNewStatsMergeLogic(Equip primaryItem, List<Equip> equipsToMerge) {
+        // Calculate the total stats from all items
+        Map<String, Short> totalStats = new HashMap<>();
+
+        // Initialize with zeros
+        statGetters.keySet().forEach(stat -> totalStats.put(stat, (short)0));
+
+        // Sum up all stats from all items to merge
+        for (Equip equip : equipsToMerge) {
+            statGetters.forEach((statName, getter) -> {
+                short currentStat = totalStats.get(statName);
+                short equipStat = getter.apply(equip);
+                totalStats.put(statName, (short)(currentStat + equipStat));
+            });
+        }
+
+        // Calculate the bonus stats (total - primary)
+        Map<String, Short> bonusStats = new HashMap<>();
+        statGetters.forEach((statName, getter) -> {
+            short primaryStat = getter.apply(primaryItem);
+            short totalStat = totalStats.get(statName);
+            short bonusStat = (short)(totalStat - primaryStat);
+            bonusStats.put(statName, bonusStat);
+        });
+
+        // Rule #1: Apply tax rate based on the new rules
+        // Default no tax under 2000 attack, 40% above
+        double taxRate; // Default 0% tax
+
+        // Check if watk or matk bonus exceeds 2000, apply 40% tax
+        if (bonusStats.get("Watk") > 2000 || bonusStats.get("Matk") > 2000) {
+            taxRate = 0.4; // 40% tax for high attack bonuses
+        } else {
+            taxRate = 0.0;
+        }
+
+        // Apply the stats to the primary item
+        statGetters.forEach((statName, getter) -> {
+            short primaryStat = getter.apply(primaryItem);
+            short bonusStat = bonusStats.get(statName);
+
+            // Apply tax and round up
+            double taxedBonusDouble = bonusStat * (1 - taxRate);
+            // Math.ceil to round up to nearest whole number, then cast to short
+            short taxedBonus = (short)Math.ceil(taxedBonusDouble);
+
+            // Calculate new stat value
+            short newStatValue = (short)(primaryStat + taxedBonus);
+
+            // Update the primary item
+            statUpdaters.get(statName).accept(primaryItem, newStatValue);
+
+            log.info("Merged {} stat: Base={}, Bonus={}, Tax={}%, Taxed bonus={}, Final={}",
+                    statName, primaryStat, bonusStat, (int)(taxRate * 100), taxedBonus, newStatValue);
+        });
     }
 
     private final Map<String, java.util.function.BiConsumer<Equip, Short>> statUpdaters = Map.of(
@@ -451,4 +676,4 @@ public class MergeCommand extends Command {
 // !item 1302000 1 sword
 // !item 1082002 1 glove
 // !item 2040806 10 glove dex
-// !item 2280001 1 MERGE_COIN
+// !item 2022280 1 MERGE_COIN
