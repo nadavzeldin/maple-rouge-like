@@ -1948,6 +1948,7 @@ public class MapleMap {
                 // Original calculation is fine, multiply by 5
                 monster.addHp(monster.getHp() * 4); // Add 4 times current HP since addHp adds to current value
             }
+            monster.setStartingHp(monster.getHp());
         }
         spawnMonster(monster, 1, false);
     }
