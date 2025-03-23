@@ -1936,9 +1936,8 @@ public class MapleMap {
         }
     }
 
-    public void spawnMonster(final Monster monster) {
-        if (channel == 3)
-        {
+    private void applyChannelBuff(final Monster monster) {
+        if (channel == 3) {
             long newHp = (long)monster.getHp() * 5;
             if (newHp > 2_000_000_000) {
                 // Calculate how much HP to add to reach exactly 2 billion
@@ -1950,6 +1949,10 @@ public class MapleMap {
             }
             monster.setStartingHp(monster.getHp());
         }
+    }
+
+    public void spawnMonster(final Monster monster) {
+        applyChannelBuff(monster);
         spawnMonster(monster, 1, false);
     }
 
@@ -2037,6 +2040,7 @@ public class MapleMap {
     }
 
     public void spawnFakeMonster(final Monster monster) {
+        applyChannelBuff(monster);
         monster.setMap(this);
         monster.setFake(true);
         spawnAndAddRangedMapObject(monster, c -> c.sendPacket(PacketCreator.spawnFakeMonster(monster, 0)));
