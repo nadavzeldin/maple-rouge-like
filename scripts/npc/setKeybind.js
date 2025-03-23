@@ -1,5 +1,5 @@
 /**
- * Danger Zone Taxi
+ * Pio
  * Set previous skills to keybinds
  * @author CPURules
  */
@@ -9,14 +9,8 @@ const JobTypes = Java.type('client.Job');
 const KeyBinding = Java.type('client.keybind.KeyBinding');
 const SkillInfo = Java.type('server.SkillInformationProvider');
 
-// List of skills that are different between classes and should both be shown
-const DIFFERENT_SKILLS_SAME_NAME = [
-    "Dragon's Breath",
-    "Power Knock-Back",
-    "Strafe",
-];
-
 var status;
+var selectedBranch;
 var skillId;
 
 const keyMapStr = new Map(
@@ -51,6 +45,10 @@ function getJobName(id) {
     return GameConstants.JOB_NAMES.get(Math.floor(id / 10000)) ?? "N/A";
 }
 
+function getJobNameByJobId(id) {
+    return getJobName(id * 10000); // hacky but oh well
+}
+
 function action(mode, type, selection) {
     if (mode == -1 || (mode == 0 && status == 0)) {
         cm.dispose();
@@ -62,7 +60,16 @@ function action(mode, type, selection) {
     }
 
     var textList = [];
-    var skillCategories = ["Warrior", "Magician", "Bowman", "Thief", "Pirate", "Aran"];
+    // skillBranches: Class Category -> [{ First Advance -> Last Advance }]
+    var skillBranches = new Map([
+        ["Warrior", new Map([[JobTypes.SPEARMAN, JobTypes.DARKKNIGHT], [JobTypes.FIGHTER, JobTypes.HERO], [JobTypes.PAGE, JobTypes.PALADIN], [JobTypes.DAWNWARRIOR1, JobTypes.DAWNWARRIOR4]])],
+        ["Magician", new Map([[JobTypes.IL_WIZARD, JobTypes.IL_ARCHMAGE], [JobTypes.FP_WIZARD, JobTypes.FP_ARCHMAGE], [JobTypes.CLERIC, JobTypes.BISHOP], [JobTypes.BLAZEWIZARD1, JobTypes.BLAZEWIZARD4]])],
+        ["Bowman", new Map([[JobTypes.HUNTER, JobTypes.BOWMASTER], [JobTypes.CROSSBOWMAN, JobTypes.MARKSMAN], [JobTypes.WINDARCHER1, JobTypes.WINDARCHER4]])],
+        ["Thief", new Map([[JobTypes.ASSASSIN, JobTypes.NIGHTLORD], [JobTypes.BANDIT, JobTypes.SHADOWER], [JobTypes.NIGHTWALKER1, JobTypes.NIGHTWALKER4]])],
+        ["Pirate", new Map([[JobTypes.BRAWLER, JobTypes.BUCCANEER], [JobTypes.GUNSLINGER, JobTypes.CORSAIR], [JobTypes.THUNDERBREAKER1, JobTypes.THUNDERBREAKER4]])]
+    ]);
+    var skillBranchKeys = Array.from(skillBranches.keys());
+
     var jobBranches = [
         [JobTypes.HERO, JobTypes.PALADIN, JobTypes.DARKKNIGHT, JobTypes.DAWNWARRIOR4],
         [JobTypes.FP_ARCHMAGE, JobTypes.IL_ARCHMAGE, JobTypes.BISHOP, JobTypes.BLAZEWIZARD4],
@@ -74,23 +81,32 @@ function action(mode, type, selection) {
 
     if (status == 0) {
         textList.push("Which job tree do you want to view skills for?\r\n");
-        for (var i = 0; i < skillCategories.length; i++) {
-            textList.push("#L" + i + "# " + skillCategories[i] + "#l\r\n");
+        for (var i = 0; i < skillBranchKeys.length; i++) {
+            textList.push("#L" + i + "# " + skillBranchKeys[i] + "#l\r\n");
         }
 
         cm.sendSimple(textList.join(""));
     }
     else if (status == 1) {
-        var allSkills = Array.from(cm.getPlayer().getSkills().keySet());
+        if (mode == 1) {
+            selectedBranch = skillBranchKeys[selection];
+        }
 
-        var displaySkills = [];
-        if (selection == skillCategories.indexOf("Aran")) {
-            displaySkills = allSkills.filter((skill) => GameConstants.isAranSkills(skill.getId()) && !GameConstants.isHiddenSkills(skill.getId()));
+        textList.push("Which " + selectedBranch + " sub-tree do you want to view skills for?\r\n");
+        var subBranchKeys = Array.from(skillBranches.get(selectedBranch).keys())
+        
+        for (var i = 0; i < subBranchKeys.length; i++) {
+            textList.push("#L" + i + "# " + getJobNameByJobId(subBranchKeys[i].getId()) + "#l\r\n");
         }
-        else {
-            displaySkills = allSkills.filter((skill) => !GameConstants.isGMSkills(skill.getId()) && !skill.isBeginnerSkill()
-                                                        && jobBranches[selection].some((b) => GameConstants.isInJobTree(skill.getId(),  b.getId())));
-        }
+
+        cm.sendSimple(textList.join(""));
+    }
+    else if (status == 2) {
+        var subBranch = Array.from(skillBranches.get(selectedBranch).keys())[selection];
+        var jobBranch = skillBranches.get(selectedBranch).get(subBranch);
+        var allSkills = Array.from(cm.getPlayer().getSkills().keySet());
+        var displaySkills = allSkills.filter((skill) => !GameConstants.isGMSkills(skill.getId()) && !skill.isBeginnerSkill()
+                                                        && GameConstants.isInJobTree(skill.getId(),  jobBranch.getId()));
         // filter out passive skills:
         // thousands place is 0
         displaySkills = displaySkills.filter((skill) => (Math.floor(skill.getId() / 1000) % 10 > 0));
@@ -105,28 +121,21 @@ function action(mode, type, selection) {
             return;
         }
         
-        textList.push("Which skill would you like to bind?\r\n\r\n");
-        // Filter out duplicate names
-        // We can just store the names we've seen
-        var seenSkills = [];
+        textList.push("Which " + getJobNameByJobId(subBranch.getId()) + " skill would you like to bind?\r\n\r\n");
+
         for (var i = 0; i < displaySkills.length; i++) {
             var skill = displaySkills[i];
-            var skillName = getName(skill.getId());
-            if (seenSkills.includes(skillName) && !DIFFERENT_SKILLS_SAME_NAME.includes(skillName)) {
-                continue;
-            }
-            seenSkills.push(skillName);
-            textList.push("#L" + skill.getId() + "##s" + skill.getId() + "# #q" + skill.getId() + "# (" + getJobName(skill.getId()) + ")#l\r\n");
+            textList.push("#L" + skill.getId() + "##s" + skill.getId() + "# #q" + skill.getId() + "##l\r\n");
         }
 
         cm.sendSimple(textList.join(""));
     }
-    else if (status == 2) {
+    else if (status == 3) {
         skillId = selection;
 
         cm.sendGetText("What key do you want to bind #s" + skillId + "# #q" + skillId + "# to?\r\n");
     }
-    else if (status == 3) {
+    else if (status == 4) {
         const PacketCreator = Java.type('tools.PacketCreator');
         var key = cm.getText().toLowerCase();
         var player = cm.getPlayer();
