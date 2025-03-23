@@ -275,6 +275,10 @@ public final class TakeDamageHandler extends AbstractPacketHandler {
                 if (chr.isRidingBattleship()) {
                     chr.decreaseBattleshipHp(damage);
                 }
+                if (c.getChannel() == 3)
+                {
+                    damage *=3;
+                }
                 chr.addMPHP(-damage, -mpattack);
             }
         }
