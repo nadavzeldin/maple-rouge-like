@@ -95,8 +95,8 @@ function action(mode, type, selection) {
         // thousands place is 0
         displaySkills = displaySkills.filter((skill) => (Math.floor(skill.getId() / 1000) % 10 > 0));
 
-        // Sort by name
-        displaySkills.sort((s1, s2) => getName(s1.getId()).localeCompare(getName(s2.getId())));
+        // Sort by name, and then by skill ID
+        displaySkills.sort((s1, s2) => getName(s1.getId()).localeCompare(getName(s2.getId())) || (s1.getId() - s2.getId()));
 
         if (displaySkills.length == 0) {
             textList.push("It looks like you don't have any skills in this category...");
