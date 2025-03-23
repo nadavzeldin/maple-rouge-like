@@ -354,24 +354,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2070016); // Crystal Ilbi Throwing-Stars
         USE_ITEMS.add(2070018); // Balanced Fury
         USE_ITEMS.add(2210000); // Orange Mushroom Piece
-        USE_ITEMS.add(2210001); // Ribbon Pig Piece
-        USE_ITEMS.add(2210002); // Grey Piece
         USE_ITEMS.add(2210003); // Dragon Elixir
         USE_ITEMS.add(2210004); // Blue Ribbon Pig Piece
         USE_ITEMS.add(2210005); // Tigun Transformation Bundle.
-        USE_ITEMS.add(2210006); // Rainbow-colored Snail Shell
         USE_ITEMS.add(2210007); // Change to Ghost
         USE_ITEMS.add(2210008); // Ghost Candy
-        USE_ITEMS.add(2210009); // Sophillia's Abandoned Doll
-        USE_ITEMS.add(2210010); // Potion of Transformation
-        USE_ITEMS.add(2210011); // Potion of Transformation
         USE_ITEMS.add(2210012); // Change to Mouse
-        USE_ITEMS.add(2210016); // Mini Draco Transformation
-        USE_ITEMS.add(2210017); // Moon Photo
         USE_ITEMS.add(2210018); // Sweet Rice Cake
         USE_ITEMS.add(2210021); // Gaga Transformation Potion
-        USE_ITEMS.add(2210022); // Peto Transformation Potion
-        USE_ITEMS.add(2210030); // Geppetto Transformation
         USE_ITEMS.add(2210032); // Cody's Picture
         USE_ITEMS.add(2210033); // Cake Picture
         USE_ITEMS.add(2210034); // Alien Gray Transformation
@@ -380,7 +370,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2210037); // Penguin Transformation 3
         USE_ITEMS.add(2210038); // Penguin Transformation 4
         USE_ITEMS.add(2210039); // Penguin Transformation 5
-        USE_ITEMS.add(2210043); // Leech Costume
 
         // Add all boots items to EQUIPMENT_ITEMS
         
