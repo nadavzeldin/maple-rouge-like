@@ -4,12 +4,15 @@
  * @author CPURules
  */
 const ResourceStorageType = Java.type('server.ResourceStorage');
+const ItemInfo = Java.type('server.ItemInformationProvider')
 var header = "#r#eScroll Storage#k#n\r\n\r\n";
 
 var status;
 
 var actionType; // 0 -> Withdraw, 1 -> Deposit
 var selectedItem; // Item ID to withdraw / deposit
+var filterText = ""; // string to filter items by
+var setFilter = false;
 
 function start() {
     status = -1;
@@ -38,6 +41,7 @@ function action(mode, type, selection) {
         textList.push("\t#i2049100# Chaos scrolls\r\n");
         textList.push("\t#i2340000# White scrolls\r\n");
         textList.push("\t#i2049000# Clean slate scrolls\r\n");
+        textList.push("\t#i2022153# All-stat cakes\r\n")
         textList.push("What would you like to do?\r\n");
         textList.push("#b");
         textList.push("#L0#Withdraw scrolls#l\r\n");
@@ -51,16 +55,27 @@ function action(mode, type, selection) {
 
         if (actionType == 0) { // withdraw
             var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.SCROLL_OFFSET];
-            var items = resourceStorage.getItems();
+            var items = resourceStorage.getItems(filterText);
 
             if (items.size() == 0) {
-                textList.push("It looks like you don't have any scrolls stored right now...\r\n\r\n");
+                if (filterText != "") {
+                    textList.push("It looks like you don't have any stored scrolls matching your filter: #r" + filterText + "#k...");
+                }
+                else {
+                    textList.push("It looks like you don't have any scrolls stored right now...\r\n\r\n");
+                }
+                textList.push("\r\n\r\n");
                 cm.sendOk(textList.join(""));
                 cm.dispose();
                 return;
             }
 
-            textList.push("Below are the scrolls you currently have stored.\r\n\r\n");
+            textList.push("Below are the scrolls you currently have stored.\r\n");
+            textList.push("#L0#If you'd like, click this line to filter this list#l\r\n\r\n");
+            if (filterText != "") {
+                textList.push("Current filter: #r" + filterText + "#k\r\n");
+            }
+            textList.push("\r\n");
             textList.push("What would you like to withdraw?\r\n");
             for (var i = 0; i < items.size(); i++) {
                 var item = items[i];
@@ -73,7 +88,7 @@ function action(mode, type, selection) {
             const InventoryType = Java.type('client.inventory.InventoryType');
             var inv = cm.getPlayer().getInventory(InventoryType.USE).getScrolls();
             if (inv.size() == 0) {
-                textList.push("It looks like you don't have any scrolls materials on you right now...\r\n\r\n");
+                textList.push("It looks like you don't have any scrolls on you right now...\r\n\r\n");
                 cm.sendOk(textList.join(""));
                 cm.dispose();
                 return;
@@ -92,7 +107,13 @@ function action(mode, type, selection) {
             cm.dispose();
         }
     } else if (status == 2) { // prompt for quantity
-        if (mode == 1) {
+        if (mode == 1) { // we came from the previous screen
+            if (selection == 0) { // filter
+                setFilter = true;
+                textList.push("Enter the text you'd like to use for filtering your stored scrolls:\r\n\r\n");
+                cm.sendGetText(textList.join(""));
+                return;
+            }
             selectedItem = selection;
         }
 
@@ -115,6 +136,13 @@ function action(mode, type, selection) {
             cm.dispose();
         }
     } else if (status == 3) { // process transaction
+        if (setFilter) { // If we came from the set filter screen, update the filter text and backtrack to the item list screen
+            filterText = cm.getText();
+            setFilter = false;
+            status = 2;
+            action(0, 0, 0);
+            return;
+        }
         var qty = selection;
         var resourceStorage = cm.getPlayer().getResourceStorage()[ResourceStorageType.SCROLL_OFFSET];
         var item = resourceStorage.getItemById(selectedItem);

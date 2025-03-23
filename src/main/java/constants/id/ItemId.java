@@ -124,6 +124,7 @@ public class ItemId {
                 || intInRange(itemId, 2049103, 2049110)
                 || intInRange(itemId, 2049200, 2049211)
                 || itemId == 2340000
+                || itemId == 2022153 // Happy birthday (+1 all stats)
         );
     }
 
