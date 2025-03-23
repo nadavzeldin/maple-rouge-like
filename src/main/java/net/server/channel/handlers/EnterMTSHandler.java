@@ -26,6 +26,7 @@ import client.Client;
 import client.inventory.Equip;
 import client.inventory.Item;
 import config.YamlConfig;
+import constants.id.MapId;
 import net.AbstractPacketHandler;
 import net.packet.InPacket;
 import net.server.Server;
@@ -34,6 +35,7 @@ import server.maps.FieldLimit;
 import server.maps.MiniDungeonInfo;
 import tools.DatabaseConnection;
 import tools.PacketCreator;
+import tools.mapletools.MapInfoRetriever;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,33 +51,30 @@ public final class EnterMTSHandler extends AbstractPacketHandler {
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();
 
-        if (!YamlConfig.config.server.USE_MTS) {
-            c.sendPacket(PacketCreator.enableActions());
-            return;
-        }
-
         if (chr.getEventInstance() != null) {
-            c.sendPacket(PacketCreator.serverNotice(5, "Entering Cash Shop or MTS are disabled when registered on an event."));
+            chr.dropMessage(1, "You cannot go to the Free Market while in an expedition.");
             c.sendPacket(PacketCreator.enableActions());
             return;
         }
 
-        if (MiniDungeonInfo.isDungeonMap(chr.getMapId())) {
-            c.sendPacket(PacketCreator.serverNotice(5, "Changing channels or entering Cash Shop or MTS are disabled when inside a Mini-Dungeon."));
-            c.sendPacket(PacketCreator.enableActions());
-            return;
+        if (!chr.isGM()) {
+            if (MiniDungeonInfo.isDungeonMap(chr.getMapId()) || FieldLimit.CANNOTMIGRATE.check(chr.getMap().getFieldLimit())) {
+                chr.dropMessage(1, "You cannot go to the Free Market from this map.");
+                chr.sendPacket(PacketCreator.enableActions());
+                return;
+            }
         }
-
-        if (FieldLimit.CANNOTMIGRATE.check(chr.getMap().getFieldLimit())) {
-            chr.dropMessage(1, "You can't do it here in this map.");
-            c.sendPacket(PacketCreator.enableActions());
-            return;
-        }
-
         if (!chr.isAlive()) {
             c.sendPacket(PacketCreator.enableActions());
             return;
         }
+
+        chr.saveLocation("FREE_MARKET");
+        chr.changeMap(MapId.FM_ENTRANCE);
+
+
+        /* Original MTS
+
         if (chr.getLevel() < 10) {
             c.sendPacket(PacketCreator.blockedMessage2(5));
             c.sendPacket(PacketCreator.enableActions());
@@ -170,6 +169,8 @@ public final class EnterMTSHandler extends AbstractPacketHandler {
         c.sendPacket(PacketCreator.sendMTS(items, 1, 0, 0, pages));
         c.sendPacket(PacketCreator.transferInventory(getTransfer(chr.getId())));
         c.sendPacket(PacketCreator.notYetSoldInv(getNotYetSold(chr.getId())));
+         */
+
     }
 
     private List<MTSItemInfo> getNotYetSold(int cid) {
