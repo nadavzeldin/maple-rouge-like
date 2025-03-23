@@ -1394,6 +1394,7 @@ public class Character extends AbstractCharacterObject {
 
     public void eventLootLizardSpawnLogic(){
         long currentTime = System.currentTimeMillis();
+        MapleMap map_ = getWarpMap(mapid);
         if  (this.level < 10)
         {
             return;
@@ -1402,9 +1403,13 @@ public class Character extends AbstractCharacterObject {
             return; // Still on cooldown
         }
 
+        if (map_.isTown()) // checked and this include starting map
+        {
+            return;
+        }
+
         if (Randomizer.nextInt(100) < GameConstants.LOOT_LIZARD_PERCENT)
         {
-            MapleMap map_ = getWarpMap(mapid);
             // Create weak boss with custom stats
             Monster scrollCandle = LifeFactory.getMonster(LOOT_LIZARD_ID); // The Boss event version
             MonsterStats stats = scrollCandle.getStats();
