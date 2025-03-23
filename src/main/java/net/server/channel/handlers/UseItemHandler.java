@@ -57,7 +57,8 @@ public final class UseItemHandler extends AbstractPacketHandler {
         int itemId = p.readInt();
         Item toUse = chr.getInventory(InventoryType.USE).getItem(slot);
         long curTime = System.currentTimeMillis();
-        if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
+
+        if (itemId != ItemId.HAPPY_BIRTHDAY && curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
             // use item is on cooldown
             chr.yellowMessage("Potion is on cooldown!");
             return;
