@@ -27,6 +27,7 @@ import client.Character;
 import client.Client;
 import client.command.Command;
 import constants.game.GameConstants;
+import constants.id.MapId;
 import constants.id.NpcId;
 import server.maps.FieldLimit;
 import server.maps.MapFactory;
@@ -121,7 +122,13 @@ public class GotoCommand extends Command {
 
             // expedition issue with this command detected thanks to Masterrulax
             Portal targetPortal = target.getRandomPlayerSpawnpoint();
-            player.saveLocationOnWarp();
+            if (target.getId() == MapId.FM_ENTRANCE) {
+                player.saveLocation("FREE_MARKET");
+            }
+            else {
+                player.saveLocationOnWarp();
+            }
+            
             player.changeMap(target, targetPortal);
         } else {
             // detailed info on goto available areas suggested thanks to Vcoc
