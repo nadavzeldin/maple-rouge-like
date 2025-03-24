@@ -75,6 +75,7 @@ public class ItemId {
                 || intInRange(itemId, 2041000, 2041062)
                 || intInRange(itemId, 2041066, 2041069)
                 || intInRange(itemId, 2041100, 2041119)
+                || itemId == 2041200 // Dragon Stone (Horntail Necklace)
                 || intInRange(itemId, 2041300, 2041319)
                 || intInRange(itemId, 2043000, 2043013)
                 || intInRange(itemId, 2043015, 2043019)
@@ -114,7 +115,7 @@ public class ItemId {
                 || intInRange(itemId, 2044712, 2044713)
                 || intInRange(itemId, 2044800, 2044815)
                 || itemId == 2044817
-                || intInRange(itemId, 2044900, 2044904)
+                || intInRange(itemId, 2044900, 2044905)
                 || intInRange(itemId, 2044906, 2044908)
                 || itemId == 2044910
                 || intInRange(itemId, 2048000, 2048013)
@@ -123,6 +124,7 @@ public class ItemId {
                 || intInRange(itemId, 2049103, 2049110)
                 || intInRange(itemId, 2049200, 2049211)
                 || itemId == 2340000
+                || itemId == 2022153 // Happy birthday (+1 all stats)
         );
     }
 

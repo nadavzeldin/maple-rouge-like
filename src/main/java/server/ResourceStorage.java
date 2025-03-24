@@ -180,7 +180,15 @@ public class ResourceStorage {
                 typeItems.put(type, new ArrayList<>(filterItems(type)));
             }
             else {
-                existing.setQuantity((short) (existing.getQuantity() + qty));
+                // we need to check for overflow - quantity is a short, max value 32767
+                // for now - just don't allow storage if qty would exceed
+                // TODO - let's migrate resource storage to a separate table.  It will make all of this a little less hacky
+                int newQty = item.getQuantity() + existing.getQuantity();
+                if (newQty > Short.MAX_VALUE) {
+                    return false;
+                }
+
+                existing.setQuantity((short) newQty);
             }
 
             return true;
@@ -197,6 +205,10 @@ public class ResourceStorage {
         } finally {
             lock.unlock();
         }
+    }
+
+    public List<Item> getItems(String filterText) {
+        return getItems().stream().filter((item) -> ItemInformationProvider.getInstance().getName(item.getItemId()).toLowerCase().contains(filterText.toLowerCase())).toList();
     }
 
     private List<Item> filterItems(InventoryType type) {

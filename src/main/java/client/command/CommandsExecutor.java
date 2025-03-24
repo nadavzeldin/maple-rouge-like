@@ -25,6 +25,7 @@ package client.command;
 
 import client.Client;
 import client.command.commands.gm0.AscensionCommand;
+import client.command.commands.gm0.BoostedMap;
 import client.command.commands.gm0.BuyExpCommand;
 import client.command.commands.gm0.ChangeLanguageCommand;
 import client.command.commands.gm0.DisposeCommand;
@@ -34,12 +35,14 @@ import client.command.commands.gm0.EnableAuthCommand;
 import client.command.commands.gm0.EquipLvCommand;
 import client.command.commands.gm0.GachaCommand;
 import client.command.commands.gm0.GetMacroCommand;
+import client.command.commands.gm0.GamesFeatureNPCCommand;
 import client.command.commands.gm0.GmCommand;
 import client.command.commands.gm0.HelpCommand;
 import client.command.commands.gm0.JoinEventCommand;
 import client.command.commands.gm0.LastWordsCommand;
 import client.command.commands.gm0.LeaveEventCommand;
 import client.command.commands.gm0.MapOwnerClaimCommand;
+import client.command.commands.gm0.MergeNPCCommand;
 import client.command.commands.gm0.MyAchievementsCommand;
 import client.command.commands.gm0.OnlineCommand;
 import client.command.commands.gm0.RanksCommand;
@@ -52,6 +55,7 @@ import client.command.commands.gm0.RollCommand;
 import client.command.commands.gm0.SellCommand;
 import client.command.commands.gm0.ShopCommand;
 import client.command.commands.gm0.ShowRatesCommand;
+import client.command.commands.gm0.SkillBindCommand;
 import client.command.commands.gm0.StaffCommand;
 import client.command.commands.gm0.StatDexCommand;
 import client.command.commands.gm0.StatIntCommand;
@@ -62,6 +66,7 @@ import client.command.commands.gm0.ToggleAutoStoreCommand;
 import client.command.commands.gm0.ToggleExpCommand;
 import client.command.commands.gm0.UptimeCommand;
 import client.command.commands.gm0.WarpRandomMap;
+import client.command.commands.gm0.WorldChatCommand;
 import client.command.commands.gm1.BossHpCommand;
 import client.command.commands.gm1.BuffMeCommand;
 import client.command.commands.gm1.GotoCommand;
@@ -288,6 +293,11 @@ public class CommandsExecutor {
             client.getPlayer().yellowMessage("You do not have permission to use commands while in jail.");
             return;
         }
+        if (client.getPlayer().getLastDeathTime() != 0 && !client.getPlayer().isGM())
+        {
+            client.getPlayer().yellowMessage("You do not have permission to use commands while dead.");
+            return;
+        }
         final String splitRegex = "[ ]";
         String[] splitedMessage = message.substring(1).split(splitRegex, 2);
         if (splitedMessage.length < 2) {
@@ -372,10 +382,14 @@ public class CommandsExecutor {
         addCommand("getmacro", GetMacroCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("randomMap", WarpRandomMap.class);
+        addCommand("boosted", BoostedMap.class);
         addCommand("shop", ShopCommand.class);
         addCommand("lastwords", LastWordsCommand.class);
         addCommand("achievs", MyAchievementsCommand.class);
         addCommand("ascend", AscensionCommand.class);
+        addCommand("npcmerge", MergeNPCCommand.class);
+        addCommand("features", GamesFeatureNPCCommand.class);
+        addCommand("world", WorldChatCommand.class);
         addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("roll", RollCommand.class);
@@ -408,6 +422,7 @@ public class CommandsExecutor {
         addCommand("buyexp", BuyExpCommand.class);
         addCommand("resources", ResourceStorageCommand.class);
         addCommand("togglestore", ToggleAutoStoreCommand.class);
+        addCommand("skillbind", SkillBindCommand.class);
 
 
         commandsNameDesc.add(levelCommandsCursor);

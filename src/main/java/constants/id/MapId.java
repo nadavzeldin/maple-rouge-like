@@ -282,9 +282,25 @@ public class MapId {
     public static final int CRIMSONWOOD_KEEP = 610020006;
     public static final int MU_LUNG_DOJO_HALL = 925020001;
     public static final int EXCLUSIVE_TRAINING_CENTER = 970030000;
+    public static final int SHOWA_GANG = 801040004;
+    public static final int ZIPANGU_BUDDHA = 800020130;
+    public static final int SPOOKY_WORLD = 551030100;
+    public static final int DEEP_CLOCKTOWER = 220080000;
+    public static final int MAIN_CHIMNEY = 682010200;
 
     // DOOM MAPS
     public static final Set<Integer> DOOM_MAPS = new HashSet<>(Arrays.asList(
             980000100, 980000200, 980000300, 980000400, 980000500, 980000600
     ));
+
+    public static final Set<Integer> BOSS_MAPS = new HashSet<>(DOOM_MAPS);
+
+    static {
+        BOSS_MAPS.addAll(Arrays.asList(
+                CURSED_SANCTUARY, HOLLOWED_GROUND, DOOR_TO_ZAKUM, ORIGIN_OF_CLOCKTOWER, DRAGON_NEST_LEFT_BEHIND, CAVE_OF_PIANUS, 240060200 /*horntail cave*/,280030000 /*zakum altar*/,
+                270050100 /*pinkbean*/, CAVE_OF_PIANUS, SOMEONE_ELSES_HOUSE, GRIFFEY_FOREST,MANONS_FOREST,MANONS_FOREST
+        ));
+    }
+    public static final Set<Integer> BUFFED_SPAWN_MAPS = new HashSet<>(Arrays.asList(270030400, 800020130, 220060400, 220070400));
+
 }

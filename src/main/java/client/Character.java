@@ -194,6 +194,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -1394,6 +1395,7 @@ public class Character extends AbstractCharacterObject {
 
     public void eventLootLizardSpawnLogic(){
         long currentTime = System.currentTimeMillis();
+        MapleMap map_ = getWarpMap(mapid);
         if  (this.level < 10)
         {
             return;
@@ -1402,9 +1404,13 @@ public class Character extends AbstractCharacterObject {
             return; // Still on cooldown
         }
 
+        if (map_.isTown()) // checked and this include starting map
+        {
+            return;
+        }
+
         if (Randomizer.nextInt(100) < GameConstants.LOOT_LIZARD_PERCENT)
         {
-            MapleMap map_ = getWarpMap(mapid);
             // Create weak boss with custom stats
             Monster scrollCandle = LifeFactory.getMonster(LOOT_LIZARD_ID); // The Boss event version
             MonsterStats stats = scrollCandle.getStats();
@@ -2490,7 +2496,7 @@ public class Character extends AbstractCharacterObject {
                 ps.executeUpdate();
             }
 
-            String[] toDel = {"famelog", "inventoryitems", "keymap", "queststatus", "savedlocations", "trocklocations", "skillmacros", "skills", "eventstats", "server_queue"};
+            String[] toDel = {"famelog", "inventoryitems", "keymap", "queststatus", "savedlocations", "skillmacros", "skills", "eventstats", "server_queue"};
             for (String s : toDel) {
                 Character.deleteWhereCharacterId(con, "DELETE FROM `" + s + "` WHERE characterid = ?", cid);
             }
@@ -2520,12 +2526,19 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
-    private void deleteWhereCharacterId(Connection con, String sql) throws SQLException {
+    private void deleteWhereCharacterOrAccountId(Connection con, String sql, boolean isAccount) throws SQLException {
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            if (isAccount) ps.setInt(1, accountid);
+            else ps.setInt(1, id);
+
             ps.executeUpdate();
         }
     }
+
+    private void deleteWhereCharacterId(Connection con, String sql) throws SQLException {
+        deleteWhereCharacterOrAccountId(con, sql, false);
+    }
+
 
     public static void deleteWhereCharacterId(Connection con, String sql, int cid) throws SQLException {
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -6278,6 +6291,10 @@ public class Character extends AbstractCharacterObject {
         return gmLevel > 1;
     }
 
+    public long getLastDeathTime(){
+        return lastDeathtime;
+    }
+
     public boolean isHidden() {
         return hidden;
     }
@@ -6579,6 +6596,28 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    public static int getInfiniteAscensionValue(List<String> ascensions) {
+        if (ascensions == null || ascensions.isEmpty()) {
+            return 0;
+        }
+
+        Pattern pattern = Pattern.compile(AscensionConstants.Names.INFINITE + "\\((\\d+)\\)");
+
+        for (String ascension : ascensions) {
+            Matcher matcher = pattern.matcher(ascension);
+            if (matcher.matches()) {
+                try {
+                    return Integer.parseInt(matcher.group(1));
+                } catch (NumberFormatException e) {
+                    // In case of parsing error, return 0
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
+
     public synchronized void levelUp(boolean takeexp) {
         Skill improvingMaxHP = null;
         Skill improvingMaxMP = null;
@@ -6607,7 +6646,7 @@ public class Character extends AbstractCharacterObject {
             }
         } else {
             int remainingAp = 5;
-
+            remainingAp += getInfiniteAscensionValue(accountExtraDetails.getAscension()) * 2;
             if (isCygnus()) {
                 if (level > 10) {
                     if (level <= 17) {
@@ -7366,8 +7405,9 @@ public class Character extends AbstractCharacterObject {
             }
 
             // Teleport rocks
+            // NOTE: To avoid altering DB structure, we treat characterid as accountid
             try (PreparedStatement ps = con.prepareStatement("SELECT mapid,vip FROM trocklocations WHERE characterid = ? LIMIT 15")) {
-                ps.setInt(1, charid);
+                ps.setInt(1, ret.accountid);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     byte vip = 0;
@@ -8909,13 +8949,13 @@ public class Character extends AbstractCharacterObject {
                     psLoc.executeBatch();
                 }
 
-                deleteWhereCharacterId(con, "DELETE FROM trocklocations WHERE characterid = ?");
+                deleteWhereCharacterOrAccountId(con, "DELETE FROM trocklocations WHERE characterid = ?", true);
 
-                // Vip teleport rocks
+                // Regular teleport rocks
                 try (PreparedStatement psVip = con.prepareStatement("INSERT INTO trocklocations(characterid, mapid, vip) VALUES (?, ?, 0)")) {
                     for (int i = 0; i < getTrockSize(); i++) {
                         if (trockmaps.get(i) != MapId.NONE) {
-                            psVip.setInt(1, getId());
+                            psVip.setInt(1, accountid);
                             psVip.setInt(2, trockmaps.get(i));
                             psVip.addBatch();
                         }
@@ -8923,11 +8963,11 @@ public class Character extends AbstractCharacterObject {
                     psVip.executeBatch();
                 }
 
-                // Regular teleport rocks
+                // VIP teleport rocks
                 try (PreparedStatement psReg = con.prepareStatement("INSERT INTO trocklocations(characterid, mapid, vip) VALUES (?, ?, 1)")) {
                     for (int i = 0; i < getVipTrockSize(); i++) {
                         if (viptrockmaps.get(i) != MapId.NONE) {
-                            psReg.setInt(1, getId());
+                            psReg.setInt(1, accountid);
                             psReg.setInt(2, viptrockmaps.get(i));
                             psReg.addBatch();
                         }

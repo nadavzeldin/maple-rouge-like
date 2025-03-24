@@ -23,6 +23,7 @@
 */
 package client.command.commands.gm0;
 
+import client.AscensionConstants;
 import client.Character;
 import client.Client;
 import client.command.Command;
@@ -36,6 +37,8 @@ public class ShowRatesCommand extends Command {
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
+        boolean isHoarder = player.accountExtraDetails.getAscension().contains(AscensionConstants.Names.HOARDER);
+
         String showMsg = "#eEXP RATE#n" + "\r\n";
         showMsg += "World EXP Rate: #k" + c.getWorldServer().getExpRate() + "x#k" + "\r\n";
         showMsg += "Player EXP Rate: #k" + player.getRawExpRate() + "x#k" + "\r\n";
@@ -50,6 +53,9 @@ public class ShowRatesCommand extends Command {
         if (player.getCouponMesoRate() != 1) {
             showMsg += "Coupon MESO Rate: #k" + player.getCouponMesoRate() + "x#k" + "\r\n";
         }
+        if (isHoarder) {
+            showMsg += "Hoarder MESO Rate: #k5x#k\r\n";
+        }
         showMsg += "MESO Rate: #e#b" + player.getMesoRate() + "x#k#n" + "\r\n";
 
         showMsg += "\r\n" + "#eDROP RATE#n" + "\r\n";
@@ -57,6 +63,9 @@ public class ShowRatesCommand extends Command {
         showMsg += "Player DROP Rate: #k" + player.getRawDropRate() + "x#k" + "\r\n";
         if (player.getCouponDropRate() != 1) {
             showMsg += "Coupon DROP Rate: #k" + player.getCouponDropRate() + "x#k" + "\r\n";
+        }
+        if (isHoarder) {
+            showMsg += "Hoarder DROP Rate: #k5x#k\r\n";
         }
         showMsg += "DROP Rate: #e#b" + player.getDropRate() + "x#k#n" + "\r\n";
 

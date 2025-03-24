@@ -57,6 +57,7 @@ import server.events.gm.Fitness;
 import server.events.gm.Ola;
 import server.events.gm.OxQuiz;
 import server.events.gm.Snowball;
+import server.life.HourlySpawnBoostManager;
 import server.life.LifeFactory;
 import server.life.LifeFactory.selfDestruction;
 import server.life.Monster;
@@ -99,6 +100,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Predicate;
 
+import static constants.game.GameConstants.SPAWN_RATE;
+import static constants.id.MapId.BOSS_MAPS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -189,6 +192,14 @@ public class MapleMap {
 
     // due to the nature of loadMapFromWz (synchronized), sole function that calls 'generateMapDropRangeCache', this lock remains optional.
     private static final Lock bndLock = new ReentrantLock(true);
+    /**
+     * Gets the count of spawn points in this map
+     */
+    public int getSpawnPointCount() {
+        synchronized(monsterSpawn) {
+            return monsterSpawn.size();
+        }
+    }
 
     public MapleMap(int mapid, int world, int channel, int returnMapId, float monsterRate) {
         this.mapid = mapid;
@@ -252,6 +263,17 @@ public class MapleMap {
 
     private static double getRangedDistance() {
         return YamlConfig.config.server.USE_MAXRANGE ? Double.POSITIVE_INFINITY : 722500;
+    }
+
+    public void duplicateSpawnPoints(int factor) {
+        List<SpawnPoint> originalSpawns = new ArrayList<>(getMonsterSpawn());
+        for (int i = 0; i < factor - 1; i++) {
+            for (SpawnPoint sp : originalSpawns) {
+                SpawnPoint newSp = new SpawnPoint(sp.getMonster(), sp.getPosition(),
+                        !sp.getMonster().isMobile(), sp.getMobTime(), mobInterval, sp.getTeam());
+                monsterSpawn.add(newSp);
+            }
+        }
     }
 
     public List<MapObject> getMapObjectsInRect(Rectangle box, List<MapObjectType> types) {
@@ -1914,7 +1936,23 @@ public class MapleMap {
         }
     }
 
+    private void applyChannelBuff(final Monster monster) {
+        if (channel == 3 && !monster.isBoss()) {
+            long newHp = (long)monster.getHp() * 5;
+            if (newHp > 2_000_000_000) {
+                // Calculate how much HP to add to reach exactly 2 billion
+                int hpToAdd = 2_000_000_000 - monster.getHp();
+                monster.addHp(hpToAdd);
+            } else {
+                // Original calculation is fine, multiply by 5
+                monster.addHp(monster.getHp() * 4); // Add 4 times current HP since addHp adds to current value
+            }
+            monster.setStartingHp(monster.getHp());
+        }
+    }
+
     public void spawnMonster(final Monster monster) {
+        applyChannelBuff(monster);
         spawnMonster(monster, 1, false);
     }
 
@@ -2002,6 +2040,7 @@ public class MapleMap {
     }
 
     public void spawnFakeMonster(final Monster monster) {
+        applyChannelBuff(monster);
         monster.setMap(this);
         monster.setFake(true);
         spawnAndAddRangedMapObject(monster, c -> c.sendPacket(PacketCreator.spawnFakeMonster(monster, 0)));
@@ -3521,15 +3560,6 @@ public class MapleMap {
     }
 
     private int getNumShouldSpawn(int numPlayers) {
-        /*
-        System.out.println("----------------------------------");
-        for (SpawnPoint spawnPoint : getMonsterSpawn()) {
-            System.out.println("sp " + spawnPoint.getPosition().getX() + ", " + spawnPoint.getPosition().getY() + ": " + spawnPoint.getDenySpawn());
-        }
-        System.out.println("try " + monsterSpawn.size() + " - " + spawnedMonstersOnMap.get());
-        System.out.println("----------------------------------");
-        */
-
         if (YamlConfig.config.server.USE_ENABLE_FULL_RESPAWN) {
             return (monsterSpawn.size() - spawnedMonstersOnMap.get());
         }
@@ -3556,6 +3586,10 @@ public class MapleMap {
         }
 
         int numShouldSpawn = getNumShouldSpawn(numPlayers);
+        if (!BOSS_MAPS.contains(mapid)){
+            numShouldSpawn *= SPAWN_RATE;
+        }
+
         if (numShouldSpawn > 0) {
             List<SpawnPoint> randomSpawn = new ArrayList<>(getMonsterSpawn());
             Collections.shuffle(randomSpawn);
@@ -4386,6 +4420,72 @@ public class MapleMap {
         } finally {
             chrWLock.unlock();
         }
+    }
+
+    /**
+     * Backup the current spawn points for later restoration
+     */
+    private List<SpawnPoint> originalSpawnPoints;
+
+    public void backupSpawnPoints() {
+        synchronized (monsterSpawn) {
+            originalSpawnPoints = new ArrayList<>(monsterSpawn);
+        }
+    }
+
+    /**
+     * Restore the original spawn points
+     */
+    public void restoreSpawnPoints() {
+        if (originalSpawnPoints != null) {
+            synchronized (monsterSpawn) {
+                monsterSpawn.clear();
+                monsterSpawn.addAll(originalSpawnPoints);
+            }
+            originalSpawnPoints = null;
+        }
+    }
+
+    /**
+     * Multiply the current spawn rate by the given factor
+     */
+    public void multiplySpawnRate(int factor) {
+        if (factor <= 1) {
+            return;
+        }
+
+        List<SpawnPoint> currentSpawns = new ArrayList<>(getMonsterSpawn());
+
+        synchronized (monsterSpawn) {
+            // We'll duplicate each spawn point (factor-1) times
+            for (int i = 0; i < factor - 1; i++) {
+                for (SpawnPoint sp : currentSpawns) {
+                    SpawnPoint newSp = new SpawnPoint(sp.getMonster(), sp.getPosition(),
+                            !sp.getMonster().isMobile(), sp.getMobTime(),
+                            mobInterval, sp.getTeam());
+                    monsterSpawn.add(newSp);
+                }
+            }
+        }
+    }
+
+
+
+    // Add a method to get the current spawn rate
+    public int getSpawnRate() {
+        int mapId = this.getId();
+
+        // Check if this map has a boosted spawn rate
+        if (HourlySpawnBoostManager.getInstance().isMapBoosted(mapId)) {
+            return HourlySpawnBoostManager.getInstance().getSpawnRateForMap(mapId);
+        }
+
+        // Otherwise return the default spawn rate
+        if (!BOSS_MAPS.contains(mapId)) {
+            return GameConstants.SPAWN_RATE;
+        }
+
+        return 1;
     }
 
     public int getMaxMobs() {

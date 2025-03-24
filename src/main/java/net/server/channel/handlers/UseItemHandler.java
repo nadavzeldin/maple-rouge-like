@@ -70,7 +70,7 @@ public final class UseItemHandler extends AbstractPacketHandler {
         if (MACRO_ITEMS_DICT.containsKey(itemId)) {
             macro = true;
         }
-        if (curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
+        if (itemId != ItemId.HAPPY_BIRTHDAY && curTime - chr.getUsedPotionTime() < USE_POTION_COOLDOWN) {
             if (!macro){
                 chr.yellowMessage("Potion is on cooldown!");
                 return;

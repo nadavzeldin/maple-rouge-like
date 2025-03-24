@@ -20,6 +20,7 @@ import java.util.*;
  * @author Ronan
  */
 public class GameConstants {
+    public static int SPAWN_RATE = 2;
     public static int LOOT_LIZARD_ID = 9400506;
     public static int LOOT_LIZARD_PERCENT = 20;
     public static final long LOOT_LIZARD_SPAWN_COOLDOWN = 180000; // 3 minutes in milliseconds
@@ -92,18 +93,22 @@ public class GameConstants {
         put("quay", MapId.BOAT_QUAY_TOWN);
         put("kampung", MapId.KAMPUNG_VILLAGE);
         put("amoria", MapId.AMORIA);
-        put("temple", MapId.TEMPLE_OF_TIME);
+        put("tot", MapId.TEMPLE_OF_TIME);
         put("square", MapId.KERNING_SQUARE);
         put("neo", MapId.NEO_CITY);
         put("mushking", MapId.MUSHROOM_KINGDOM);
         put("fm", MapId.FM_ENTRANCE);
         put("balrog", MapId.CURSED_SANCTUARY);
         put("zakum", MapId.DOOR_TO_ZAKUM);
-        put("papu", MapId.ORIGIN_OF_CLOCKTOWER);
-        put("skelegon", MapId.DRAGON_NEST_LEFT_BEHIND);
+        put("skele", MapId.DRAGON_NEST_LEFT_BEHIND);
         put("pianus", MapId.CAVE_OF_PIANUS);
         put("horntail", MapId.ENTRANCE_TO_HORNTAILS_CAVE);
         put("pinkbean", MapId.FORGOTTEN_TWILIGHT);
+        put("himes", MapId.ZIPANGU_BUDDHA);
+        put("scarga", MapId.SPOOKY_WORLD);
+        put("pap", MapId.DEEP_CLOCKTOWER);
+        put("yakuza", MapId.SHOWA_GANG);
+        put("chimney", MapId.MAIN_CHIMNEY);
     }};
 
     // "goto" command for only-GMs
@@ -274,6 +279,89 @@ public class GameConstants {
         add("BgmSG/Ghostship");
         add("BgmUI/ShopBgm");
         add("BgmUI/Title");
+    }};
+
+    public static final Map<Integer, String> JOB_NAMES = new HashMap<>() {{
+       put(100, "Warrior");
+       put(110, "Fighter");
+       put(111, "Crusader"); 
+       put(112, "Hero");
+       put(120, "Page");
+       put(121, "White Knight");
+       put(122, "Paladin");
+       put(130, "Spearman");
+       put(131, "Dragon Knight");
+       put(132, "Dark Knight");
+
+       put(200, "Magician");
+       put(210, "F/P Wizard");
+       put(211, "F/P Mage");
+       put(212, "F/P Archmage");
+       put(220, "I/L Wizard");
+       put(221, "I/L Mage");
+       put(222, "I/L Archmage");
+       put(230, "Cleric");
+       put(231, "Priest");
+       put(232, "Bishop");
+
+       put(300, "Bowman");
+       put(310, "Hunter");
+       put(311, "Ranger");
+       put(312, "Bowmaster");
+       put(320, "Crossbowman");
+       put(321, "Sniper");
+       put(322, "Marksman");
+
+       put(400, "Thief");
+       put(410, "Assassin");
+       put(411, "Hermit");
+       put(412, "Night Lord");
+       put(420, "Bandit");
+       put(421, "Chief Bandit");
+       put(422, "Shadower");
+
+       put(500, "Pirate");
+       put(510, "Brawler");
+       put(511, "Marauder");
+       put(512, "Buccaneer");
+       put(520, "Gunslinger");
+       put(521, "Outlaw");
+       put(522, "Corsair");
+
+       put(900, "GM");
+       put(910, "Super GM");
+
+       put(1000, "Noblesse");
+       put(1100, "Dawn Warrior");
+       put(1110, "Dawn Warrior");
+       put(1111, "Dawn Warrior");
+       put(1112, "Dawn Warrior");
+       put(1200, "Blaze Wizard");
+       put(1210, "Blaze Wizard");
+       put(1211, "Blaze Wizard");
+       put(1212, "Blaze Wizard");
+       put(1300, "Wind Archer");
+       put(1310, "Wind Archer");
+       put(1311, "Wind Archer");
+       put(1312, "Wind Archer");
+       put(1400, "Night Walker");
+       put(1410, "Night Walker");
+       put(1411, "Night Walker");
+       put(1412, "Night Walker");
+       put(1500, "Thunder Breaker");
+       put(1510, "Thunder Breaker");
+       put(1511, "Thunder Breaker");
+       put(1512, "Thunder Breaker");
+
+       put(2000, "Legend");
+       put(2100, "Aran");
+       put(2110, "Aran");
+       put(2111, "Aran");
+       put(2112, "Aran");
+
+       put(2001, "Evan");
+       put(2200, "Evan");
+       for (int i = 0; i <= 8; i++) put(2210 + i, "Evan");
     }};
 
     // MapleStory default keyset

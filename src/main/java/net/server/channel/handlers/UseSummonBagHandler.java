@@ -44,6 +44,10 @@ public final class UseSummonBagHandler extends AbstractPacketHandler {
             c.sendPacket(PacketCreator.enableActions());
             return;
         }
+        if (c.getPlayer().getMap().isTown()){
+            c.getPlayer().dropMessage(5, "cant summon in towns.");
+            return;
+        }
         p.readInt();
         short slot = p.readShort();
         int itemId = p.readInt();
