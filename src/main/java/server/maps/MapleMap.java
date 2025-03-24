@@ -1937,7 +1937,7 @@ public class MapleMap {
     }
 
     private void applyChannelBuff(final Monster monster) {
-        if (channel == 3) {
+        if (channel == 3 && !monster.isBoss()) {
             long newHp = (long)monster.getHp() * 5;
             if (newHp > 2_000_000_000) {
                 // Calculate how much HP to add to reach exactly 2 billion
