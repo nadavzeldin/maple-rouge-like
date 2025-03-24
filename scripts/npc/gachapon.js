@@ -35,7 +35,7 @@ var prizeGroups = [
     "Mounts",
     "Weapons & Shields",
     "Accessories",
-    "Capes, Shoes, & Gloves",
+    "Equips",
     "Uses",
     "Chairs",
     "Scrolls"
