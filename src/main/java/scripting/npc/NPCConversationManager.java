@@ -84,6 +84,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     private static final List<Integer> EQUIPMENT_ITEMS = new ArrayList<>();
     private static final List<Integer> USE_ITEMS = new ArrayList<>();
     private static final List<Integer> SET_UP = new ArrayList<>();
+    private static final List<Integer> SCROLLS_ITEMS = new ArrayList<>();
     private static boolean poolsInitialized = false;
 
     private final int npc;
@@ -335,9 +336,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1032061); // (no description)
 
         USE_ITEMS.add(2060004); // Diamond Arrow for Bow
+        USE_ITEMS.add(2060003); // Red Arrow for Bow
         USE_ITEMS.add(2060005); // Snowball
         USE_ITEMS.add(2060006); // Big Snowball
         USE_ITEMS.add(2061004); // Diamond Arrow for Crossbow
+        USE_ITEMS.add(2061003); // Blue Arrow for Crossbow 
         USE_ITEMS.add(2070001); // Wolbi Throwing-Stars
         USE_ITEMS.add(2070002); // Mokbi Throwing-Stars
         USE_ITEMS.add(2070003); // Kumbi Throwing-Stars
@@ -353,23 +356,34 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2070013); // Orange
         USE_ITEMS.add(2070016); // Crystal Ilbi Throwing-Stars
         USE_ITEMS.add(2070018); // Balanced Fury
-        USE_ITEMS.add(2210000); // Orange Mushroom Piece
-        USE_ITEMS.add(2210003); // Dragon Elixir
-        USE_ITEMS.add(2210004); // Blue Ribbon Pig Piece
-        USE_ITEMS.add(2210005); // Tigun Transformation Bundle.
-        USE_ITEMS.add(2210007); // Change to Ghost
-        USE_ITEMS.add(2210008); // Ghost Candy
-        USE_ITEMS.add(2210012); // Change to Mouse
-        USE_ITEMS.add(2210018); // Sweet Rice Cake
-        USE_ITEMS.add(2210021); // Gaga Transformation Potion
-        USE_ITEMS.add(2210032); // Cody's Picture
-        USE_ITEMS.add(2210033); // Cake Picture
-        USE_ITEMS.add(2210034); // Alien Gray Transformation
-        USE_ITEMS.add(2210035); // Penguin Transformation 1
-        USE_ITEMS.add(2210036); // Penguin Transformation 2
-        USE_ITEMS.add(2210037); // Penguin Transformation 3
-        USE_ITEMS.add(2210038); // Penguin Transformation 4
-        USE_ITEMS.add(2210039); // Penguin Transformation 5
+        USE_ITEMS.add(2330005); // Eternal Bullet
+        USE_ITEMS.add(2330004); // Shiny Bullet
+        USE_ITEMS.add(2331000); // Blaze Capsule
+        USE_ITEMS.add(2332000); // Glaze Capsule
+        USE_ITEMS.add(2022282); // Naricain's Demon Elixir
+        USE_ITEMS.add(2022273); // Ssiws Cheese
+        USE_ITEMS.add(2022278); // Lump of Coal
+        USE_ITEMS.add(2022546); // Energy Drink
+
+        // Transformation potion, disabled until crash is fixed
+        
+        //USE_ITEMS.add(2210000); // Orange Mushroom Piece
+        //USE_ITEMS.add(2210003); // Dragon Elixir
+        //USE_ITEMS.add(2210004); // Blue Ribbon Pig Piece
+        //USE_ITEMS.add(2210005); // Tigun Transformation Bundle.
+        //USE_ITEMS.add(2210007); // Change to Ghost
+        //USE_ITEMS.add(2210008); // Ghost Candy
+        //USE_ITEMS.add(2210012); // Change to Mouse
+        //USE_ITEMS.add(2210018); // Sweet Rice Cake
+        //USE_ITEMS.add(2210021); // Gaga Transformation Potion
+        //USE_ITEMS.add(2210032); // Cody's Picture
+        //USE_ITEMS.add(2210033); // Cake Picture
+        //USE_ITEMS.add(2210034); // Alien Gray Transformation
+        //USE_ITEMS.add(2210035); // Penguin Transformation 1
+        //USE_ITEMS.add(2210036); // Penguin Transformation 2
+        //USE_ITEMS.add(2210037); // Penguin Transformation 3
+        //USE_ITEMS.add(2210038); // Penguin Transformation 4
+        //USE_ITEMS.add(2210039); // Penguin Transformation 5
 
         // Add all boots items to EQUIPMENT_ITEMS
         
@@ -382,6 +396,28 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         // Stat-giving Gloves
         
         EQUIPMENT_ITEMS.add(1082223); // Stormcaster Gloves
+
+        // Scrolls
+
+        SCROLLS_ITEMS.add(2040760); // Scroll for Shoes for ATT 10%
+        SCROLLS_ITEMS.add(2040727); // Scroll for Spikes on Shoes 10%
+        SCROLLS_ITEMS.add(2040002); // Scroll for Overall Armor for INT 10% (Assuming this is the correct item ID)
+        SCROLLS_ITEMS.add(2040502); // Scroll for Overall Armor for DEX 10%
+        SCROLLS_ITEMS.add(2040517); // Scroll for Overall Armor for LUK 10%
+        SCROLLS_ITEMS.add(2040816); // Scroll for Gloves for Magic Att. 10%
+        SCROLLS_ITEMS.add(2040920); // Scroll for Shield for Magic Att 10%
+        SCROLLS_ITEMS.add(2048010); // Scroll for Pet Equip. for STR 60%
+        SCROLLS_ITEMS.add(2048011); // Scroll for Pet Equip. for INT 60%
+        SCROLLS_ITEMS.add(2048012); // Scroll for Pet Equip. for DEX 60%
+        SCROLLS_ITEMS.add(2048013); // Scroll for Pet Equip. for LUK 60%
+        SCROLLS_ITEMS.add(2040915); // Scroll for Shield for Weapon Att 10%
+        SCROLLS_ITEMS.add(2040323); // Scroll for Earring for LUK 10%
+        SCROLLS_ITEMS.add(2040205); // Scroll for Eye Accessory for INT 10%
+        SCROLLS_ITEMS.add(2040105); // Scroll for Face Accessory for Avoidability 10%
+        SCROLLS_ITEMS.add(2049207); // Dark Scroll for Accessory for LUK 30%
+        SCROLLS_ITEMS.add(2049201); // Dark Scroll for Accessory for STR 30%
+        SCROLLS_ITEMS.add(2049203); // Dark Scroll for Accessory for DEX 30%
+        SCROLLS_ITEMS.add(2049205); // Dark Scroll for Accessory for INT 30%
 
         poolsInitialized = true;
         System.out.println("Gachapon item pools initialized successfully!");
@@ -744,8 +780,13 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             case 4: // Uses
                 itemPool = USE_ITEMS;
                 break;
+                
             case 5: // Setups
                 itemPool = SET_UP;
+                break;
+                
+            case 6: // Scrolls
+                itemPool = SCROLLS_ITEMS;
                 break;
         }
 
