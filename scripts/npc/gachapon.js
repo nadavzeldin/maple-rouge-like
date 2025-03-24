@@ -147,10 +147,18 @@ function action(mode, type, selection) {
                 case 4: // Uses
                     hasSpace = cm.canHold(2000000, amount) && cm.canHold(2040000, amount) && cm.canHold(2070000, amount);
                     break;
+		case 5: // Chairs
+                    hasSpace = cm.canHold(3010000, amount); // SETUP inventory
+                    break;
 		case 6: // Scrolls
 		    hasSpace = cm.canHold(2040760, amount);
 		    break;
             }
+	    if (!hasSpace) {
+   		cm.sendOk("It looks like you don't have enough inventory space for these rolls!");
+   		cm.dispose();
+   		return;
+	    }
 
             // Take mesos and do gachapon rolls
             cm.gainMeso(-totalCost);
