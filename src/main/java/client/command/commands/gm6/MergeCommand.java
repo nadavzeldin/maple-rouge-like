@@ -522,6 +522,14 @@ public class MergeCommand extends Command {
      */
     private boolean checkForLevel25SpecialMerge(Client c, Character player, ArrayList<Equip> equipmentItems, short mergedCoinPosition) {
         // Find all level 25 items
+        boolean isBlacksmith = player.accountExtraDetails.getAscension().contains(AscensionConstants.Names.BLACKSMITH);
+
+        if (!isBlacksmith)
+        {
+            player.yellowMessage("Only blacksmith (Ascension) can reach level 30");
+            return false;
+        }
+
         List<Equip> level25Items = new ArrayList<>();
 
         for (Equip equip : equipmentItems) {
@@ -547,7 +555,7 @@ public class MergeCommand extends Command {
         }
 
         // Apply the special merge - double all stats and set to level 30
-        doubleItemStats(selectedItem);
+        multiplyItemStats(selectedItem);
         selectedItem.setItemLevel((byte)30);
 
         // Use up one merge coin
@@ -565,23 +573,23 @@ public class MergeCommand extends Command {
     }
 
     /**
-     * Doubles all stats on an equip item
+     * Multiplies all stats on an equip item by 1.5
      */
-    private void doubleItemStats(Equip item) {
-        // Double all stats
-        item.setWatk((short)(item.getWatk() * 2));
-        item.setWdef((short)(item.getWdef() * 2));
-        item.setMatk((short)(item.getMatk() * 2));
-        item.setMdef((short)(item.getMdef() * 2));
-        item.setHp((short)(item.getHp() * 2));
-        item.setMp((short)(item.getMp() * 2));
-        item.setStr((short)(item.getStr() * 2));
-        item.setDex((short)(item.getDex() * 2));
-        item.setLuk((short)(item.getLuk() * 2));
-        item.setInt((short)(item.getInt() * 2));
+    private void multiplyItemStats(Equip item) {
+        // Multiply all stats by 1.5
+        item.setWatk((short)(item.getWatk() * 1.5));
+        item.setWdef((short)(item.getWdef() * 1.5));
+        item.setMatk((short)(item.getMatk() * 1.5));
+        item.setMdef((short)(item.getMdef() * 1.5));
+        item.setHp((short)(item.getHp() * 1.5));
+        item.setMp((short)(item.getMp() * 1.5));
+        item.setStr((short)(item.getStr() * 1.5));
+        item.setDex((short)(item.getDex() * 1.5));
+        item.setLuk((short)(item.getLuk() * 1.5));
+        item.setInt((short)(item.getInt() * 1.5));
 
         // Log the stat changes
-        log.info("Special Level 25 merge - doubled all stats for item: {}", item.toString());
+        log.info("Special Level 25 merge - multiplied all stats by 1.5 for item: {}", item.toString());
     }
 
     /**
