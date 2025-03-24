@@ -1280,7 +1280,13 @@ public class StatEffect {
 
         if (isSkillMorph())
         {
-            applyto.dropMessage(5, "Transformation are blocked due to DC connection bugs");
+            applyto.dropMessage(5, "Transformation are blocked due to causing crashes");
+            return;
+        }
+
+        if (sourceid == NightWalker.SHADOW_PARTNER)
+        {
+            applyto.dropMessage(5, "NightWalker.SHADOW_PARTNER is blocked due to causing crashes");
             return;
         }
 
@@ -1620,7 +1626,7 @@ public class StatEffect {
     }
 
     private boolean isShadowPartner() {
-        return skill && (sourceid == Hermit.SHADOW_PARTNER || sourceid == NightWalker.SHADOW_PARTNER);
+        return skill && (sourceid == Hermit.SHADOW_PARTNER);
     }
 
     private boolean isChakra() {
