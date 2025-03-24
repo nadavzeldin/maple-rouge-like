@@ -253,6 +253,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         // Spears
         WEAPON_SHIELD_ITEMS.add(1432040); // Maple Soul Spear
         WEAPON_SHIELD_ITEMS.add(1432045); // Sunspear
+        WEAPON_SHIELD_ITEMS.add(1432047); // Timeless Alchupiz
         
         // Pole arms
         WEAPON_SHIELD_ITEMS.add(1442051); // Maple Karstan
@@ -262,14 +263,18 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         // Bows
         WEAPON_SHIELD_ITEMS.add(1452045); // Maple Kandiva Bow
         WEAPON_SHIELD_ITEMS.add(1452052); // Andromeda Bow
+        WEAPON_SHIELD_ITEMS.add(1452057); // Timeless Engaw
 
         // Crossbows
         WEAPON_SHIELD_ITEMS.add(1462040); // Maple Nishada
         WEAPON_SHIELD_ITEMS.add(1462046); // Void Hunter
+        WEAPON_SHIELD_ITEMS.add(1462050); // Timeless Black Beauty
 
         // Claws
         WEAPON_SHIELD_ITEMS.add(1472023); // Blood Gigantic
         WEAPON_SHIELD_ITEMS.add(1472062); // Black Hole
+        WEAPON_SHIELD_ITEMS.add(1472068); // Timeless Lampion
+        WEAPON_SHIELD_ITEMS.add(1472054); // Shinobi Bracer
 
         //others
         WEAPON_SHIELD_ITEMS.add(1322027); // frying pan
@@ -326,14 +331,23 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1122007); // Spiegelmann's Necklace - (no description)
         ACCESSORIES_ITEMS.add(1122010); // Horus' Eye - (no description)
         ACCESSORIES_ITEMS.add(1122014); // Silver Deputy Star - A badge of honor given by Lita Lawless for vanquishing monsters in defense of NLC. You're part of the law now!
-       
+    
         ACCESSORIES_ITEMS.add(1022069); // Orange Shutter Shades - (no description)
         ACCESSORIES_ITEMS.add(1012134); // Tear Drop Face Tattoo - Express your soft side with this teary-eyed Tattoo!
         ACCESSORIES_ITEMS.add(1122059); // Mark of Naricain
-       
+        ACCESSORIES_ITEMS.add(1012108); // Smiling Mask
+        ACCESSORIES_ITEMS.add(1012109); // Crying Mask
+        ACCESSORIES_ITEMS.add(1012110); // Angry Mask
+        ACCESSORIES_ITEMS.add(1012111); // Sad Mask
+        ACCESSORIES_ITEMS.add(1022058); // Raccoon Mask
+        ACCESSORIES_ITEMS.add(1022060); // White Raccoon Mask
+        ACCESSORIES_ITEMS.add(1012107); // Branch Nose
+        ACCESSORIES_ITEMS.add(1012106); // Rat Mouth
+        ACCESSORIES_ITEMS.add(1022079); // Clear Glasses
         ACCESSORIES_ITEMS.add(1032060); // Altair Earrings - (no description)
         ACCESSORIES_ITEMS.add(1022073); // Broken Glasses - (no description)
-        ACCESSORIES_ITEMS.add(1032061); // (no description)
+        ACCESSORIES_ITEMS.add(1032061); // Glittering Altair Earrings
+        ACCESSORIES_ITEMS.add(1022082); // Spectrum Goggles
 
         USE_ITEMS.add(2060004); // Diamond Arrow for Bow
         USE_ITEMS.add(2060003); // Red Arrow for Bow
@@ -363,7 +377,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2022282); // Naricain's Demon Elixir
         USE_ITEMS.add(2022273); // Ssiws Cheese
         USE_ITEMS.add(2022278); // Lump of Coal
-        USE_ITEMS.add(2022546); // Energy Drink
+        USE_ITEMS.add(2022031); // Cookie
 
         // Transformation potion, disabled until crash is fixed
         
@@ -385,20 +399,44 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         //USE_ITEMS.add(2210038); // Penguin Transformation 4
         //USE_ITEMS.add(2210039); // Penguin Transformation 5
 
+        // Hats, Helmets, Caps
+        EQUIPMENT_ITEMS.add(1002577); // Pickpocket Pilfer
+        EQUIPMENT_ITEMS.add(1002579); // LeFay Jester
+        EQUIPMENT_ITEMS.add(1002578); // Herculean Helmet
+        EQUIPMENT_ITEMS.add(1002580); // Lockewood Hat
+        EQUIPMENT_ITEMS.add(1002656); // White Identity
+        //Overalls
+        EQUIPMENT_ITEMS.add(1051017); // Red Sauna Robe
+        EQUIPMENT_ITEMS.add(1050018); // Blue Sauna Robe
+        // Bottoms
+        EQUIPMENT_ITEMS.add(1060128); // Stirgeman Utility Pants Mk II
+        EQUIPMENT_ITEMS.add(1061155); // Stirgeman Power Skirt Mk II
         // Add all boots items to EQUIPMENT_ITEMS
-        
         EQUIPMENT_ITEMS.add(1072344); // Facestompers
-
+        EQUIPMENT_ITEMS.add(1072238); // Violet Snowshoes
+        EQUIPMENT_ITEMS.add(1072239); // Yellow Snowshoes
+        EQUIPMENT_ITEMS.add(1072427); // Red Christmas Sock
+        EQUIPMENT_ITEMS.add(1072428); // Green Christmas Sock
+        EQUIPMENT_ITEMS.add(1072429); // Navy Christmas Sock
+        EQUIPMENT_ITEMS.add(1072430); // White Christmas Sock
+        EQUIPMENT_ITEMS.add(1072431); // Yellow Christmas Sock
+        EQUIPMENT_ITEMS.add(1072432); // Purple Christmas Sock
         // Add all cape items to equipment items
         EQUIPMENT_ITEMS.add(1102084); // Pink Gaia Cape
         EQUIPMENT_ITEMS.add(1102086); // Purple Gaia Cape
-
+        EQUIPMENT_ITEMS.add(1102206); // Blackfist Cloak
+        EQUIPMENT_ITEMS.add(1102207); // Goldensoul Cape
+        EQUIPMENT_ITEMS.add(1102040); // Yellow Adventurer Cape
+        EQUIPMENT_ITEMS.add(1102041); // Pink Adventurer Cape
+        EQUIPMENT_ITEMS.add(1102042); // Purple Adventurer Cape
+        EQUIPMENT_ITEMS.add(1102055); // Icarus Cape (2)
+        EQUIPMENT_ITEMS.add(1102085); // Yellow Gaia Cape
         // Stat-giving Gloves
-        
         EQUIPMENT_ITEMS.add(1082223); // Stormcaster Gloves
+        EQUIPMENT_ITEMS.add(1082222); // Mechanical Glove
+        EQUIPMENT_ITEMS.add(1082228); // Green Mittens
 
         // Scrolls
-
         SCROLLS_ITEMS.add(2040760); // Scroll for Shoes for ATT 10%
         SCROLLS_ITEMS.add(2040727); // Scroll for Spikes on Shoes 10%
         SCROLLS_ITEMS.add(2040002); // Scroll for Overall Armor for INT 10% (Assuming this is the correct item ID)
