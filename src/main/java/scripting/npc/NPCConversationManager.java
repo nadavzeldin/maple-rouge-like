@@ -292,38 +292,23 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         // Knucklers
         WEAPON_SHIELD_ITEMS.add(1482008); // Psycho Claw
         WEAPON_SHIELD_ITEMS.add(1482022); // Maple Golden Claw
+        WEAPON_SHIELD_ITEMS.add(1482023); // Timeless Equinox
 
         // Guns
         WEAPON_SHIELD_ITEMS.add(1492006); // Lunar Shooter
         WEAPON_SHIELD_ITEMS.add(1492010); // Infinity's Wrath
+        WEAPON_SHIELD_ITEMS.add(1492023); // Timeless Blindness
 
         // Stat-giving Rings
-        ACCESSORIES_ITEMS.add(1112300); // Ring of Moon Stone 1Carats
-        ACCESSORIES_ITEMS.add(1112301); // Ring of Moon Stone: 2 Carats
-        ACCESSORIES_ITEMS.add(1112302); // Ring of Moon Stone 3Carats
-        ACCESSORIES_ITEMS.add(1112303); // Ring of Shining Star 1Carats
-        ACCESSORIES_ITEMS.add(1112304); // Ring of Shining Star 2Carats
-        ACCESSORIES_ITEMS.add(1112305); // Ring of Shining Star 3Carats
-        ACCESSORIES_ITEMS.add(1112306); // Gold Heart Ring 1Carats
-        ACCESSORIES_ITEMS.add(1112307); // Gold Heart Ring: 2 Carats
-        ACCESSORIES_ITEMS.add(1112308); // Gold Heart Ring: 3 Carats
-        ACCESSORIES_ITEMS.add(1112309); // Ring of Silver Wing 1Carats
-        ACCESSORIES_ITEMS.add(1112310); // Ring of Silver Wing: 2 Carats
-        ACCESSORIES_ITEMS.add(1112311); // Ring of Silver Wing: 3 Carats
         ACCESSORIES_ITEMS.add(1112400); // Ring of Alchemist
         ACCESSORIES_ITEMS.add(1112401); // Spiegelmann's Ring
         ACCESSORIES_ITEMS.add(1112402); // Spiegelmann's Ring
         ACCESSORIES_ITEMS.add(1112405); // Lilin's Ring
         ACCESSORIES_ITEMS.add(1112407); // Circle of Ancient Thought
         ACCESSORIES_ITEMS.add(1112408); // Circle of Ancient Strength
-        ACCESSORIES_ITEMS.add(1112413); // Lilin's Ring
-        ACCESSORIES_ITEMS.add(1112414); // Lilin's Ring
         ACCESSORIES_ITEMS.add(1112908); // Aura Ring (explicitly mentions +1 to all stats)
-        ACCESSORIES_ITEMS.add(1112916); // Solo Ring
-        ACCESSORIES_ITEMS.add(1122003); // bow
-        ACCESSORIES_ITEMS.add(1122000); // Horntail Necklace
+        ACCESSORIES_ITEMS.add(1122003); // Bow-tie (Yellow)
         ACCESSORIES_ITEMS.add(1122001); // Bow-tie(Green)
-        ACCESSORIES_ITEMS.add(1022071); //  Red Shutter Shades
         ACCESSORIES_ITEMS.add(1122002); // Bow-tie (Red) - (no description)
         ACCESSORIES_ITEMS.add(1122004); // Bow-tie (Pink) - (no description)
         ACCESSORIES_ITEMS.add(1122005); // Bow-tie (Black) - (no description)
@@ -332,8 +317,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1122010); // Horus' Eye - (no description)
         ACCESSORIES_ITEMS.add(1122014); // Silver Deputy Star - A badge of honor given by Lita Lawless for vanquishing monsters in defense of NLC. You're part of the law now!
     
-        ACCESSORIES_ITEMS.add(1022069); // Orange Shutter Shades - (no description)
-        ACCESSORIES_ITEMS.add(1012134); // Tear Drop Face Tattoo - Express your soft side with this teary-eyed Tattoo!
         ACCESSORIES_ITEMS.add(1122059); // Mark of Naricain
         ACCESSORIES_ITEMS.add(1012108); // Smiling Mask
         ACCESSORIES_ITEMS.add(1012109); // Crying Mask
@@ -348,6 +331,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         ACCESSORIES_ITEMS.add(1022073); // Broken Glasses - (no description)
         ACCESSORIES_ITEMS.add(1032061); // Glittering Altair Earrings
         ACCESSORIES_ITEMS.add(1022082); // Spectrum Goggles
+        ACCESSORIES_ITEMS.add(1032048); // Crystal Leaf Earrings
+        ACCESSORIES_ITEMS.add(1032046); // Spider Venom Earrings
 
         USE_ITEMS.add(2060004); // Diamond Arrow for Bow
         USE_ITEMS.add(2060003); // Red Arrow for Bow
@@ -807,11 +792,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 itemPool = WEAPON_SHIELD_ITEMS;
                 break;
 
-            case 2: // Rings, Capes, Gloves, Face & Accessories
+            case 2: // Accessories
                 itemPool = ACCESSORIES_ITEMS;
                 break;
 
-            case 3: // Cap, Coat, Longcoat, Pants & Shoes
+            case 3: // Equips
                 itemPool = EQUIPMENT_ITEMS;
                 break;
 
