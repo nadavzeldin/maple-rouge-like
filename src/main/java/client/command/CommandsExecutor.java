@@ -34,6 +34,7 @@ import client.command.commands.gm0.DropLimitCommand;
 import client.command.commands.gm0.EnableAuthCommand;
 import client.command.commands.gm0.EquipLvCommand;
 import client.command.commands.gm0.GachaCommand;
+import client.command.commands.gm0.GetMacroCommand;
 import client.command.commands.gm0.GamesFeatureNPCCommand;
 import client.command.commands.gm0.GmCommand;
 import client.command.commands.gm0.HelpCommand;
@@ -216,6 +217,7 @@ import client.command.commands.gm6.SpawnAllPNpcsCommand;
 import client.command.commands.gm6.SupplyRateCouponCommand;
 import client.command.commands.gm6.WarpWorldCommand;
 import client.command.commands.gm6.MergeCommand;
+import client.command.commands.gm0.SetMacroCommand;
 
 import constants.id.MapId;
 import org.slf4j.Logger;
@@ -374,9 +376,10 @@ public class CommandsExecutor {
 
     private void registerLv0Commands() {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
-
         addCommand(new String[]{"help", "commands"}, HelpCommand.class);
         addCommand(new String[]{"warpto", "reach", "follow"},  0, ReachCommand.class);
+        addCommand(new String[]{"setmacro","macro"}, 0, SetMacroCommand.class);
+        addCommand("getmacro", GetMacroCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("randomMap", WarpRandomMap.class);
         addCommand("boosted", BoostedMap.class);
