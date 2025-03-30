@@ -1428,7 +1428,7 @@ public class Character extends AbstractCharacterObject {
 
             scrollCandle.setStartingHp(100);
 
-            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards!", LOOT_LIZARD_UI_BANNER);
+            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards! ", LOOT_LIZARD_UI_BANNER);
             // Spawn at random player spawn point
             this.getMap().spawnMonsterOnGroundBelow(scrollCandle,
                     map_.getRandomPlayerSpawnpoint().getPosition());
