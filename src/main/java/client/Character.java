@@ -11516,15 +11516,27 @@ public class Character extends AbstractCharacterObject {
 
     public void updateMacro(int slot, String command) {
         macros[slot-1] = command;
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement("UPDATE macro SET skill" + slot + " = ? WHERE characterid = ?")) {
-            ps.setString(1, command);
-            ps.setInt(2, getId());
-            ps.executeUpdate();
+        try (Connection con = DatabaseConnection.getConnection()) {
+            // First try to update
+            try (PreparedStatement ps = con.prepareStatement("UPDATE macro SET skill" + slot + " = ? WHERE characterid = ?")) {
+                ps.setString(1, command);
+                ps.setInt(2, getId());
+                int updatedRows = ps.executeUpdate();
+
+                // If no rows were updated, we need to insert a new row
+                if (updatedRows == 0) {
+                    try (PreparedStatement insertPs = con.prepareStatement(
+                            "INSERT INTO macro (characterid, skill" + slot + ") VALUES (?, ?)")) {
+                        insertPs.setInt(1, getId());
+                        insertPs.setString(2, command);
+                        insertPs.executeUpdate();
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-	}
+    }
 
     public void setTotalCP(int a) {
         this.totCP = a;
