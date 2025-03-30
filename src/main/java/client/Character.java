@@ -23,6 +23,7 @@
 package client;
 
 import client.autoban.AutobanManager;
+import client.command.commands.gm0.DoomCommand;
 import client.creator.CharacterFactoryRecipe;
 import client.inventory.Equip;
 import client.inventory.Equip.StatUpgrade;
@@ -1404,7 +1405,7 @@ public class Character extends AbstractCharacterObject {
             return; // Still on cooldown
         }
 
-        if (map_.isTown()) // checked and this include starting map
+        if (map_.isTown() || map_.getId() == 980000000) // checked and this include starting map or doommap
         {
             return;
         }
