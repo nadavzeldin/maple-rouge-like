@@ -288,6 +288,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         WEAPON_SHIELD_ITEMS.add(1442021); // Yellow Mop - (no description)
         WEAPON_SHIELD_ITEMS.add(1442022); // White Mop - (no description)
         WEAPON_SHIELD_ITEMS.add(1442023); // Maroon Mop - (no description)
+        WEAPON_SHIELD_ITEMS.add(1382052); // Elemental Staff 8 - (no description)
 
         // Knucklers
         WEAPON_SHIELD_ITEMS.add(1482008); // Psycho Claw
@@ -364,25 +365,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         USE_ITEMS.add(2022278); // Lump of Coal
         USE_ITEMS.add(2022031); // Cookie
 
-        // Transformation potion, disabled until crash is fixed
-        
-        //USE_ITEMS.add(2210000); // Orange Mushroom Piece
-        //USE_ITEMS.add(2210003); // Dragon Elixir
-        //USE_ITEMS.add(2210004); // Blue Ribbon Pig Piece
-        //USE_ITEMS.add(2210005); // Tigun Transformation Bundle.
-        //USE_ITEMS.add(2210007); // Change to Ghost
-        //USE_ITEMS.add(2210008); // Ghost Candy
-        //USE_ITEMS.add(2210012); // Change to Mouse
-        //USE_ITEMS.add(2210018); // Sweet Rice Cake
-        //USE_ITEMS.add(2210021); // Gaga Transformation Potion
-        //USE_ITEMS.add(2210032); // Cody's Picture
-        //USE_ITEMS.add(2210033); // Cake Picture
-        //USE_ITEMS.add(2210034); // Alien Gray Transformation
-        //USE_ITEMS.add(2210035); // Penguin Transformation 1
-        //USE_ITEMS.add(2210036); // Penguin Transformation 2
-        //USE_ITEMS.add(2210037); // Penguin Transformation 3
-        //USE_ITEMS.add(2210038); // Penguin Transformation 4
-        //USE_ITEMS.add(2210039); // Penguin Transformation 5
 
         // Hats, Helmets, Caps
         EQUIPMENT_ITEMS.add(1002577); // Pickpocket Pilfer
