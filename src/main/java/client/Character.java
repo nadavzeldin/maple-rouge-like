@@ -23,6 +23,7 @@
 package client;
 
 import client.autoban.AutobanManager;
+import client.command.commands.gm0.DoomCommand;
 import client.creator.CharacterFactoryRecipe;
 import client.inventory.Equip;
 import client.inventory.Equip.StatUpgrade;
@@ -1404,7 +1405,7 @@ public class Character extends AbstractCharacterObject {
             return; // Still on cooldown
         }
 
-        if (map_.isTown()) // checked and this include starting map
+        if (map_.isTown() || map_.getId() == 980000000) // checked and this include starting map or doommap
         {
             return;
         }
@@ -1427,7 +1428,7 @@ public class Character extends AbstractCharacterObject {
 
             scrollCandle.setStartingHp(100);
 
-            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards!", LOOT_LIZARD_UI_BANNER);
+            map_.startMapEffect("A mysterious Loot Candle has appeared on the map! Find it quickly for valuable rewards! ", LOOT_LIZARD_UI_BANNER);
             // Spawn at random player spawn point
             this.getMap().spawnMonsterOnGroundBelow(scrollCandle,
                     map_.getRandomPlayerSpawnpoint().getPosition());
@@ -11516,15 +11517,27 @@ public class Character extends AbstractCharacterObject {
 
     public void updateMacro(int slot, String command) {
         macros[slot-1] = command;
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement("UPDATE macro SET skill" + slot + " = ? WHERE characterid = ?")) {
-            ps.setString(1, command);
-            ps.setInt(2, getId());
-            ps.executeUpdate();
+        try (Connection con = DatabaseConnection.getConnection()) {
+            // First try to update
+            try (PreparedStatement ps = con.prepareStatement("UPDATE macro SET skill" + slot + " = ? WHERE characterid = ?")) {
+                ps.setString(1, command);
+                ps.setInt(2, getId());
+                int updatedRows = ps.executeUpdate();
+
+                // If no rows were updated, we need to insert a new row
+                if (updatedRows == 0) {
+                    try (PreparedStatement insertPs = con.prepareStatement(
+                            "INSERT INTO macro (characterid, skill" + slot + ") VALUES (?, ?)")) {
+                        insertPs.setInt(1, getId());
+                        insertPs.setString(2, command);
+                        insertPs.executeUpdate();
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-	}
+    }
 
     public void setTotalCP(int a) {
         this.totCP = a;
