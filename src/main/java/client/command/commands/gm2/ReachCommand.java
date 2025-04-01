@@ -29,6 +29,7 @@ import client.command.Command;
 import server.maps.MapleMap;
 
 import static constants.id.MapId.DOOM_MAPS;
+import static constants.id.MapId.GM_MAP;
 
 public class ReachCommand  extends Command {
     {
@@ -51,6 +52,12 @@ public class ReachCommand  extends Command {
         if (!player.isGM() && DOOM_MAPS.contains(target.getMap().getId()))
         {
             player.yellowMessage("cant teleport into doom");
+            return;
+        }
+
+        if (!player.isGM() && GM_MAP ==target.getMap().getId())
+        {
+            player.yellowMessage("cant teleport into stylist map");
             return;
         }
 

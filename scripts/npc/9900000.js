@@ -47,7 +47,7 @@ function pushIfItemExists(array, itemid) {
 }
 
 function start() {
-    if (cm.getPlayer().gmLevel() < 1) {
+    if (cm.getPlayer().gmLevel() < 0) {
         cm.sendOk("Hey wassup?");
         cm.dispose();
         return;

@@ -21,6 +21,7 @@
  */
 package net.server.channel.handlers;
 
+import client.AscensionConstants;
 import client.BuddyList;
 import client.BuddylistEntry;
 import client.Character;
@@ -77,6 +78,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static client.AscensionConstants.Names.RISKTAKER;
+import static constants.game.GameConstants.BUFF_CHANNEL;
+
 public final class PlayerLoggedinHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(PlayerLoggedinHandler.class);
     private static final Set<Integer> attemptingLoginAccounts = new HashSet<>();
@@ -125,20 +129,7 @@ public final class PlayerLoggedinHandler extends AbstractPacketHandler {
                 c.disconnect(true, false);
                 return;
             }
-
-            Channel cserv = wserv.getChannel(c.getChannel());
-            if (cserv == null) {
-                c.setChannel(1);
-                cserv = wserv.getChannel(c.getChannel());
-
-                if (cserv == null) {
-                    c.disconnect(true, false);
-                    return;
-                }
-            }
-
             Character player = wserv.getPlayerStorage().getCharacterById(cid);
-
             final Hwid hwid;
             if (player == null) {
                 hwid = SessionCoordinator.getInstance().pickLoginSessionHwid(c);
@@ -149,13 +140,7 @@ public final class PlayerLoggedinHandler extends AbstractPacketHandler {
             } else {
                 hwid = player.getClient().getHwid();
             }
-
             c.setHwid(hwid);
-
-            if (!server.validateCharacteridInTransition(c, cid)) {
-                c.disconnect(true, false);
-                return;
-            }
 
             boolean newcomer = false;
             if (player == null) {
@@ -173,6 +158,28 @@ public final class PlayerLoggedinHandler extends AbstractPacketHandler {
             }
             c.setPlayer(player);
             c.setAccID(player.getAccountID());
+
+            Channel cserv = wserv.getChannel(c.getChannel());
+            if (!player.isGM() && c.getChannel() == BUFF_CHANNEL && !player.accountExtraDetails.getAscension().contains(RISKTAKER))
+            {
+                player.yellowMessage("Only " + AscensionConstants.Names.RISKTAKER + " can use this channel");
+                c.setChannel(1);
+            }
+
+            if (cserv == null) {
+                c.setChannel(1);
+                cserv = wserv.getChannel(c.getChannel());
+
+                if (cserv == null) {
+                    c.disconnect(true, false);
+                    return;
+                }
+            }
+
+            if (!server.validateCharacteridInTransition(c, cid)) {
+                c.disconnect(true, false);
+                return;
+            }
 
             boolean allowLogin = true;
 

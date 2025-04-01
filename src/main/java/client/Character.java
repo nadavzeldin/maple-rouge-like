@@ -10902,6 +10902,26 @@ public class Character extends AbstractCharacterObject {
         whiteChat = !whiteChat;
     }
 
+    public String getDataString()
+    {
+        return dataString;
+    }
+
+    public void setDataString()
+    {
+        this.dataString = "set";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement("UPDATE characters SET dataString = ? WHERE id = ?")) {
+
+            ps.setString(1, "set");
+            ps.setInt(2, this.id);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            this.yellowMessage("Error");
+        }
+    }
+
     // These need to be renamed, but I am too lazy right now to go through the scripts and rename them...
     public String getPartyQuestItems() {
         return dataString;
