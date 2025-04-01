@@ -38,6 +38,7 @@ public class AscensionCommand extends Command {
         ASCENSION_TYPES.put(6, AscensionConstants.Names.INFINITE);
         ASCENSION_TYPES.put(7, AscensionConstants.Names.STYLIST);
         ASCENSION_TYPES.put(8, AscensionConstants.Names.RISKTAKER);
+        ASCENSION_TYPES.put(9, AscensionConstants.Names.HEIRLOOM);
     }
 
     {

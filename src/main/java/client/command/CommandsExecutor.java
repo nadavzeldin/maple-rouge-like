@@ -61,6 +61,7 @@ import client.command.commands.gm0.StatDexCommand;
 import client.command.commands.gm0.StatIntCommand;
 import client.command.commands.gm0.StatLukCommand;
 import client.command.commands.gm0.StatStrCommand;
+import client.command.commands.gm0.StorageCommand;
 import client.command.commands.gm0.StylistCommand;
 import client.command.commands.gm0.TimeCommand;
 import client.command.commands.gm0.ToggleAutoStoreCommand;
@@ -290,10 +291,7 @@ public class CommandsExecutor {
     }
 
     private void handleInternal(Client client, String message) {
-        if (client.getPlayer().getMapId() == MapId.JAIL && !client.getPlayer().isGM()) {
-            client.getPlayer().yellowMessage("You do not have permission to use commands while in jail.");
-            return;
-        }
+
         if (client.getPlayer().getLastDeathTime() != 0 && !client.getPlayer().isGM())
         {
             client.getPlayer().yellowMessage("You do not have permission to use commands while dead.");
@@ -310,6 +308,11 @@ public class CommandsExecutor {
         final String[] lowercaseParams = splitedMessage[1].toLowerCase().split(splitRegex);
 
         final Command command = registeredCommands.get(commandName);
+        if (client.getPlayer().getMapId() == MapId.JAIL && !client.getPlayer().isGM() && !command.description.equals("storage")) {
+            client.getPlayer().yellowMessage("You do not have permission to use commands while in jail.");
+            return;
+        }
+
         if (command == null) {
             client.getPlayer().yellowMessage("Command '" + commandName + "' is not available. See @commands for a list of available commands.");
             return;
@@ -425,6 +428,7 @@ public class CommandsExecutor {
         addCommand("resources", ResourceStorageCommand.class);
         addCommand("togglestore", ToggleAutoStoreCommand.class);
         addCommand("skillbind", SkillBindCommand.class);
+        addCommand("storage", StorageCommand.class);
 
 
         commandsNameDesc.add(levelCommandsCursor);
