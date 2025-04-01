@@ -61,6 +61,7 @@ import client.command.commands.gm0.StatDexCommand;
 import client.command.commands.gm0.StatIntCommand;
 import client.command.commands.gm0.StatLukCommand;
 import client.command.commands.gm0.StatStrCommand;
+import client.command.commands.gm0.StylistCommand;
 import client.command.commands.gm0.TimeCommand;
 import client.command.commands.gm0.ToggleAutoStoreCommand;
 import client.command.commands.gm0.ToggleExpCommand;
@@ -393,6 +394,7 @@ public class CommandsExecutor {
         addCommand("doom", DoomCommand.class);
         addCommand("sell", SellCommand.class);
         addCommand("roll", RollCommand.class);
+        addCommand("style", StylistCommand.class);
         addCommand("time", TimeCommand.class);
         addCommand("credits", StaffCommand.class);
         addCommand("uptime", UptimeCommand.class);

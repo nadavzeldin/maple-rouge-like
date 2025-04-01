@@ -15,14 +15,30 @@ import tools.PacketCreator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class AscensionCommand extends Command {
+
+    // Define all ascension types in a single map with their corresponding indices
+    private static final Map<Integer, String> ASCENSION_TYPES = new LinkedHashMap<>();
+
+    static {
+        // Populate the map with all available ascension types
+        ASCENSION_TYPES.put(1, AscensionConstants.Names.HOARDER);
+        ASCENSION_TYPES.put(2, AscensionConstants.Names.RESILIENT);
+        ASCENSION_TYPES.put(3, AscensionConstants.Names.LUCKY);
+        ASCENSION_TYPES.put(4, AscensionConstants.Names.BLACKSMITH);
+        ASCENSION_TYPES.put(5, AscensionConstants.Names.EARLYBIRD);
+        ASCENSION_TYPES.put(6, AscensionConstants.Names.INFINITE);
+        ASCENSION_TYPES.put(7, AscensionConstants.Names.STYLIST);
+    }
+
     {
         setDescription("Show ascension status.");
     }
@@ -32,14 +48,14 @@ public class AscensionCommand extends Command {
         int type;
         Character player = c.getPlayer();
         if (params.length < 1) {
-            player.yellowMessage("Syntax: @ascend <0=ShowMyAscensions, 1=Hoarder, 2=Resilient, 3=Lucky, 4=Blacksmith, 5=EarlyBird, 6=Infinite>");
+            showSyntaxMessage(player);
             return;
         }
 
         try {
             type = Integer.parseInt(params[0]);
         } catch (NumberFormatException e) {
-            player.yellowMessage("Invalid number format. Use 0 to show ascensions, 1 for Hoarder, 2 for Resilient, 3 for Lucky, 4 for Blacksmith, 5 for EarlyBird or 6 for Infinite");
+            showSyntaxMessage(player);
             return;
         }
 
@@ -65,25 +81,12 @@ public class AscensionCommand extends Command {
             return;
         }
 
-        if (type < 0 || type > 6) {
-            player.yellowMessage("Invalid ascension type. Use 1 for Hoarder, 2 for Resilient, 3 for Lucky, 4 for Blacksmith, 5 for EarlyBird or 6 for Infinite.");
+        if (type < 0 || type > ASCENSION_TYPES.size()) {
+            showSyntaxMessage(player);
             return;
         }
 
-        String ascensionType;
-        if (type == 1) {
-            ascensionType = AscensionConstants.Names.HOARDER;
-        } else if (type == 2) {
-            ascensionType = AscensionConstants.Names.RESILIENT;
-        } else if (type == 3) {
-            ascensionType = AscensionConstants.Names.LUCKY;
-        } else if (type == 4) {
-            ascensionType = AscensionConstants.Names.BLACKSMITH;
-        } else if (type == 5) {
-            ascensionType = AscensionConstants.Names.EARLYBIRD;
-        } else {
-            ascensionType = AscensionConstants.Names.INFINITE;
-        }
+        String ascensionType = ASCENSION_TYPES.get(type);
 
         // Special handling for INFINITE ascension type
         if (ascensionType.equals(AscensionConstants.Names.INFINITE)) {
@@ -100,26 +103,16 @@ public class AscensionCommand extends Command {
 
         saveAscensions(player, details);
 
-        player.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
-        player.changeMap(MapId.JAIL);
+        if(!player.isGM())
+        {
+            player.addJailExpirationTime(MINUTES.toMillis(Long.MAX_VALUE));
+            player.changeMap(MapId.JAIL);
+        }
 
         // Determine the display name for broadcast message
         String displayName = ascensionType;
         if (ascensionType.equals(AscensionConstants.Names.INFINITE)) {
-            // Find the Infinite with the highest number
-            Pattern pattern = Pattern.compile(AscensionConstants.Names.INFINITE + "\\((\\d+)\\)");
-            int highestNum = 0;
-
-            for (String asc : ascensions) {
-                Matcher matcher = pattern.matcher(asc);
-                if (matcher.matches()) {
-                    int num = Integer.parseInt(matcher.group(1));
-                    if (num > highestNum) {
-                        highestNum = num;
-                        displayName = asc;
-                    }
-                }
-            }
+            displayName = getHighestInfiniteAscension(ascensions);
         }
 
         Server.getInstance().broadcastMessage(0,
@@ -127,6 +120,37 @@ public class AscensionCommand extends Command {
                         "Player " + player.getName() +
                                 " was ascended [" + displayName + "] well done!")
         );
+    }
+
+    private void showSyntaxMessage(Character player) {
+        StringBuilder syntax = new StringBuilder("Syntax: @ascend <0=ShowMyAscensions");
+
+        for (Map.Entry<Integer, String> entry : ASCENSION_TYPES.entrySet()) {
+            syntax.append(", ").append(entry.getKey()).append("=").append(entry.getValue());
+        }
+
+        syntax.append(">");
+        player.yellowMessage(syntax.toString());
+    }
+
+    private String getHighestInfiniteAscension(List<String> ascensions) {
+        // Pattern to match Infinite(#)
+        Pattern pattern = Pattern.compile(AscensionConstants.Names.INFINITE + "\\((\\d+)\\)");
+        int highestNum = 0;
+        String highestInfinite = AscensionConstants.Names.INFINITE;
+
+        for (String asc : ascensions) {
+            Matcher matcher = pattern.matcher(asc);
+            if (matcher.matches()) {
+                int num = Integer.parseInt(matcher.group(1));
+                if (num > highestNum) {
+                    highestNum = num;
+                    highestInfinite = asc;
+                }
+            }
+        }
+
+        return highestInfinite;
     }
 
     private void handleInfiniteAscension(Character player, List<String> ascensions) {
