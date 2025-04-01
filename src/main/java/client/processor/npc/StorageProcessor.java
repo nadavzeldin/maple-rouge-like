@@ -31,6 +31,7 @@ import client.inventory.manipulator.InventoryManipulator;
 import client.inventory.manipulator.KarmaManipulator;
 import config.YamlConfig;
 import constants.id.ItemId;
+import constants.id.MapId;
 import constants.inventory.ItemConstants;
 import net.packet.InPacket;
 import org.slf4j.Logger;
@@ -119,6 +120,11 @@ public class StorageProcessor {
                     break;
                 }
                 case 5: { // Store
+                    if (chr.getMap().getId() == MapId.JAIL && !chr.getDataString().isBlank())
+                    {
+                        chr.yellowMessage("in jail can use storage only once");
+                        break;
+                    }
                     short slot = p.readShort();
                     int itemId = p.readInt();
                     short quantity = p.readShort();
@@ -189,6 +195,10 @@ public class StorageProcessor {
                         String itemName = ii.getName(item.getItemId());
                         log.debug("Chr {} stored {}x {} ({})", c.getPlayer().getName(), item.getQuantity(), itemName, item.getItemId());
                         storage.sendStored(c, ItemConstants.getInventoryType(itemId));
+                        if (chr.getMap().getId() == MapId.JAIL)
+                        {
+                            chr.setDataString();
+                        }
                     }
                     break;
                 }
