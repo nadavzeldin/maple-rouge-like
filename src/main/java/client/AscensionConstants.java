@@ -9,5 +9,6 @@ public class AscensionConstants {
         public static final String EARLYBIRD = "EarlyBird";
         public static final String INFINITE = "Infinite";
         public static final String STYLIST = "Stylist";
+        public static final String RISKTAKER = "Risktaker";
     }
 }
