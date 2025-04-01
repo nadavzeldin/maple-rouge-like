@@ -36,6 +36,9 @@ function action(mode, type, selection) {
                 "4 - Blacksmith Ascension: on merge 10% for extra buffed merged\r\n" +
                 "5 - EarlyBird Ascension: new character start with another extra bonus of 50 for each AP\r\n" +
                 "6 - Infinite Ascension: can stack! each Infinite give +2AP to level\r\n\r\n" +
+                "7 - Stylist Ascension: @style -> teleport to unique map with extra cosmetic options\r\n" +
+                "8 - Risktaker Ascension: unlock buffed channel (3)\r\n" +
+                "9 - Heirloom Ascension: enable use @storage from jail once per character\r\n\r\n" +
                 "#ePlease Note:#n #rAscending will send your current character to jail, forever!#k");
             cm.dispose();
         }
