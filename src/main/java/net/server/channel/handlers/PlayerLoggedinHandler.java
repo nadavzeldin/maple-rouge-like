@@ -160,11 +160,6 @@ public final class PlayerLoggedinHandler extends AbstractPacketHandler {
             c.setAccID(player.getAccountID());
 
             Channel cserv = wserv.getChannel(c.getChannel());
-            if (!player.isGM() && c.getChannel() == BUFF_CHANNEL && !player.accountExtraDetails.getAscension().contains(RISKTAKER))
-            {
-                player.yellowMessage("Only " + AscensionConstants.Names.RISKTAKER + " can use this channel");
-                c.setChannel(1);
-            }
 
             if (cserv == null) {
                 c.setChannel(1);
@@ -179,6 +174,13 @@ public final class PlayerLoggedinHandler extends AbstractPacketHandler {
             if (!server.validateCharacteridInTransition(c, cid)) {
                 c.disconnect(true, false);
                 return;
+            }
+
+            
+            boolean triedBlockedChannel = !player.isGM() && c.getChannel() == BUFF_CHANNEL && !player.accountExtraDetails.getAscension().contains(RISKTAKER);
+            if (triedBlockedChannel) {
+                c.setChannel(1);
+                cserv = wserv.getChannel(c.getChannel());
             }
 
             boolean allowLogin = true;
@@ -460,6 +462,10 @@ public final class PlayerLoggedinHandler extends AbstractPacketHandler {
 
             if (newcomer) {
                 player.setLoginTime(System.currentTimeMillis());
+            }
+
+            if (triedBlockedChannel) {
+                player.yellowMessage("Only " + AscensionConstants.Names.RISKTAKER + " can use channel " + BUFF_CHANNEL + ".  You have been sent to channel 1 instead.");
             }
         } catch (Exception e) {
             e.printStackTrace();
