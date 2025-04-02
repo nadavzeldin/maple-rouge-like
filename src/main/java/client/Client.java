@@ -1479,18 +1479,22 @@ public class Client extends ChannelInboundHandlerAdapter {
     }
 
     public void changeChannel(int channel) {
+        Server server = Server.getInstance();
+
+        if (player.isBanned()) {
+            disconnect(false, false);
+            return;
+        }
+
         if (channel == BUFF_CHANNEL)
         {
             if (!player.accountExtraDetails.getAscension().contains(RISKTAKER))
             {
                 player.yellowMessage("Only " + AscensionConstants.Names.RISKTAKER + " can use this channel");
+                return;
             }
         }
-        Server server = Server.getInstance();
-        if (player.isBanned()) {
-            disconnect(false, false);
-            return;
-        }
+
         if (!player.isAlive() || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit())) {
             sendPacket(PacketCreator.enableActions());
             return;
