@@ -194,7 +194,7 @@ function action(mode, type, selection) {
             log("Adding item to inventory: " + itemId);
             try {
                 // Use cm's built-in method instead of direct InventoryManipulator access
-                player.itemReward(level, false);
+                player.itemReward(selectedLevel, false);
                 log("Item added successfully");
             } catch (e) {
                 log("Error adding item to inventory: " + e);

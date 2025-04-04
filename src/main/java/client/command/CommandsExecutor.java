@@ -426,7 +426,7 @@ public class CommandsExecutor {
         addCommand("bosshp", BossHpCommand.class);
         addCommand("mobhp", MobHpCommand.class);
         addCommand("buyexp", BuyExpCommand.class);
-        addCommand("resources", ResourceStorageCommand.class);
+        addCommand(new String[]{"resources","re"}, ResourceStorageCommand.class);
         addCommand("rewards", RewardsCommand.class);
         addCommand("togglestore", ToggleAutoStoreCommand.class);
         addCommand("skillbind", SkillBindCommand.class);
