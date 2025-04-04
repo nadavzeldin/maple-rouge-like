@@ -23,7 +23,6 @@
 package client;
 
 import client.autoban.AutobanManager;
-import client.command.commands.gm0.DoomCommand;
 import client.creator.CharacterFactoryRecipe;
 import client.inventory.Equip;
 import client.inventory.Equip.StatUpgrade;
@@ -374,6 +373,7 @@ public class Character extends AbstractCharacterObject {
     private long lizardLastSpawnTime = 0;
     private long usedPotionTime = System.currentTimeMillis();
     public AccountExtraDetails accountExtraDetails;
+    public CharacterSettings characterSettings;
 
 
     private Character() {
@@ -437,6 +437,17 @@ public class Character extends AbstractCharacterObject {
         }
         quests = new LinkedHashMap<>();
         setPosition(new Point(0, 0));
+    }
+
+    public CharacterSettings getCharacterSettings() {
+        if (characterSettings == null) {
+            characterSettings = new CharacterSettings();
+        }
+        return characterSettings;
+    }
+
+    public void setCharacterSettings(CharacterSettings characterSettings) {
+        this.characterSettings = characterSettings;
     }
 
    public void resetInventory(Client c) {
@@ -6419,7 +6430,23 @@ public class Character extends AbstractCharacterObject {
 
 
 
-    public synchronized void itemAutoSend(int level) {
+    public synchronized void rewardMessage(int level, boolean onlyNotify) {
+        Map<Integer, Integer> levelToItem = new HashMap<>();
+        // level 20-80 rings, level 100 belt, level 120 eye, level 140 ear, level 160 pendent, level 180 forehead.
+        levelToItem.put(20, 1112300);
+        levelToItem.put(40, 1112408);
+        levelToItem.put(60, 1112405);
+        levelToItem.put(80, 1112401);
+        levelToItem.put(90, 1132009);
+        levelToItem.put(100, 1102166);
+        levelToItem.put(120, 1022082);
+        levelToItem.put(140, 1032033);
+        levelToItem.put(160, 1122003);
+        levelToItem.put(180, 1012070);
+
+
+    }
+    public synchronized void itemReward(int level,boolean onlyNotify) {
         Map<Integer, Integer> levelToItem = new HashMap<>();
         // level 20-80 rings, level 100 belt, level 120 eye, level 140 ear, level 160 pendent, level 180 forehead.
         levelToItem.put(20, 1112300);
@@ -6434,6 +6461,12 @@ public class Character extends AbstractCharacterObject {
         levelToItem.put(180, 1012070);
 
         // Add more level-item pairs as needed
+        if(levelToItem.containsKey(level)  && onlyNotify) {
+            MapleMap map_ = getWarpMap(mapid);
+            map_.startMapEffect("Congratulations! You've leveled up and earned a powerful new item! use @rewards to collect", Level_Up_Banner);
+            return;
+         }
+
         if(levelToItem.containsKey(level)) {
             int itemId = levelToItem.get(level);
             InventoryManipulator.addById(client, itemId, (short)1, getName(), -1,  ItemConstants.UNTRADEABLE, -1);
@@ -6448,25 +6481,10 @@ public class Character extends AbstractCharacterObject {
             newReceivedItem.setLuk((short) (5 + Math.sqrt(level) * 2));
             newReceivedItem.setSpeed((short) (5));
             newReceivedItem.setJump((short) (5));
-            //newReceivedItem.setUpgradeSlots(5);
-            MapleMap map_ = getWarpMap(mapid);
-            map_.startMapEffect("Congratulations! You've leveled up and earned a powerful new item!", Level_Up_Banner);
             client.sendPacket(PacketCreator.modifyInventory
                     (true, Collections.singletonList
                             (new ModifyInventory(0, newReceivedItem))));
         }
-//
-
-
-
-
-//        if (level == 20)
-//        {
-//            primaryItem = new Item(1302000,(short) 0,(short) 1);
-//            client.sendPacket(PacketCreator.modifyInventory
-//                    (true, Collections.singletonList
-//                            (new ModifyInventory(0, primaryItem))));
-//        }
     }
 
     public synchronized void addBonusHealthMana(int level){
@@ -6724,7 +6742,7 @@ public class Character extends AbstractCharacterObject {
         addBonusHealthMana(level);
         checkAchievements(level);
         jobUpdateLogic(level);
-        itemAutoSend(level);
+        itemReward(level, true);
         if (level >= getMaxClassLevel()) {
             exp.set(0);
 
@@ -7122,6 +7140,15 @@ public class Character extends AbstractCharacterObject {
             ret.rankMove = rs.getInt("rankMove");
             ret.jobRank = rs.getInt("jobRank");
             ret.jobRankMove = rs.getInt("jobRankMove");
+            String rewardStatusData = rs.getString("settings");
+            if (rewardStatusData != null && !rewardStatusData.isEmpty()) {
+                try {
+                    ret.characterSettings = new ObjectMapper().readValue(rewardStatusData, CharacterSettings.class);
+                } catch (JsonProcessingException e) {
+                    // Log the error but don't stop character loading
+                    log.error("Error parsing extra_details JSON for accountid: " + ret.accountid, e);
+                }
+            }
             if (equipped != null) {  // players can have no equipped items at all, ofc
                 Inventory inv = ret.inventory[InventoryType.EQUIPPED.ordinal()];
                 for (Item item : equipped) {
@@ -7285,6 +7312,15 @@ public class Character extends AbstractCharacterObject {
                     ret.dojoPoints = rs.getInt("dojoPoints");
                     ret.dojoStage = rs.getInt("lastDojoStage");
                     ret.dataString = rs.getString("dataString");
+                    String rewardStatusData = rs.getString("settings");
+                    if (rewardStatusData != null && !rewardStatusData.isEmpty()) {
+                        try {
+                            ret.characterSettings = new ObjectMapper().readValue(rewardStatusData, CharacterSettings.class);
+                        } catch (JsonProcessingException e) {
+                            // Log the error but don't stop character loading
+                            log.error("Error parsing extra_details JSON for accountid: " + ret.accountid, e);
+                        }
+                    }
                     ret.mgc = new GuildCharacter(ret);
                     int buddyCapacity = rs.getInt("buddyCapacity");
                     ret.buddylist = new BuddyList(buddyCapacity);
@@ -9084,6 +9120,15 @@ public class Character extends AbstractCharacterObject {
                 if (storage != null && usedStorage) {
                     storage.saveToDB(con);
                     usedStorage = false;
+                }
+
+                try (PreparedStatement psSettings = con.prepareStatement("UPDATE characters SET settings = ? WHERE id = ?")) {
+                    String jsonSettings = new ObjectMapper().writeValueAsString(characterSettings);
+                    psSettings.setString(1, jsonSettings);
+                    psSettings.setInt(2, id);
+                    psSettings.executeUpdate();
+                } catch (Exception e) {
+                    log.error("Error saving character settings for {}", name, e);
                 }
 
                 con.commit();
@@ -11644,5 +11689,29 @@ public class Character extends AbstractCharacterObject {
 
     public void setChasing(boolean chasing) {
         this.chasing = chasing;
+    }
+
+    /**
+     * Initializes the reward status if it hasn't been initialized yet
+     */
+    public void initializeRewardStatus() {
+        getCharacterSettings().initializeRewardStatus();
+    }
+
+    /**
+     * Checks if a reward can be taken at the specified level
+     * @param rewardLevel The level to check
+     * @return True if the reward can be taken, false otherwise
+     */
+    public boolean canTakeReward(Integer rewardLevel) {
+        return getCharacterSettings().canTakeReward(rewardLevel);
+    }
+
+    /**
+     * Marks a reward as claimed at the specified level
+     * @param rewardLevel The level to mark as claimed
+     */
+    public void setRewardStatus(Integer rewardLevel) {
+        getCharacterSettings().setRewardForLevel(rewardLevel);
     }
 }
