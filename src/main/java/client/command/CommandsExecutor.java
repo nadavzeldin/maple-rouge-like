@@ -396,7 +396,7 @@ public class CommandsExecutor {
         addCommand("features", GamesFeatureNPCCommand.class);
         addCommand("world", WorldChatCommand.class);
         addCommand("doom", DoomCommand.class);
-        addCommand("sell", SellCommand.class);
+        addCommand(new String[]{"s","sell"}, SellCommand.class);
         addCommand("roll", RollCommand.class);
         addCommand("style", StylistCommand.class);
         addCommand("time", TimeCommand.class);
@@ -440,10 +440,10 @@ public class CommandsExecutor {
     private void registerLv1Commands() {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
 
-        addCommand("whatdropsfrom", 1, WhatDropsFromCommand.class);
-        addCommand("whodrops", 1, WhoDropsCommand.class);
+        addCommand(new String[]{"wdf","whatdropsfrom"}, 1, WhatDropsFromCommand.class);
+        addCommand(new String[]{"wd","whodrops"}, 1, WhoDropsCommand.class);
         addCommand("buffme", 1, BuffMeCommand.class);
-        addCommand("goto", 1, GotoCommand.class);
+        addCommand(new String[]{"go","goto"}, 1, GotoCommand.class);
         commandsNameDesc.add(levelCommandsCursor);
     }
 
@@ -485,7 +485,7 @@ public class CommandsExecutor {
         addCommand("unbug", 2, UnBugCommand.class);
         addCommand("id", 2, IdCommand.class);
         addCommand("gachalist", GachaListCommand.class);
-        addCommand("loot", LootCommand.class);
+        addCommand(new String[]{"l","loot"}, LootCommand.class);
         addCommand("mobskill", MobSkillCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
