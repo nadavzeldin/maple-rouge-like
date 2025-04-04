@@ -198,6 +198,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `lastExpGainTime` timestamp NOT NULL DEFAULT '2015-01-01 05:00:00',
   `partySearch` tinyint(1) NOT NULL DEFAULT '1',
   `jailexpire` bigint(20) NOT NULL DEFAULT '0',
+  `settings` JSON,
   PRIMARY KEY (`id`),
   KEY `accountid` (`accountid`),
   KEY `party` (`party`),

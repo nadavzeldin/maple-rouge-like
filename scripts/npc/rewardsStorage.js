@@ -61,12 +61,12 @@ function getLevelRewards() {
 function applyItemStats(item, level) {
     log("Applying custom stats to item for level: " + level);
     try {
-        item.setWatk(Math.floor(5 + Math.sqrt(level) * 2));
-        item.setMatk(Math.floor(5 + Math.sqrt(level) * 2));
-        item.setStr(Math.floor(5 + Math.sqrt(level) * 2));
-        item.setDex(Math.floor(5 + Math.sqrt(level) * 2));
-        item.setInt(Math.floor(5 + Math.sqrt(level) * 2));
-        item.setLuk(Math.floor(5 + Math.sqrt(level) * 2));
+        item.setWatk(10);
+        item.setMatk(10);
+        item.setStr(10);
+        item.setDex(10);
+        item.setInt(10);
+        item.setLuk(10);
         item.setSpeed(5);
         item.setJump(5);
         log("Successfully applied stats to item");
@@ -194,7 +194,7 @@ function action(mode, type, selection) {
             log("Adding item to inventory: " + itemId);
             try {
                 // Use cm's built-in method instead of direct InventoryManipulator access
-                cm.gainItem(itemId, 1);
+                player.itemReward(level, false);
                 log("Item added successfully");
             } catch (e) {
                 log("Error adding item to inventory: " + e);
@@ -202,36 +202,6 @@ function action(mode, type, selection) {
                 cm.sendOk(textList.join(""));
                 cm.dispose();
                 return;
-            }
-
-            // Get the item to modify its stats
-            log("Finding item in inventory to modify stats");
-            var newReceivedItem = null;
-            try {
-                newReceivedItem = player.getInventory(InventoryType.EQUIP).findById(itemId);
-                log("Found item in inventory: " + (newReceivedItem != null));
-            } catch (e) {
-                log("Error finding item in inventory: " + e);
-            }
-
-            if (newReceivedItem != null) {
-                // Apply custom stats to the item
-                log("Applying custom stats to item");
-                applyItemStats(newReceivedItem, selectedLevel);
-
-                // Update the item in inventory
-                log("Updating item in inventory");
-                try {
-                    cm.getClient().sendPacket(PacketCreator.modifyInventory(
-                        true,
-                        Collections.singletonList(new ModifyInventory(0, newReceivedItem))
-                    ));
-                    log("Inventory update packet sent");
-                } catch (e) {
-                    log("Error updating item in inventory: " + e);
-                }
-            } else {
-                log("Could not find item in inventory after adding it");
             }
 
             // Mark reward as claimed
