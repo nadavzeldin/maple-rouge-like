@@ -33,11 +33,12 @@ function action(mode, type, selection) {
         textList.push("#L0#Crafting material storage#l\r\n");
         textList.push("#L1#Scroll storage#l\r\n");
         textList.push("#L2#Merge Coin storage#l\r\n");
+        textList.push("#L3#Rewards storage#l\r\n");
 
         cm.sendSimple(textList.join(""));
     } else if (status == 1) {
-        var npcIds = [2083002, 2041016, 9310083];
-        var scriptIds = ["oreStorage", "scrollStorage", "coinStorage"];
+        var npcIds = [2083002, 2041016, 9310083, 9250051];
+        var scriptIds = ["oreStorage", "scrollStorage", "coinStorage", "rewardsStorage"];
         cm.dispose();
         cm.openNpc(npcIds[selection], scriptIds[selection]);
     }

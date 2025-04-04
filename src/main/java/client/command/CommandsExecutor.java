@@ -51,6 +51,7 @@ import client.command.commands.gm0.ReadPointsCommand;
 import client.command.commands.gm0.ReportBugCommand;
 import client.command.commands.gm0.ResetStatsCommand;
 import client.command.commands.gm0.ResourceStorageCommand;
+import client.command.commands.gm0.RewardsCommand;
 import client.command.commands.gm0.RollCommand;
 import client.command.commands.gm0.SellCommand;
 import client.command.commands.gm0.ShopCommand;
@@ -426,6 +427,7 @@ public class CommandsExecutor {
         addCommand("mobhp", MobHpCommand.class);
         addCommand("buyexp", BuyExpCommand.class);
         addCommand("resources", ResourceStorageCommand.class);
+        addCommand("rewards", RewardsCommand.class);
         addCommand("togglestore", ToggleAutoStoreCommand.class);
         addCommand("skillbind", SkillBindCommand.class);
         addCommand("storage", StorageCommand.class);
