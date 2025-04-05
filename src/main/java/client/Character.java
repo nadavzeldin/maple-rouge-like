@@ -744,7 +744,7 @@ public class Character extends AbstractCharacterObject {
             if (!MapId.isPartyDojo(this.getMapId())) {
                 pts++;
             }
-            this.dojoPoints += pts;
+            this.dojoPoints += 3*pts;
         }
         return pts;
     }
