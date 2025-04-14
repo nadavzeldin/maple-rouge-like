@@ -756,7 +756,6 @@ public class Monster extends AbstractLoadedLife {
             double levelMultiplier = level / 100.0;
             double baseChance = totalExp * 0.00000003;
             double chance = Math.min(baseChance * levelMultiplier, 0.5);
-            System.out.println("Chance to decrease hands: " + chance + ", Total exp: " + totalExp + ", Level: " + level + ", Level multiplier: " + levelMultiplier + ", Base chance: " + baseChance);
             
             if (Math.random() < chance) {
                 attacker.descreaseHands(1);
