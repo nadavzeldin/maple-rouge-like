@@ -279,6 +279,10 @@ public final class TakeDamageHandler extends AbstractPacketHandler {
                 {
                     damage *=3;
                 }
+                if (damage > 10000)
+                {
+                    damage = Math.min(damage, chr.getMaxHp()/2);
+                }
                 chr.addMPHP(-damage, -mpattack);
             }
         }
