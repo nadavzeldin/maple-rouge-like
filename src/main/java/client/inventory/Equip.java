@@ -253,7 +253,67 @@ public class Equip extends Item {
     }
 
     public void setHands(short hands) {
+        // Max hands is 100, min is 0
+        if (hands > 100) {
+            hands = 100;
+        }
+        if (hands < 0) {
+            hands = 0;
+        }
+        updateStats(hands);
         this.hands = hands;
+    }
+    
+    private void updateStats(int hands) {
+        // Get current and new tier
+        int oldTier = this.hands / 10; // Tier based on current hands
+        int newTier = hands / 10;      // Tier based on new hands
+    
+        // Calculate old multiplier relative to base stat
+        float oldMultiplier;
+        if (this.hands >= 91) {
+            // At 91–100, multiplier is 1.1^9 * 1.5 (tier 9 multiplier times 50% boost)
+            oldMultiplier = (float) Math.pow(1.1, 9) * 1.5f;
+        } else {
+            // Normal tier: multiplier is 1.1^tier
+            oldMultiplier = (float) Math.pow(1.1, oldTier);
+        }
+    
+        // Calculate new multiplier relative to base stat
+        float newMultiplier;
+        if (hands >= 91) {
+            // At 91–100, multiplier is 1.1^9 * 1.5
+            newMultiplier = (float) Math.pow(1.1, 9) * 1.5f;
+        } else {
+            // Normal tier: multiplier is 1.1^tier
+            newMultiplier = (float) Math.pow(1.1, newTier);
+        }
+    
+        // Avoid division by zero (unlikely, but safety check)
+        if (oldMultiplier == 0) {
+            oldMultiplier = 1.0f;
+        }
+    
+        // Adjust stats: divide by old multiplier, multiply by new multiplier
+        str = adjustStat(str, oldMultiplier, newMultiplier);
+        dex = adjustStat(dex, oldMultiplier, newMultiplier);
+        _int = adjustStat(_int, oldMultiplier, newMultiplier);
+        luk = adjustStat(luk, oldMultiplier, newMultiplier);
+        hp = adjustStat(hp, oldMultiplier, newMultiplier);
+        mp = adjustStat(mp, oldMultiplier, newMultiplier);
+        watk = adjustStat(watk, oldMultiplier, newMultiplier);
+        matk = adjustStat(matk, oldMultiplier, newMultiplier);
+        wdef = adjustStat(wdef, oldMultiplier, newMultiplier);
+        mdef = adjustStat(mdef, oldMultiplier, newMultiplier);
+        acc = adjustStat(acc, oldMultiplier, newMultiplier);
+        avoid = adjustStat(avoid, oldMultiplier, newMultiplier);
+        speed = adjustStat(speed, oldMultiplier, newMultiplier);
+        jump = adjustStat(jump, oldMultiplier, newMultiplier);
+    }
+    
+    private short adjustStat(short stat, float oldMultiplier, float newMultiplier) {
+        float adjusted = (stat / oldMultiplier) * newMultiplier;
+        return (short) Math.max(0, Math.round(adjusted));
     }
 
     public void setSpeed(short speed) {

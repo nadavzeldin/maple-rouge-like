@@ -1635,6 +1635,10 @@
     <string name="name" value="Scroll for Helmet for DEX 10%"/>
     <string name="desc" value="Improves DEX on headwear.\nSuccess rate:10%, DEX+3. The success rate of this scroll can be enhanced by Vega&apos;s Spell."/>
   </imgdir>
+  <imgdir name="2049115">
+    <string name="name" value="Scroll for Corrupt 15%"/>
+    <string name="desc" value="Improves Corrupt.\nSuccess rate:15%, CORRUPT+10."/>
+  </imgdir>
   <imgdir name="2040100">
     <string name="name" value="Scroll for Face Accessory for HP"/>
     <string name="desc" value="Improves MaxHP on face accessories.\nSuccess rate:10%, MaxHP+30. The success rate of this scroll can be enhanced by Vega&apos;s Spell."/>

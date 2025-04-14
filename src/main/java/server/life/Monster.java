@@ -750,7 +750,18 @@ public class Monster extends AbstractLoadedLife {
             }
 
             int _partyExp = expValueToInteger(partyExp);
-
+            // decrease hands for the player, base on the exp and his level, higher the level higher the change to decrease hands
+            int totalExp = _personalExp + _partyExp;
+            int level = attacker.getLevel();
+            double levelMultiplier = level / 100.0;
+            double baseChance = totalExp * 0.00000003;
+            double chance = Math.min(baseChance * levelMultiplier, 0.5);
+            System.out.println("Chance to decrease hands: " + chance + ", Total exp: " + totalExp + ", Level: " + level + ", Level multiplier: " + levelMultiplier + ", Base chance: " + baseChance);
+            
+            if (Math.random() < chance) {
+                attacker.descreaseHands(1);
+            }
+            
             attacker.gainExp(_personalExp, _partyExp, true, false, white);
             attacker.increaseEquipExp(_personalExp);
             attacker.raiseQuestMobCount(getId());

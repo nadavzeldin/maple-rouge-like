@@ -275,6 +275,7 @@ public class ItemId {
     public static final int RING_STR_100_SCROLL = 2041100;
     public static final int DRAGON_STONE_SCROLL = 2041200;
     public static final int BELT_STR_100_SCROLL = 2041300;
+    public static final int CORRUPT_15_SCROLL = 2049115;
 
     // Cure debuff
     public static final int ALL_CURE_POTION = 2050004;
