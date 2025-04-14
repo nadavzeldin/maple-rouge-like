@@ -368,7 +368,7 @@
       <uol name="iconRaw" value="../../02040002/info/iconRaw"/>
       <int name="price" value="1"/>
       <int name="incHands" value="10"/>
-      <int name="success" value="15"/>
+      <int name="success" value="100"/>
     </imgdir>
   </imgdir>
   <imgdir name="02040041">
