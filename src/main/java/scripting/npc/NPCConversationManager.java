@@ -54,6 +54,7 @@ import server.expeditions.ExpeditionType;
 import server.gachapon.Gachapon;
 import server.gachapon.Gachapon.GachaponItem;
 import server.life.LifeFactory;
+import server.life.MonsterInformationProvider;
 import server.life.PlayerNPC;
 import server.maps.MapManager;
 import server.maps.MapObject;
@@ -1531,4 +1532,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
         return false;
     }
+
+    public String getMonsterName(int monsterId) {
+        return MonsterInformationProvider.getInstance().getMobNameFromId(monsterId);
+    }
+
+
 }

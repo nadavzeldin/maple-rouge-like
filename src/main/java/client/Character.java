@@ -6529,13 +6529,13 @@ public class Character extends AbstractCharacterObject {
         return;
     }
 
-    private synchronized void writeExtraDetails() {
+    public synchronized void writeExtraDetails() {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("UPDATE accounts SET extra_details = ? WHERE id = ?")) {
-                String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
-                ps.setString(1, updatedJson);
-                ps.setInt(2, this.accountid);
-                ps.executeUpdate();
+            String updatedJson = new ObjectMapper().writeValueAsString(accountExtraDetails);
+            ps.setString(1, updatedJson);
+            ps.setInt(2, this.accountid);
+            ps.executeUpdate();
         } catch (Exception e) {
             log.error("Error updating account extra details for accountid: " + accountid, e);
         }
@@ -11623,4 +11623,14 @@ public class Character extends AbstractCharacterObject {
     public void setChasing(boolean chasing) {
         this.chasing = chasing;
     }
+
+    public AccountExtraDetails getAccountExtraDetails() {
+        if (accountExtraDetails == null) {
+            accountExtraDetails = new AccountExtraDetails();
+            writeExtraDetails();
+        }
+        return accountExtraDetails;
+    }
+
+    
 }
