@@ -293,28 +293,33 @@ public class Equip extends Item {
         if (oldMultiplier == 0) {
             oldMultiplier = 1.0f;
         }
-    
-        // Adjust stats: divide by old multiplier, multiply by new multiplier
-        str = adjustStat(str, oldMultiplier, newMultiplier);
-        dex = adjustStat(dex, oldMultiplier, newMultiplier);
-        _int = adjustStat(_int, oldMultiplier, newMultiplier);
-        luk = adjustStat(luk, oldMultiplier, newMultiplier);
-        hp = adjustStat(hp, oldMultiplier, newMultiplier);
-        mp = adjustStat(mp, oldMultiplier, newMultiplier);
-        watk = adjustStat(watk, oldMultiplier, newMultiplier);
-        matk = adjustStat(matk, oldMultiplier, newMultiplier);
-        wdef = adjustStat(wdef, oldMultiplier, newMultiplier);
-        mdef = adjustStat(mdef, oldMultiplier, newMultiplier);
-        acc = adjustStat(acc, oldMultiplier, newMultiplier);
-        avoid = adjustStat(avoid, oldMultiplier, newMultiplier);
-        speed = adjustStat(speed, oldMultiplier, newMultiplier);
-        jump = adjustStat(jump, oldMultiplier, newMultiplier);
+        // list of all stats to adjust(str, dex etc)
+        List<Short> stats = List.of(str, dex, _int, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, speed, jump);
+        // update the class real values
+        for (int i = 0; i < stats.size(); i++) {
+            short stat = stats.get(i);
+            // Calculate the new value based on the new multiplier
+            float newValue = (stat / oldMultiplier) * newMultiplier;
+            // Update the class variable with the new value
+            switch (i) {
+                case 0 -> setStr((short) newValue);
+                case 1 -> setDex((short) newValue);
+                case 2 -> setInt((short) newValue);
+                case 3 -> setLuk((short) newValue);
+                case 4 -> setHp((short) newValue);
+                case 5 -> setMp((short) newValue);
+                case 6 -> setWatk((short) newValue);
+                case 7 -> setMatk((short) newValue);
+                case 8 -> setWdef((short) newValue);
+                case 9 -> setMdef((short) newValue);
+                case 10 -> setAcc((short) newValue);
+                case 11 -> setAvoid((short) newValue);
+                case 12 -> setSpeed((short) newValue);
+                case 13 -> setJump((short) newValue);
+            }
+        }
     }
-    
-    private short adjustStat(short stat, float oldMultiplier, float newMultiplier) {
-        float adjusted = (stat / oldMultiplier) * newMultiplier;
-        return (short) Math.max(0, Math.round(adjusted));
-    }
+
 
     public void setSpeed(short speed) {
         this.speed = speed;
