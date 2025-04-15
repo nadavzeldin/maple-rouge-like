@@ -744,7 +744,7 @@ public class Character extends AbstractCharacterObject {
             if (!MapId.isPartyDojo(this.getMapId())) {
                 pts++;
             }
-            this.dojoPoints += pts;
+            this.dojoPoints += 3*pts;
         }
         return pts;
     }
@@ -6870,6 +6870,11 @@ public class Character extends AbstractCharacterObject {
             return false;
         }
     }
+
+    public void updatePlayerExpRates(){
+        this.expRate = Math.max(10, this.expRate - this.accountExtraDetails.AscensionCount());
+    }
+
     public void setPlayerRates() {
         this.expRate *= GameConstants.getPlayerBonusExpRate(this.level / 20);
         this.mesoRate *= GameConstants.getPlayerBonusMesoRate(this.level / 20);
@@ -6891,6 +6896,7 @@ public class Character extends AbstractCharacterObject {
     public void setWorldRates() {
         World worldz = getWorldServer();
         this.expRate *= worldz.getExpRate();
+        this.updatePlayerExpRates();
         this.mesoRate *= worldz.getMesoRate();
         this.dropRate *= worldz.getDropRate();
     }

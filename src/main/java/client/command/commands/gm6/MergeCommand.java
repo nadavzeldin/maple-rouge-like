@@ -35,8 +35,11 @@ import client.inventory.InventoryType;
 import client.inventory.Item;
 import client.inventory.ModifyInventory;
 import client.inventory.manipulator.InventoryManipulator;
+import client.inventory.manipulator.KarmaManipulator;
+import constants.inventory.ItemConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import server.ItemInformationProvider;
 import tools.PacketCreator;
 
 import java.util.ArrayList;
@@ -165,7 +168,7 @@ public class MergeCommand extends Command {
                     // Merge failed (likely due to level check)
                     break;
                 }
-
+                makeItemTradeable(primaryItem);
                 foundItemToMerge = true;
                 totalMergesDone++;
 
@@ -198,7 +201,19 @@ public class MergeCommand extends Command {
             player.yellowMessage("Merge operations complete! " + totalMergesDone + " merges performed.");
         }
     }
+    private void makeItemTradeable(Equip item) {
+        short flag = item.getFlag();
+        if ((flag & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE) {
+            flag &= (0xFFFFFFFF ^ ItemConstants.UNTRADEABLE);
+            item.setFlag(flag);
+        }
 
+        // If the item is drop restricted, we need to add the karma flag to make it tradeable
+        if (ItemInformationProvider.getInstance().isDropRestricted(item.getItemId())) {
+            // Add karma flag to the item
+            KarmaManipulator.setKarmaFlag(item);
+        }
+    }
     private static final Map<String, EffectBonus> EFFECT_BONUSES = new HashMap<>() {{
         put("HarryPotter", new EffectBonus("matk", "int"));
         put("Zoro", new EffectBonus("atk", "str"));

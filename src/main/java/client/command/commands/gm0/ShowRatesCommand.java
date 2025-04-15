@@ -45,6 +45,11 @@ public class ShowRatesCommand extends Command {
         if (player.getCouponExpRate() != 1) {
             showMsg += "Coupon EXP Rate: #k" + player.getCouponExpRate() + "x#k" + "\r\n";
         }
+        // Add ascension decrease explanation
+        int ascensionCount = player.accountExtraDetails.AscensionCount();
+        if (ascensionCount > 0) {
+            showMsg += "Ascension Decrease: #k-" + ascensionCount + "x#k" + "\r\n";
+        }
         showMsg += "EXP Rate: #e#b" + player.getExpRate() + "x#k#n" + (player.hasNoviceExpRate() ? " - novice rate" : "") + "\r\n";
 
         showMsg += "\r\n" + "#eMESO RATE#n" + "\r\n";
