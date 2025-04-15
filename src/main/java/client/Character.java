@@ -10705,12 +10705,12 @@ public class Character extends AbstractCharacterObject {
             nEquip.setHands(newCorruption); // Updates stats via setCorruption
     
             // Messages
-            if (newCorruption % 10 == 0 && newCorruption > 0) {
+            if (newCorruption % 10 == 0 && newCorruption > oldCorruption) {
                 c.getPlayer().yellowMessage("The equipment '" + itemName + "' has been boosted!");
             }
             // each 5 from 15 down(15,10,5)
             if (newCorruption == 5 || newCorruption == 10 || newCorruption == 15) {
-                c.getPlayer().yellowMessage("Warning: The equipment '" + itemName + "' may disappear soon!");
+                c.getPlayer().yellowMessage("Warning: The equipment '" + itemName + "'(Corruption:"+newCorruption+") will disappear at 0!");
             }
     
             // Item disappearance

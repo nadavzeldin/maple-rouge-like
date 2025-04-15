@@ -83,12 +83,12 @@ public final class ScrollHandler extends AbstractPacketHandler {
                     return;
                 }
                 if (!ItemConstants.isModifierScroll(scroll.getItemId()) && 
-                    (scroll.getItemId() != ItemId.CORRUPT_15_SCROLL || toScroll.getHands() >= 100) && 
+                    (scroll.getItemId() != ItemId.CORRUPT_SCROLL || toScroll.getHands() >= 100) && 
                     toScroll.getUpgradeSlots() < 1) {
                     announceCannotScroll(c, legendarySpirit);
                     return;
                 }
-                if (ItemId.CORRUPT_15_SCROLL == scroll.getItemId() && toScroll.getHands() >= 100) {
+                if (ItemId.CORRUPT_SCROLL == scroll.getItemId() && toScroll.getHands() >= 100) {
                     c.sendPacket(PacketCreator.getInventoryFull());
                     return;
                 }
@@ -101,7 +101,7 @@ public final class ScrollHandler extends AbstractPacketHandler {
                     announceCannotScroll(c, legendarySpirit);
                     return;
                 }
-                if (!ItemConstants.isChaosScroll(scroll.getItemId()) && !ItemConstants.isCleanSlate(scroll.getItemId()) && scroll.getItemId() != ItemId.CORRUPT_15_SCROLL) {
+                if (!ItemConstants.isChaosScroll(scroll.getItemId()) && !ItemConstants.isCleanSlate(scroll.getItemId()) && scroll.getItemId() != ItemId.CORRUPT_SCROLL) {
                     if (!canScroll(scroll.getItemId(), toScroll.getItemId())) {
                         announceCannotScroll(c, legendarySpirit);
                         return;
@@ -149,7 +149,7 @@ public final class ScrollHandler extends AbstractPacketHandler {
                         } else if (scrolled.getLevel() > oldLevel ||
                         (ItemConstants.isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() == oldSlots + 1) ||
                         ItemConstants.isFlagModifier(scroll.getItemId(), scrolled.getFlag()) ||
-                        (scroll.getItemId() == ItemId.CORRUPT_15_SCROLL && scrolled.getHands() > oldHands)) {
+                        (scroll.getItemId() == ItemId.CORRUPT_SCROLL && scrolled.getHands() > oldHands)) {
                             scrollSuccess = Equip.ScrollResult.SUCCESS;
                             successfulScrolls++;
                         }

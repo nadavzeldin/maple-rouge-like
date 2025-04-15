@@ -1062,7 +1062,7 @@ public class ItemInformationProvider {
 
         if (equip instanceof Equip nEquip) {
             Map<String, Integer> stats = this.getEquipStats(scrollId);
-            if (nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId) || scrollId == ItemId.CORRUPT_15_SCROLL || assertGM) {
+            if (nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId) || scrollId == ItemId.CORRUPT_SCROLL || assertGM) {
                 double prop = (double) stats.get("success");
                 switch (vegaItemId) {
                     case ItemId.VEGAS_SPELL_10:
@@ -1104,21 +1104,21 @@ public class ItemInformationProvider {
                         case ItemId.MAPLE_SYRUP:
                             scrollEquipWithChaos(nEquip, YamlConfig.config.server.CHSCROLL_STAT_RANGE);
                             break;
-                        case ItemId.CORRUPT_15_SCROLL:
+                        case ItemId.CORRUPT_SCROLL:
                             nEquip.setHands((byte) (nEquip.getHands() + 10));
                             break;
                         default:
                             improveEquipStats(nEquip, stats);
                             break;
                     }
-                    if (!ItemConstants.isCleanSlate(scrollId) && scrollId != ItemId.CORRUPT_15_SCROLL) {
+                    if (!ItemConstants.isCleanSlate(scrollId) && scrollId != ItemId.CORRUPT_SCROLL) {
                         if (!assertGM && !ItemConstants.isModifierScroll(scrollId)) {   // issue with modifier scrolls taking slots found thanks to Masterrulax, justin, BakaKnyx
                             nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                         }
                         nEquip.setLevel((byte) (nEquip.getLevel() + 1));
                     }
                 } else {
-                    if (!YamlConfig.config.server.USE_PERFECT_SCROLLING && !usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM && !ItemConstants.isModifierScroll(scrollId) && scrollId != ItemId.CORRUPT_15_SCROLL) {                        
+                    if (!YamlConfig.config.server.USE_PERFECT_SCROLLING && !usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM && !ItemConstants.isModifierScroll(scrollId) && scrollId != ItemId.CORRUPT_SCROLL) {                        
                         nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                     }
                     if (Randomizer.nextInt(100) < stats.get("cursed")) {

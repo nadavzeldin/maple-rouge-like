@@ -260,11 +260,11 @@ public class Equip extends Item {
         if (hands < 0) {
             hands = 0;
         }
-        updateStats(hands);
+        corruptionUpdateStats(hands);
         this.hands = hands;
     }
     
-    private void updateStats(int hands) {
+    private void corruptionUpdateStats(int hands) {
         // Get current and new tier
         int oldTier = this.hands / 10; // Tier based on current hands
         int newTier = hands / 10;      // Tier based on new hands
