@@ -10754,6 +10754,50 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    public void descreaseHands(int exp){
+        ItemInformationProvider ii = ItemInformationProvider.getInstance();
+        Client c = getClient();
+    
+        for (Item item : getUpgradeableEquipped()) {
+            if (!(item instanceof Equip)) {
+                continue;
+            }
+            Equip nEquip = (Equip) item;
+            String itemName = ii.getName(nEquip.getItemId());
+            if (itemName == null) {
+                continue;
+            }
+    
+            // Decrease corruption by 1
+            short oldCorruption = nEquip.getHands();
+            if (oldCorruption <= 0) {
+                continue; // Skip items with 0 corruption
+            }
+    
+            short newCorruption = (short) Math.max(0, oldCorruption - 1);
+            nEquip.setHands(newCorruption); // Updates stats via setCorruption
+    
+            // Messages
+            if (newCorruption % 10 == 0 && newCorruption > oldCorruption) {
+                c.getPlayer().yellowMessage("The equipment '" + itemName + "' has been boosted!");
+            }
+            // each 5 from 15 down(15,10,5)
+            if (newCorruption == 5 || newCorruption == 10 || newCorruption == 15) {
+                c.getPlayer().yellowMessage("Warning: The equipment '" + itemName + "'(Corruption:"+newCorruption+") will disappear at 0!");
+            }
+    
+            // Item disappearance
+            if (newCorruption == 0 && oldCorruption == 1) {
+                InventoryManipulator.removeFromSlot(c, InventoryType.EQUIPPED, nEquip.getPosition(), nEquip.getQuantity(), false);
+                c.getPlayer().yellowMessage("The equipment '" + itemName + "' has disappeared due to corruption!");
+                continue; // Skip further processing
+            }
+    
+            // Update item
+            forceUpdateItem(nEquip);
+        }
+    }
+
     public void showAllEquipFeatures() {
         String showMsg = "";
 

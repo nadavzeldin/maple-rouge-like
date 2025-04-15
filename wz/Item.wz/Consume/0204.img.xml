@@ -362,6 +362,15 @@
       <int name="success" value="10"/>
     </imgdir>
   </imgdir>
+  <imgdir name="02049115">
+    <imgdir name="info">
+      <uol name="icon" value="../../02040002/info/icon"/>
+      <uol name="iconRaw" value="../../02040002/info/iconRaw"/>
+      <int name="price" value="1"/>
+      <int name="incHands" value="10"/>
+      <int name="success" value="100"/>
+    </imgdir>
+  </imgdir>
   <imgdir name="02040041">
     <imgdir name="info">
       <canvas name="icon" width="30" height="30">

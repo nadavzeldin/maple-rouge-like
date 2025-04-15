@@ -253,8 +253,73 @@ public class Equip extends Item {
     }
 
     public void setHands(short hands) {
+        // Max hands is 100, min is 0
+        if (hands > 100) {
+            hands = 100;
+        }
+        if (hands < 0) {
+            hands = 0;
+        }
+        corruptionUpdateStats(hands);
         this.hands = hands;
     }
+    
+    private void corruptionUpdateStats(int hands) {
+        // Get current and new tier
+        int oldTier = this.hands / 10; // Tier based on current hands
+        int newTier = hands / 10;      // Tier based on new hands
+    
+        // Calculate old multiplier relative to base stat
+        float oldMultiplier;
+        if (this.hands >= 91) {
+            // At 91–100, multiplier is 1.1^9 * 1.5 (tier 9 multiplier times 50% boost)
+            oldMultiplier = (float) Math.pow(1.1, 9) * 1.5f;
+        } else {
+            // Normal tier: multiplier is 1.1^tier
+            oldMultiplier = (float) Math.pow(1.1, oldTier);
+        }
+    
+        // Calculate new multiplier relative to base stat
+        float newMultiplier;
+        if (hands >= 91) {
+            // At 91–100, multiplier is 1.1^9 * 1.5
+            newMultiplier = (float) Math.pow(1.1, 9) * 1.5f;
+        } else {
+            // Normal tier: multiplier is 1.1^tier
+            newMultiplier = (float) Math.pow(1.1, newTier);
+        }
+    
+        // Avoid division by zero (unlikely, but safety check)
+        if (oldMultiplier == 0) {
+            oldMultiplier = 1.0f;
+        }
+        // list of all stats to adjust(str, dex etc)
+        List<Short> stats = List.of(str, dex, _int, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, speed, jump);
+        // update the class real values
+        for (int i = 0; i < stats.size(); i++) {
+            short stat = stats.get(i);
+            // Calculate the new value based on the new multiplier
+            float newValue = (stat / oldMultiplier) * newMultiplier;
+            // Update the class variable with the new value
+            switch (i) {
+                case 0 -> setStr((short) newValue);
+                case 1 -> setDex((short) newValue);
+                case 2 -> setInt((short) newValue);
+                case 3 -> setLuk((short) newValue);
+                case 4 -> setHp((short) newValue);
+                case 5 -> setMp((short) newValue);
+                case 6 -> setWatk((short) newValue);
+                case 7 -> setMatk((short) newValue);
+                case 8 -> setWdef((short) newValue);
+                case 9 -> setMdef((short) newValue);
+                case 10 -> setAcc((short) newValue);
+                case 11 -> setAvoid((short) newValue);
+                case 12 -> setSpeed((short) newValue);
+                case 13 -> setJump((short) newValue);
+            }
+        }
+    }
+
 
     public void setSpeed(short speed) {
         this.speed = speed;
