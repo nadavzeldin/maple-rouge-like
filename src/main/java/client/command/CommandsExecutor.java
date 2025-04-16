@@ -34,6 +34,7 @@ import client.command.commands.gm0.DropLimitCommand;
 import client.command.commands.gm0.EnableAuthCommand;
 import client.command.commands.gm0.EquipLvCommand;
 import client.command.commands.gm0.GachaCommand;
+import client.command.commands.gm0.GetMacroCommand;
 import client.command.commands.gm0.GamesFeatureNPCCommand;
 import client.command.commands.gm0.GmCommand;
 import client.command.commands.gm0.HelpCommand;
@@ -50,6 +51,7 @@ import client.command.commands.gm0.ReadPointsCommand;
 import client.command.commands.gm0.ReportBugCommand;
 import client.command.commands.gm0.ResetStatsCommand;
 import client.command.commands.gm0.ResourceStorageCommand;
+import client.command.commands.gm0.RewardsCommand;
 import client.command.commands.gm0.RollCommand;
 import client.command.commands.gm0.ScrollQuestCommand;
 import client.command.commands.gm0.SellCommand;
@@ -61,6 +63,8 @@ import client.command.commands.gm0.StatDexCommand;
 import client.command.commands.gm0.StatIntCommand;
 import client.command.commands.gm0.StatLukCommand;
 import client.command.commands.gm0.StatStrCommand;
+import client.command.commands.gm0.StorageCommand;
+import client.command.commands.gm0.StylistCommand;
 import client.command.commands.gm0.TimeCommand;
 import client.command.commands.gm0.ToggleAutoStoreCommand;
 import client.command.commands.gm0.ToggleExpCommand;
@@ -217,6 +221,7 @@ import client.command.commands.gm6.SpawnAllPNpcsCommand;
 import client.command.commands.gm6.SupplyRateCouponCommand;
 import client.command.commands.gm6.WarpWorldCommand;
 import client.command.commands.gm6.MergeCommand;
+import client.command.commands.gm0.SetMacroCommand;
 
 import constants.id.MapId;
 import org.slf4j.Logger;
@@ -288,10 +293,7 @@ public class CommandsExecutor {
     }
 
     private void handleInternal(Client client, String message) {
-        if (client.getPlayer().getMapId() == MapId.JAIL && !client.getPlayer().isGM()) {
-            client.getPlayer().yellowMessage("You do not have permission to use commands while in jail.");
-            return;
-        }
+
         if (client.getPlayer().getLastDeathTime() != 0 && !client.getPlayer().isGM())
         {
             client.getPlayer().yellowMessage("You do not have permission to use commands while dead.");
@@ -308,6 +310,11 @@ public class CommandsExecutor {
         final String[] lowercaseParams = splitedMessage[1].toLowerCase().split(splitRegex);
 
         final Command command = registeredCommands.get(commandName);
+        if (client.getPlayer().getMapId() == MapId.JAIL && !client.getPlayer().isGM() && !command.description.equals("storage")) {
+            client.getPlayer().yellowMessage("You do not have permission to use commands while in jail.");
+            return;
+        }
+
         if (command == null) {
             client.getPlayer().yellowMessage("Command '" + commandName + "' is not available. See @commands for a list of available commands.");
             return;
@@ -375,9 +382,10 @@ public class CommandsExecutor {
 
     private void registerLv0Commands() {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
-
         addCommand(new String[]{"help", "commands"}, HelpCommand.class);
         addCommand(new String[]{"warpto", "reach", "follow"},  0, ReachCommand.class);
+        addCommand(new String[]{"setmacro","macro"}, 0, SetMacroCommand.class);
+        addCommand("getmacro", GetMacroCommand.class);
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("randomMap", WarpRandomMap.class);
         addCommand("boosted", BoostedMap.class);
@@ -389,8 +397,9 @@ public class CommandsExecutor {
         addCommand("features", GamesFeatureNPCCommand.class);
         addCommand("world", WorldChatCommand.class);
         addCommand("doom", DoomCommand.class);
-        addCommand("sell", SellCommand.class);
+        addCommand(new String[]{"s","sell"}, SellCommand.class);
         addCommand("roll", RollCommand.class);
+        addCommand("style", StylistCommand.class);
         addCommand("time", TimeCommand.class);
         addCommand("credits", StaffCommand.class);
         addCommand("uptime", UptimeCommand.class);
@@ -418,11 +427,12 @@ public class CommandsExecutor {
         addCommand("bosshp", BossHpCommand.class);
         addCommand("mobhp", MobHpCommand.class);
         addCommand("buyexp", BuyExpCommand.class);
-        addCommand("resources", ResourceStorageCommand.class);
+        addCommand(new String[]{"resources","re"}, ResourceStorageCommand.class);
+        addCommand("rewards", RewardsCommand.class);
         addCommand("togglestore", ToggleAutoStoreCommand.class);
         addCommand("skillbind", SkillBindCommand.class);
+        addCommand("storage", StorageCommand.class);
         addCommand("scrollquest", ScrollQuestCommand.class);
-
 
         commandsNameDesc.add(levelCommandsCursor);
     }
@@ -431,10 +441,10 @@ public class CommandsExecutor {
     private void registerLv1Commands() {
         levelCommandsCursor = new Pair<>(new ArrayList<String>(), new ArrayList<String>());
 
-        addCommand("whatdropsfrom", 1, WhatDropsFromCommand.class);
-        addCommand("whodrops", 1, WhoDropsCommand.class);
+        addCommand(new String[]{"wdf","whatdropsfrom"}, 1, WhatDropsFromCommand.class);
+        addCommand(new String[]{"wd","whodrops"}, 1, WhoDropsCommand.class);
         addCommand("buffme", 1, BuffMeCommand.class);
-        addCommand("goto", 1, GotoCommand.class);
+        addCommand(new String[]{"go","goto"}, 1, GotoCommand.class);
         commandsNameDesc.add(levelCommandsCursor);
     }
 
@@ -476,7 +486,7 @@ public class CommandsExecutor {
         addCommand("unbug", 2, UnBugCommand.class);
         addCommand("id", 2, IdCommand.class);
         addCommand("gachalist", GachaListCommand.class);
-        addCommand("loot", LootCommand.class);
+        addCommand(new String[]{"l","loot"}, LootCommand.class);
         addCommand("mobskill", MobSkillCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);

@@ -98,6 +98,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static client.AscensionConstants.Names.RISKTAKER;
+import static constants.game.GameConstants.BUFF_CHANNEL;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Client extends ChannelInboundHandlerAdapter {
@@ -1478,10 +1480,21 @@ public class Client extends ChannelInboundHandlerAdapter {
 
     public void changeChannel(int channel) {
         Server server = Server.getInstance();
+
         if (player.isBanned()) {
             disconnect(false, false);
             return;
         }
+
+        if (channel == BUFF_CHANNEL)
+        {
+            if (!player.accountExtraDetails.getAscension().contains(RISKTAKER))
+            {
+                player.yellowMessage("Only " + AscensionConstants.Names.RISKTAKER + " can use this channel");
+                return;
+            }
+        }
+
         if (!player.isAlive() || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit())) {
             sendPacket(PacketCreator.enableActions());
             return;

@@ -1105,7 +1105,7 @@ public class ItemInformationProvider {
                             scrollEquipWithChaos(nEquip, YamlConfig.config.server.CHSCROLL_STAT_RANGE);
                             break;
                         case ItemId.CORRUPT_SCROLL:
-                            nEquip.setHands((byte) (nEquip.getHands() + 10));
+                            nEquip.setHands((byte) (nEquip.getHands() + 25));
                             break;
                         default:
                             improveEquipStats(nEquip, stats);

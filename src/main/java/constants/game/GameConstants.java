@@ -20,6 +20,7 @@ import java.util.*;
  * @author Ronan
  */
 public class GameConstants {
+    public static int BUFF_CHANNEL=3;
     public static int SPAWN_RATE = 2;
     public static int LOOT_LIZARD_ID = 9400506;
     public static int LOOT_LIZARD_PERCENT = 20;

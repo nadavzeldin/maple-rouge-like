@@ -28,6 +28,9 @@ import client.Client;
 import client.command.Command;
 import server.maps.MapleMap;
 
+import static constants.id.MapId.DOOM_MAPS;
+import static constants.id.MapId.GM_MAP;
+
 public class ReachCommand  extends Command {
     {
         setDescription("Warp to a player.");
@@ -36,22 +39,50 @@ public class ReachCommand  extends Command {
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();
+
+        // Check command syntax
         if (params.length < 1) {
             player.yellowMessage("Syntax: !reach <playername>");
             return;
         }
 
-        Character victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
-        if (victim != null && victim.isLoggedin()) {
-            if (player.getClient().getChannel() != victim.getClient().getChannel()) {
-                player.dropMessage(5, "Player '" + victim.getName() + "' is at channel " + victim.getClient().getChannel() + ".");
-            } else {
-                MapleMap map = victim.getMap();
-                player.saveLocationOnWarp();
-                player.forceChangeMap(map, map.findClosestPortal(victim.getPosition()));
-            }
-        } else {
-            player.dropMessage(6, "Unknown player.");
+        String targetName = params[0];
+        Character target = c.getWorldServer().getPlayerStorage().getCharacterByName(targetName);
+
+        if (!player.isGM() && DOOM_MAPS.contains(target.getMap().getId()))
+        {
+            player.yellowMessage("cant teleport into doom");
+            return;
         }
+
+        if (!player.isGM() && GM_MAP ==target.getMap().getId())
+        {
+            player.yellowMessage("cant teleport into stylist map");
+            return;
+        }
+
+        // Check if target exists and is logged in
+        if (target == null || !target.isLoggedin()) {
+            player.yellowMessage("Unknown player.");
+            return;
+        }
+
+        // Check party constraint
+        if (!player.isGM() && !player.isPartyMember(target)) {
+            player.yellowMessage("You can only reach players in your party.");
+            return;
+        }
+
+        // Check channel constraint
+        if (player.getClient().getChannel() != target.getClient().getChannel()) {
+            player.dropMessage(5, "Player '" + target.getName() + "' is at channel " +
+                    target.getClient().getChannel() + ".");
+            return;
+        }
+
+        // Teleport to target
+        MapleMap targetMap = target.getMap();
+        player.saveLocationOnWarp();
+        player.forceChangeMap(targetMap, targetMap.findClosestPortal(target.getPosition()));
     }
 }
