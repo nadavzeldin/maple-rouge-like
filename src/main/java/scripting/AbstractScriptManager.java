@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import client.Client;
+import server.life.MonsterInformationProvider;
+
 import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,5 +90,9 @@ public abstract class AbstractScriptManager {
 
     protected void resetContext(String path, Client c) {
         c.removeScriptEngine("scripts/" + path);
+    }
+
+    public String getMonsterName(int monsterId) {
+        return MonsterInformationProvider.getInstance().getMobNameFromId(monsterId);
     }
 }

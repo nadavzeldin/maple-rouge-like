@@ -20,7 +20,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package server.maps;
-
+import client.DailyQuest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import client.AccountExtraDetails;
 import client.BuffStat;
 import client.Character;
 import client.Client;
@@ -1441,6 +1444,26 @@ public class MapleMap {
             }
 
             Character dropOwner = monster.killBy(chr);
+
+            // Daily Quest Tracking
+            AccountExtraDetails extraDetails = chr.getAccountExtraDetails();
+            if (extraDetails != null) {
+                DailyQuest dq = extraDetails.getDailyQuest();
+                if (dq != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String today = sdf.format(new Date());
+                    if (dq.getDate() != null && dq.getDate().equals(today) && !dq.isCompleted() && dq.getMonsterId() == monster.getId()) {
+                        dq.setKillCount(dq.getKillCount() + 1);
+                        extraDetails.setDailyQuest(dq);
+                        chr.writeExtraDetails();
+                        if (dq.getKillCount() >= 100) {
+                            chr.dropMessage(5, "Daily Quest: You've reached 100 kills! Visit Nana to claim your reward.");
+                        }
+                    }
+                }
+            }
+
+
             if (withDrops && !monster.dropsDisabled()) {
                 if (dropOwner == null) {
                     dropOwner = chr;
