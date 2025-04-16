@@ -5,18 +5,61 @@
  */
 
 var status = 0;
-var monsterList = [100100, 100101, 130101, 210100, 1210100, 9300002]; // Snail, Blue Snail, Shroom, Stump, Red Snail, Green Mushroom
 var requiredKills = 100;
-var rewardItemId = 2049115; // Chaos Scroll
+var rewardItemId = 2049115; // Corruption Scroll
 
 // Hardcoded monster name mapping
 var monsterNames = {
-    100100: "Snail",
-    100101: "Blue Snail",
-    130101: "Shroom",
-    210100: "Stump",
-    1210100: "Red Snail",
+    2230103: "Trixter",
+    2230109: "Bubble Fish",
+    3210202: "Jr. Grupin",
+    4230112: "Master Robo",
+    4230100: "Cold Eye",
+    4230120: "Plateon",
+    4230400: "Iron Boar",
+    4230300: "Moon Bunny",
+    5130107: "Coolie Zombie",
+    5250001: "Stone Bug",
+    6110300: "Homun",
+    6130208: "Kru",
+    7130601: "Green Hobi",
+    8140101: "Black Kentaurus",
+    8140002: "Blood Harp",
+    8140600: "Bone Fish",
+    8140703: "Brexton",
+    8150101: "Cold Shark",
+    8200000: "Eye of Time",
+    3210450: "Scuba Pepe",
+    4230104: "Clang",
+    5100003: "Hodori",
+    5100002: "Firebomb",
+    5120506: "The Book Ghost",
+    5130102: "Dark Stone Golem",
+    5250002: "Primitive Boar",
+    6130100: "Red Drake",
+    5250002: "Boar",
+    6130200: "Buffy",
+    6130204: "Mr. Alli",
+    6230200: "Dark Pepe",
+    6230400: "Soul Teddy (Undead)",
+    6400100: "Deep Buffoon",
+    7130004: "Hankie",
+    7130101: "Taurospear",
+    7130500: "Rash",
+    8140300: "Dark Klock (Undead)",
+    8142100: "Risell Squid",
+    8200010: "Oblivion Monk Trainee",
+    7130500: "Rash",
+    7130500: "Rash",
 };
+
+// take from monsterNames
+var monsterList = Object.keys(monsterNames).map(function(key) { 
+    return parseInt(key, 10);
+}
+);
+
+
 
 function getTodayDate() {
     var date = new Date();
